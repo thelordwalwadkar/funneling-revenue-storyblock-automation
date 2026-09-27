@@ -1,11 +1,278 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CaseStudyCard from '../components/CaseStudyCard.astro';
+import StatStrip from '../components/StatStrip.astro';
+import CTASection from '../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema } from '../lib/schema';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+
+const industryLabels: Record<string, string> = {
+	'industrial-equipment-machinery': 'Industrial Equipment & Machinery',
+	'process-filtration': 'Process & Filtration',
+	'life-sciences-lab-equipment': 'Life Sciences & Lab Equipment',
+	'construction-heavy-equipment': 'Construction & Heavy Equipment',
+};
+
+const timeline = [
+	{ era: '1920s — Print', body: 'Newspapers and direct mail built awareness. Salesmen closed the deal.' },
+	{ era: '1950s — Radio', body: 'Jingles owned consideration. Door-to-door owned conversion.' },
+	{ era: '1980s — Television', body: 'Mass awareness at scale. Retail closed.' },
+	{ era: '2005 — Search', body: 'Google owned intent. Forms captured demand.' },
+	{ era: '2015 — Social', body: 'Discovery moved to feeds. Retargeting closed.' },
+	{ era: '2026 — AI / LLMs', body: 'Buyers ask ChatGPT, Perplexity, and Gemini. The funnel compresses but doesn’t disappear.' },
+];
+
+const manufacturingCards = [
+	{ title: '9-Month Sales Cycles', body: 'We design content that nurtures over quarters, not clicks.' },
+	{ title: 'Technical Buyer Personas', body: 'Process engineers, plant heads, procurement — each searches differently. We map every persona to every funnel stage.' },
+	{ title: 'Distributor & Channel Conflict', body: 'Your dealer network shouldn’t compete with your brand on search. We solve channel conflict at the SERP level.' },
+	{ title: 'Low-Volume, High-Intent Queries', body: '50 searches a month can drive ₹1Cr in revenue. We rank for the queries your CFO cares about, not the ones that look good in screenshots.' },
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Funnelling Revenue — SEO & GEO Agency for Manufacturers | Revenue-First Digital Marketing"
+	description="We engineer revenue funnels for industrial and manufacturing brands — SEO, Generative Engine Optimization, and AI-first marketing built around pipeline, not vanity metrics."
+	path="/"
+	schema={[breadcrumbSchema([{ name: 'Home', path: '/' }])]}
+>
+	<!-- Hero -->
+	<section class="hero">
+		<div class="container-max hero-inner">
+			<p class="eyebrow">Revenue-first marketing for manufacturers</p>
+			<h1>The Funnel Is Eternal. The Medium Isn&rsquo;t.</h1>
+			<p class="sub">
+				Revenue-first SEO, GEO, and digital marketing — built for manufacturers and industrial brands. We don&rsquo;t sell traffic. We engineer pipeline.
+			</p>
+			<p class="proof">&#8377;3Cr+ delivered in 90 days. 200% organic traffic growth. Cited by ChatGPT for B2B industrial queries.</p>
+			<div class="hero-actions">
+				<a href="/audit/" class="btn btn-accent">Get a free revenue audit</a>
+				<a href="/case-studies/industrial-revenue-recovery/" class="btn btn-secondary">See the &#8377;3Cr case study</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Thesis timeline -->
+	<section class="section timeline-section">
+		<div class="container-max">
+			<h2 class="center">We don&rsquo;t chase the medium. We engineer the funnel.</h2>
+			<div class="timeline">
+				{timeline.map((node) => (
+					<div class="timeline-node">
+						<p class="era">{node.era}</p>
+						<p class="body">{node.body}</p>
+					</div>
+				))}
+			</div>
+			<p class="funnel-strip">Awareness &rarr; Consideration &rarr; Decision</p>
+		</div>
+	</section>
+
+	<!-- What we report -->
+	<section class="section report-section">
+		<div class="container-max">
+			<h2 class="center">What we actually report</h2>
+			<div class="report-grid">
+				<div class="report-col muted">
+					<h3>What most agencies report</h3>
+					<ul>
+						<li>Impressions</li>
+						<li>Sessions</li>
+						<li>Bounce rate</li>
+						<li>Domain authority</li>
+						<li>Keyword count</li>
+						<li>Social followers</li>
+					</ul>
+				</div>
+				<div class="report-col bold">
+					<h3>What we report</h3>
+					<ul>
+						<li>Qualified leads</li>
+						<li>Pipeline value</li>
+						<li>CAC</li>
+						<li>Customer LTV</li>
+						<li>Deal velocity</li>
+						<li>Revenue attribution</li>
+					</ul>
+				</div>
+			</div>
+			<p class="caption center">One column makes a slide deck look good. The other pays your sales team.</p>
+		</div>
+	</section>
+
+	<!-- Built for manufacturing -->
+	<section class="section">
+		<div class="container-max">
+			<h2 class="center">Generalist agencies fail industrial brands. Here&rsquo;s why we don&rsquo;t.</h2>
+			<div class="manufacturing-grid">
+				{manufacturingCards.map((c) => (
+					<div class="card">
+						<h3>{c.title}</h3>
+						<p>{c.body}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Services teaser -->
+	<section class="section alt">
+		<div class="container-max">
+			<h2 class="center">Services built around the funnel</h2>
+			<div class="service-grid">
+				{services.map((s) => (
+					<ServiceCard slug={s.id} title={s.data.title} funnelStages={s.data.funnelStages} oneLiner={s.data.oneLiner} />
+				))}
+			</div>
+			<p class="center"><a href="/services/" class="btn btn-secondary">Explore all services</a></p>
+		</div>
+	</section>
+
+	<!-- Case studies -->
+	<section class="section">
+		<div class="container-max">
+			<h2 class="center">Proof, not promises</h2>
+			<div class="case-grid">
+				{caseStudies.map((c) => (
+					<CaseStudyCard
+						slug={c.id}
+						client={c.data.anonymized ? 'Industrial Revenue Recovery' : c.data.client}
+						headlineMetric={c.data.headlineMetric}
+						industryLabel={industryLabels[c.data.industry] ?? c.data.industry}
+					/>
+				))}
+			</div>
+			<p class="center"><a href="/case-studies/" class="btn btn-secondary">See all case studies</a></p>
+		</div>
+	</section>
+
+	<!-- AI era -->
+	<section class="section ai-era">
+		<div class="container-max ai-era-inner">
+			<div>
+				<p class="eyebrow">Generative Engine Optimization</p>
+				<h2>When your buyer asks ChatGPT, are you the answer?</h2>
+				<p>
+					Procurement engineers, plant managers, and R&amp;D heads now start vendor research inside Perplexity, ChatGPT, and Gemini &mdash; not Google. If your brand isn&rsquo;t cited there, you&rsquo;re not in the consideration set. We engineer LLM visibility the same way we engineered Google rankings ten years ago: with structured content, citation building, and technical optimisation.
+				</p>
+				<a href="/services/geo/" class="btn btn-accent">See how GEO works</a>
+			</div>
+			<div class="ai-era-card">
+				<p class="eyebrow">Example prompt</p>
+				<p class="prompt">&ldquo;Who are the top vendors for industrial filtration in India?&rdquo;</p>
+				<p class="prompt-note">If your brand isn&rsquo;t in the answer, you&rsquo;ve already lost the deal &mdash; before a human ever opened a browser.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Trust signals -->
+	<section class="section trust-section">
+		<div class="container-max">
+			<StatStrip
+				dark
+				stats={[
+					{ value: '8+', label: 'Years scaling B2B and industrial brands' },
+					{ value: '5×', label: 'Traffic uplift, agency-level average' },
+					{ value: '3×', label: 'Revenue uplift, agency-level average' },
+					{ value: '4,000+', label: 'Keywords optimised, 1,800+ in top 10' },
+				]}
+			/>
+		</div>
+	</section>
+
+	<CTASection
+		heading="Stop reporting traffic. Start reporting revenue."
+		body="30 minutes. No deck. No pitch. We'll show you exactly where your funnel is leaking."
+		primaryLabel="Get a free revenue audit"
+	/>
 </Layout>
+
+<style>
+	.hero {
+		background: linear-gradient(180deg, var(--color-steel-900) 0%, var(--color-steel-700) 100%);
+		color: white;
+		padding-block: clamp(4rem, 10vw, 7rem) clamp(3rem, 8vw, 5rem);
+	}
+	.hero-inner { max-width: 760px; }
+	.hero .eyebrow { color: var(--color-amber-300); }
+	.hero h1 {
+		font-family: var(--font-display);
+		font-size: clamp(2.25rem, 5.5vw, var(--text-display-1));
+		line-height: 1.1;
+		color: white;
+		margin: 0.75rem 0 1.25rem;
+	}
+	.hero .sub { font-size: var(--text-body-lg); color: var(--color-steel-100); max-width: 60ch; }
+	.hero .proof { color: var(--color-amber-300); font-weight: 600; margin-top: 1rem; }
+	.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+	.hero-actions .btn-secondary { color: white; border-color: white; }
+	.hero-actions .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+	.center { text-align: center; }
+	.section h2 { font-size: var(--text-h2); margin-bottom: 2rem; }
+	.section.alt { background: var(--color-charcoal-100); }
+
+	.timeline {
+		display: grid;
+		grid-template-columns: repeat(6, minmax(180px, 1fr));
+		gap: 1rem;
+		overflow-x: auto;
+		padding-bottom: 1rem;
+	}
+	.timeline-node {
+		background: white;
+		border: 1px solid var(--color-charcoal-300);
+		border-radius: var(--radius-lg);
+		padding: 1.25rem;
+	}
+	.timeline-node .era { font-weight: 700; color: var(--color-steel-700); margin-bottom: 0.5rem; font-size: 0.9rem; }
+	.timeline-node .body { font-size: 0.85rem; color: var(--color-charcoal-700); margin: 0; }
+	.funnel-strip {
+		text-align: center;
+		margin-top: 1.5rem;
+		font-family: var(--font-sans);
+		font-weight: 700;
+		color: var(--color-amber-700);
+		letter-spacing: 0.02em;
+	}
+
+	.report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 760px; margin-inline: auto; }
+	.report-col { border-radius: var(--radius-lg); padding: 1.75rem; }
+	.report-col.muted { background: var(--color-charcoal-100); color: var(--color-charcoal-500); }
+	.report-col.bold { background: var(--color-steel-900); color: white; }
+	.report-col h3 { font-size: var(--text-h4); margin-bottom: 1rem; }
+	.report-col.muted h3 { color: var(--color-charcoal-700); }
+	.report-col.bold h3 { color: white; }
+	.report-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem; }
+	.caption { margin-top: 1.5rem; color: var(--color-charcoal-500); font-style: italic; }
+
+	.manufacturing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+	.manufacturing-grid .card h3 { font-size: var(--text-h4); margin-bottom: 0.5rem; }
+	.manufacturing-grid .card p { color: var(--color-charcoal-700); margin: 0; }
+
+	.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+	.case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+
+	.ai-era { background: var(--color-steel-900); color: white; }
+	.ai-era-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; }
+	.ai-era h2 { color: white; font-size: var(--text-h2); margin: 0.5rem 0 1rem; }
+	.ai-era p { color: var(--color-steel-100); margin-bottom: 1.5rem; }
+	.ai-era-card {
+		background: var(--color-steel-700);
+		border-radius: var(--radius-lg);
+		padding: 1.75rem;
+	}
+	.ai-era-card .prompt { font-family: var(--font-display); font-style: italic; font-size: var(--text-h4); color: white; margin: 0.5rem 0 1rem; }
+	.ai-era-card .prompt-note { font-size: 0.85rem; color: var(--color-steel-100); margin: 0; }
+
+	.trust-section { background: var(--color-steel-900); padding-top: 0; }
+
+	@media (max-width: 900px) {
+		.report-grid, .manufacturing-grid, .service-grid, .case-grid { grid-template-columns: 1fr; }
+		.ai-era-inner { grid-template-columns: 1fr; }
+	}
+</style>

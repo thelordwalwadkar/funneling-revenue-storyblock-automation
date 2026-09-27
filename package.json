@@ -9,9 +9,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "storyblok:push-components": "node scripts/storyblok/push-components.mjs",
+    "storyblok:push-stories": "node scripts/storyblok/push-stories.mjs",
+    "storyblok:sync": "npm run storyblok:push-components && npm run storyblok:push-stories"
   },
   "dependencies": {
-    "astro": "^7.1.5"
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3"
   }
 }

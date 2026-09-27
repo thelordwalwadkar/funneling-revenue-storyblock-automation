@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
+
+const path = '/services/';
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const stages: Array<'ToFu' | 'MoFu' | 'BoFu'> = ['ToFu', 'MoFu', 'BoFu'];
+---
+
+<Layout
+	title="Services — SEO, GEO, Paid, and Content for Manufacturers | Funnelling Revenue"
+	description="Six revenue-driven services for industrial brands. SEO, Generative Engine Optimization, Answer Engine Optimization, content, paid media, and fractional marketing leadership."
+	path={path}
+	schema={[
+		collectionPageSchema({
+			name: 'Services',
+			description: 'Six revenue-driven services for industrial brands, each mapped to a funnel stage.',
+			path,
+		}),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Services', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Services', path: '/services/' }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>Services Built Around the Funnel — Not the Channel</h1>
+			<p>
+				Every service we offer maps to a stage of the funnel. If you&rsquo;re losing deals at the top, you have a discovery problem. If you&rsquo;re losing them in the middle, you have a consideration problem. If you&rsquo;re losing them at the bottom, you have a conversion problem. Pick the service that matches your bottleneck &mdash; or talk to us and we&rsquo;ll diagnose it for you.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max service-grid">
+			{services.map((s) => (
+				<ServiceCard slug={s.id} title={s.data.title} funnelStages={s.data.funnelStages} oneLiner={s.data.oneLiner} />
+			))}
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max">
+			<h2 class="center">The funnel-stage matrix</h2>
+			<div class="matrix-wrap">
+				<table class="matrix">
+					<thead>
+						<tr>
+							<th scope="col">Service</th>
+							{stages.map((st) => <th scope="col">{st}</th>)}
+						</tr>
+					</thead>
+					<tbody>
+						{services.map((s) => (
+							<tr>
+								<th scope="row"><a href={`/services/${s.id}/`}>{s.data.title}</a></th>
+								{stages.map((st) => (
+									<td>{s.data.funnelStages.includes(st) ? '✓' : ''}</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<CTASection heading="Pick a service, or let us pick one for you." primaryLabel="Get a free audit" secondaryLabel="Browse case studies" secondaryHref="/case-studies/" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
+	.hero-section p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); }
+	.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+	.section.alt { background: var(--color-charcoal-100); }
+	.center { text-align: center; }
+	.matrix-wrap { overflow-x: auto; }
+	.matrix { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-lg); overflow: hidden; }
+	.matrix th, .matrix td { padding: 0.9rem 1.1rem; text-align: center; border-bottom: 1px solid var(--color-charcoal-300); }
+	.matrix thead th { background: var(--color-steel-900); color: white; }
+	.matrix tbody th { text-align: left; font-weight: 600; }
+	.matrix tbody th a { color: var(--color-steel-900); text-decoration: none; }
+	.matrix tbody th a:hover { text-decoration: underline; }
+	.matrix td { color: var(--color-amber-700); font-weight: 700; }
+
+	@media (max-width: 900px) {
+		.service-grid { grid-template-columns: 1fr; }
+	}
+</style>

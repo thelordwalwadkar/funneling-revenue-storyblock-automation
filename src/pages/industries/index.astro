@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import IndustryCard from '../../components/IndustryCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
+
+const path = '/industries/';
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+	title="Industries We Serve — Marketing for Manufacturers & Industrial Brands | Funnelling Revenue"
+	description="Industrial equipment, process & filtration, life sciences, and construction & heavy equipment. Vertical-specific marketing strategies for manufacturers."
+	path={path}
+	schema={[
+		collectionPageSchema({ name: 'Industries We Serve', description: 'Vertical-specific marketing strategies for four manufacturing-adjacent verticals.', path }),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Industries', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Industries', path: '/industries/' }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>Industries We Serve</h1>
+			<p>
+				Generalist marketing fails industrial brands because every vertical has its own buyer, its own sales cycle, and its own funnel mechanics. We specialise in four manufacturing-adjacent verticals.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max industry-grid">
+			{industries.map((i) => (
+				<IndustryCard slug={i.id} title={i.data.title} oneLiner={i.data.oneLiner} />
+			))}
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>What&rsquo;s consistent across all industries</h2>
+			<p class="prose-body">
+				Long sales cycles, technical buyers, RFQ-driven conversion, distributor channels, and low-volume, high-intent queries. Our methodology is built around these realities, regardless of which product line you sell.
+			</p>
+		</div>
+	</section>
+
+	<CTASection heading="Not sure where you fit?" primaryLabel="Get an audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
+	.hero-section p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); }
+	.industry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+	.section.alt { background: var(--color-charcoal-100); }
+
+	@media (max-width: 900px) {
+		.industry-grid { grid-template-columns: repeat(2, 1fr); }
+	}
+	@media (max-width: 560px) {
+		.industry-grid { grid-template-columns: 1fr; }
+	}
+</style>

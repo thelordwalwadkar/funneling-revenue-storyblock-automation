@@ -1,0 +1,39 @@
+---
+interface Props {
+	slug: string;
+	client: string;
+	headlineMetric: string;
+	industryLabel: string;
+}
+const { slug, client, headlineMetric, industryLabel } = Astro.props;
+---
+
+<a href={`/case-studies/${slug}/`} class="case-card card">
+	<span class="eyebrow">{industryLabel}</span>
+	<p class="metric">{headlineMetric}</p>
+	<h3>{client}</h3>
+	<span class="link">Read the case study &rarr;</span>
+</a>
+
+<style>
+	.case-card {
+		background: var(--color-steel-900);
+		color: white;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		text-decoration: none;
+		transition: transform 150ms ease, box-shadow 150ms ease;
+	}
+	.case-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+	.case-card .eyebrow { color: var(--color-amber-300); }
+	.metric {
+		font-family: var(--font-display);
+		font-weight: 900;
+		font-size: 1.75rem;
+		color: white;
+		margin: 0.25rem 0;
+	}
+	.case-card h3 { color: var(--color-steel-100); font-size: var(--text-h4); margin: 0; }
+	.link { color: var(--color-amber-300); font-weight: 600; font-size: 0.9rem; margin-top: 0.5rem; }
+</style>

@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../lib/schema';
+
+const path = '/terms/';
+---
+
+<Layout
+	title="Terms | Funnelling Revenue"
+	description="Terms of use for the Funnelling Revenue website and audit process."
+	path={path}
+	schema={[breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Terms', path }])]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Terms', path }]} />
+	</div>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body">
+			<h1>Terms</h1>
+			<p>Last updated: 25 September 2026.</p>
+			<h2>Using this site</h2>
+			<p>
+				This site is published by Funnelling Revenue, founded by Shubham Walwadkar. Content is provided for informational purposes. Case study figures are drawn from real client engagements and are labelled where anonymised.
+			</p>
+			<h2>The free audit</h2>
+			<p>
+				The audit described on this site is a genuine diagnostic call with no obligation to purchase further services. Recommendations given on an audit call are based on the information available at the time and are not guarantees of results.
+			</p>
+			<h2>Intellectual property</h2>
+			<p>
+				The Funnelling Revenue name, wordmark, and the frameworks described on this site (including the funnel-stage taxonomy) are the property of Funnelling Revenue.
+			</p>
+			<h2>Contact</h2>
+			<p>
+				Questions about these terms can be sent to <a class="body-link" href="mailto:shubhamwdigital@gmail.com">shubhamwdigital@gmail.com</a>.
+			</p>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.container-reading h1 { margin-top: 1rem; }
+</style>

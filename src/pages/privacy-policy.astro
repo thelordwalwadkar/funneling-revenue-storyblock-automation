@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../lib/schema';
+
+const path = '/privacy-policy/';
+---
+
+<Layout
+	title="Privacy Policy | Funnelling Revenue"
+	description="How Funnelling Revenue collects, uses, and protects information submitted through this site."
+	path={path}
+	schema={[breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path }])]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path }]} />
+	</div>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body">
+			<h1>Privacy Policy</h1>
+			<p>Last updated: 25 September 2026.</p>
+			<h2>What we collect</h2>
+			<p>
+				When you submit the audit form, the newsletter form, or contact us directly, we collect the information you provide — typically your name, work email, company, domain, and the context of your enquiry.
+			</p>
+			<h2>How we use it</h2>
+			<p>
+				We use this information solely to respond to your enquiry, schedule an audit call, and — if you opt in — send The Funnel Letter. We do not sell or share your information with third parties for marketing purposes.
+			</p>
+			<h2>Analytics</h2>
+			<p>
+				This site uses privacy-conscious analytics to understand aggregate traffic and page performance. We do not use this data to identify individual visitors.
+			</p>
+			<h2>Contact</h2>
+			<p>
+				For any privacy request, including deletion of your data, email <a class="body-link" href="mailto:shubhamwdigital@gmail.com">shubhamwdigital@gmail.com</a>.
+			</p>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.container-reading h1 { margin-top: 1rem; }
+</style>

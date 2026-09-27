@@ -1,0 +1,56 @@
+---
+interface Props {
+	heading: string;
+	body?: string;
+	primaryLabel?: string;
+	primaryHref?: string;
+	secondaryLabel?: string;
+	secondaryHref?: string;
+	dark?: boolean;
+}
+const {
+	heading,
+	body,
+	primaryLabel = 'Get a free audit',
+	primaryHref = '/audit/',
+	secondaryLabel,
+	secondaryHref,
+	dark = false,
+} = Astro.props;
+---
+
+<section class:list={['cta-section', { dark }]}>
+	<div class="container-max cta-inner">
+		<h2>{heading}</h2>
+		{body && <p>{body}</p>}
+		<div class="cta-actions">
+			<a href={primaryHref} class="btn btn-accent">{primaryLabel}</a>
+			{secondaryLabel && secondaryHref && (
+				<a href={secondaryHref} class:list={['btn', dark ? 'btn-secondary-dark' : 'btn-secondary']}>{secondaryLabel}</a>
+			)}
+		</div>
+	</div>
+</section>
+
+<style>
+	.cta-section {
+		padding-block: clamp(3rem, 6vw, 5rem);
+		background: var(--color-steel-100);
+		text-align: center;
+	}
+	.cta-section.dark {
+		background: var(--color-steel-900);
+	}
+	.cta-inner { max-width: 640px; margin-inline: auto; }
+	.cta-section h2 { font-size: var(--text-h2); margin-bottom: 0.75rem; }
+	.cta-section.dark h2 { color: white; }
+	.cta-section p { color: var(--color-charcoal-700); margin-bottom: 1.75rem; }
+	.cta-section.dark p { color: var(--color-steel-100); }
+	.cta-actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+	.btn-secondary-dark {
+		background: transparent;
+		color: white;
+		border-color: white;
+	}
+	.btn-secondary-dark:hover { background: rgba(255,255,255,0.1); }
+</style>

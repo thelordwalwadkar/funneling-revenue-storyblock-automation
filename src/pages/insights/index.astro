@@ -1,0 +1,112 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
+
+const path = '/insights/';
+const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+	title="Insights — Funnel-First Marketing for Manufacturers | Funnelling Revenue"
+	description="Essays, frameworks, and playbooks on revenue-driven SEO, GEO, AEO, and AI-first marketing for industrial brands."
+	path={path}
+	schema={[
+		collectionPageSchema({ name: 'Insights', description: 'Five content pillars on funnel-first, revenue-driven marketing for manufacturers.', path }),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Insights', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Insights', path: '/insights/' }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>Insights — From the Funnel Front Lines</h1>
+			<p>
+				Five pillars on funnel-first, revenue-driven marketing for manufacturers. Long-form essays and guides are in production &mdash; each pillar page below outlines what&rsquo;s coming and why it matters.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max pillar-grid">
+			{pillars.map((p) => (
+				<a href={`/insights/pillar/${p.id}/`} class="pillar-card card">
+					<span class="eyebrow">{p.data.priority === 'P1' ? 'Priority pillar' : 'Pillar'}</span>
+					<h2>{p.data.title}</h2>
+					<p>{p.data.description}</p>
+					<span class="link">Explore this pillar &rarr;</span>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<section class="section alt newsletter">
+		<div class="container-max container-reading center">
+			<h2>Get the Funnel Letter</h2>
+			<p>One email a fortnight on revenue marketing for manufacturers. No drip campaigns disguised as newsletters.</p>
+			<form id="newsletter-form" name="newsletter" method="POST" data-netlify="true" class="newsletter-form">
+				<input type="hidden" name="form-name" value="newsletter" />
+				<label class="sr-only" for="newsletter-email">Work email</label>
+				<input id="newsletter-email" type="email" name="email" placeholder="you@company.com" required />
+				<button type="submit" class="btn btn-primary">Subscribe</button>
+			</form>
+			<p id="newsletter-success" class="success-msg" hidden>Thanks — you&rsquo;re on the list. Watch for the first issue.</p>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
+	.hero-section p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); }
+	.pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+	.pillar-card { text-decoration: none; display: flex; flex-direction: column; gap: 0.5rem; }
+	.pillar-card h2 { font-size: var(--text-h3); }
+	.pillar-card p { color: var(--color-charcoal-700); margin: 0; }
+	.pillar-card .link { color: var(--color-steel-700); font-weight: 600; margin-top: 0.5rem; }
+
+	.section.alt { background: var(--color-charcoal-100); }
+	.center { text-align: center; }
+	.newsletter h2 { font-size: var(--text-h2); }
+	.newsletter p { color: var(--color-charcoal-700); margin-bottom: 1.5rem; }
+	.newsletter-form { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+	.newsletter-form input {
+		flex: 1; min-width: 220px; max-width: 320px;
+		padding: 12px 16px;
+		border-radius: var(--radius-md);
+		border: 1.5px solid var(--color-charcoal-300);
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+	}
+	.success-msg { color: var(--color-success); font-weight: 600; margin-top: 1rem; }
+	.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+	@media (max-width: 700px) {
+		.pillar-grid { grid-template-columns: 1fr; }
+	}
+</style>
+
+<script>
+	const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+	const success = document.getElementById('newsletter-success');
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
+		// Netlify Forms once deployed there. Swap for ConvertKit/Beehiiv if you deploy elsewhere.
+		fetch('/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString(),
+		}).finally(() => {
+			form.hidden = true;
+			if (success) success.hidden = false;
+		});
+	});
+</script>

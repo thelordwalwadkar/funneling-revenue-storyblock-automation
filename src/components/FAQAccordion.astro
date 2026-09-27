@@ -1,0 +1,53 @@
+---
+interface Props {
+	faq: { q: string; a: string }[];
+}
+const { faq } = Astro.props;
+---
+
+<div class="faq-accordion">
+	{faq.map((item) => (
+		<details class="faq-item">
+			<summary>{item.q}</summary>
+			<p>{item.a}</p>
+		</details>
+	))}
+</div>
+
+<style>
+	.faq-accordion {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	.faq-item {
+		background: white;
+		border: 1px solid var(--color-charcoal-300);
+		border-radius: var(--radius-lg);
+		padding: 1rem 1.25rem;
+	}
+	.faq-item summary {
+		cursor: pointer;
+		font-weight: 600;
+		font-family: var(--font-sans);
+		color: var(--color-steel-900);
+		list-style: none;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.faq-item summary::-webkit-details-marker { display: none; }
+	.faq-item summary::after {
+		content: "+";
+		font-size: 1.25rem;
+		color: var(--color-amber-700);
+		margin-left: 1rem;
+		transition: transform 150ms ease;
+	}
+	.faq-item[open] summary::after { transform: rotate(45deg); }
+	.faq-item p {
+		margin-top: 0.75rem;
+		color: var(--color-charcoal-700);
+		font-size: 0.95rem;
+	}
+</style>

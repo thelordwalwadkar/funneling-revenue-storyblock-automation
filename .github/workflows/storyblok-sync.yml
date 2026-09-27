@@ -1,0 +1,33 @@
+name: Sync content to Storyblok
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "src/content/**"
+      - "scripts/storyblok/**"
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: Push component schemas
+        run: npm run storyblok:push-components
+        env:
+          STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
+          STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+
+      - name: Push stories
+        run: npm run storyblok:push-stories
+        env:
+          STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
+          STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}

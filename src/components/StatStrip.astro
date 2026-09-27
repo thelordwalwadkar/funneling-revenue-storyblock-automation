@@ -1,0 +1,39 @@
+---
+interface Props {
+	stats: { value: string; label: string }[];
+	dark?: boolean;
+}
+const { stats, dark = false } = Astro.props;
+---
+
+<div class:list={['stat-strip', { dark }]}>
+	{stats.map((stat) => (
+		<div class="stat">
+			<p class="value">{stat.value}</p>
+			<p class="label">{stat.label}</p>
+		</div>
+	))}
+</div>
+
+<style>
+	.stat-strip {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: 1.5rem;
+	}
+	.stat { text-align: center; }
+	.value {
+		font-family: var(--font-display);
+		font-weight: 900;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		color: var(--color-amber-700);
+		line-height: 1.1;
+	}
+	.stat-strip.dark .value { color: var(--color-amber-300); }
+	.label {
+		font-size: 0.85rem;
+		color: var(--color-charcoal-500);
+		margin-top: 0.35rem;
+	}
+	.stat-strip.dark .label { color: var(--color-steel-100); }
+</style>

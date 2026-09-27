@@ -1,0 +1,233 @@
+---
+import { getCollection } from 'astro:content';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<header class="site-header">
+	<div class="container-max bar">
+		<a href="/" class="wordmark" aria-label="Funnelling Revenue — home">
+			<span class="mark" aria-hidden="true">
+				<span></span><span></span><span></span>
+			</span>
+			<span class="wordmark-text">FUNNELLING <span class="amber">REVENUE</span></span>
+		</a>
+
+		<button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
+			<span class="sr-only">Menu</span>
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+				<path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round" />
+			</svg>
+		</button>
+
+		<nav id="primary-nav" class="primary-nav" aria-label="Primary">
+			<ul>
+				<li class="has-dropdown">
+					<a href="/services/">Services</a>
+					<ul class="dropdown">
+						{services.map((s) => (
+							<li>
+								<a href={`/services/${s.id}/`}>
+									{s.data.title}
+									<span class="funnel-tag" style="margin-left:8px;">{s.data.funnelStages[0]}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</li>
+				<li class="has-dropdown">
+					<a href="/industries/">Industries</a>
+					<ul class="dropdown">
+						{industries.map((i) => (
+							<li><a href={`/industries/${i.id}/`}>{i.data.title}</a></li>
+						))}
+					</ul>
+				</li>
+				<li><a href="/case-studies/">Case Studies</a></li>
+				<li class="has-dropdown">
+					<a href="/insights/">Insights</a>
+					<ul class="dropdown">
+						{pillars.map((p) => (
+							<li><a href={`/insights/pillar/${p.id}/`}>{p.data.title}</a></li>
+						))}
+						<li><a href="/insights/">All Insights</a></li>
+					</ul>
+				</li>
+			</ul>
+			<a href="/audit/" class="btn btn-accent nav-cta">Get a free audit</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--color-off-white);
+		border-bottom: 1px solid var(--color-charcoal-300);
+	}
+	.bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding-block: 1rem;
+	}
+	.wordmark {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		text-decoration: none;
+	}
+	.mark {
+		display: inline-flex;
+		flex-direction: column;
+		gap: 3px;
+		width: 22px;
+	}
+	.mark span {
+		display: block;
+		height: 3px;
+		border-radius: 2px;
+		background: var(--color-steel-700);
+	}
+	.mark span:nth-child(1) { width: 100%; }
+	.mark span:nth-child(2) { width: 68%; }
+	.mark span:nth-child(3) { width: 40%; }
+	.wordmark-text {
+		font-family: var(--font-sans);
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		font-size: 1rem;
+		color: var(--color-steel-900);
+		white-space: nowrap;
+	}
+	.wordmark-text .amber { color: var(--color-amber-700); }
+
+	.nav-toggle {
+		display: none;
+		background: none;
+		border: none;
+		color: var(--color-steel-900);
+		padding: 0.5rem;
+		cursor: pointer;
+	}
+	.sr-only {
+		position: absolute;
+		width: 1px; height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+
+	.primary-nav {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+	.primary-nav > ul {
+		display: flex;
+		align-items: center;
+		gap: 1.75rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.primary-nav > ul > li > a {
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: 0.95rem;
+		color: var(--color-charcoal-900);
+		text-decoration: none;
+		padding-block: 1.6rem;
+	}
+	.primary-nav > ul > li > a:hover { color: var(--color-steel-700); }
+
+	.has-dropdown { position: relative; }
+	.dropdown {
+		position: absolute;
+		top: 100%;
+		left: -1rem;
+		min-width: 280px;
+		background: white;
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-lg);
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(4px);
+		transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
+	}
+	.has-dropdown:hover .dropdown,
+	.has-dropdown:focus-within .dropdown {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+	.dropdown li a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.6rem 0.75rem;
+		border-radius: var(--radius-sm);
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--color-charcoal-900);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	.dropdown li a:hover { background: var(--color-steel-100); }
+
+	.nav-cta { white-space: nowrap; padding: 10px 20px; font-size: 0.9rem; }
+
+	@media (max-width: 900px) {
+		.nav-toggle { display: inline-flex; }
+		.primary-nav {
+			position: fixed;
+			inset: 73px 0 0 0;
+			background: var(--color-off-white);
+			flex-direction: column;
+			align-items: stretch;
+			padding: 1.5rem;
+			gap: 1.5rem;
+			transform: translateX(100%);
+			transition: transform 200ms ease;
+			overflow-y: auto;
+		}
+		.primary-nav.open { transform: translateX(0); }
+		.primary-nav > ul { flex-direction: column; align-items: stretch; gap: 0; }
+		.primary-nav > ul > li > a { display: block; padding-block: 0.9rem; border-bottom: 1px solid var(--color-charcoal-300); }
+		.dropdown {
+			position: static;
+			opacity: 1; visibility: visible; transform: none;
+			box-shadow: none; background: var(--color-charcoal-100);
+			display: none;
+		}
+		.has-dropdown.open .dropdown { display: block; }
+		.nav-cta { text-align: center; justify-content: center; margin-top: 0.5rem; }
+	}
+</style>
+
+<script>
+	const toggle = document.getElementById('nav-toggle');
+	const nav = document.getElementById('primary-nav');
+	toggle?.addEventListener('click', () => {
+		const open = nav?.classList.toggle('open');
+		toggle.setAttribute('aria-expanded', String(!!open));
+	});
+
+	if (window.matchMedia('(max-width: 900px)').matches) {
+		document.querySelectorAll('.has-dropdown > a').forEach((link) => {
+			link.addEventListener('click', (e) => {
+				if (window.innerWidth <= 900) {
+					e.preventDefault();
+					link.parentElement?.classList.toggle('open');
+				}
+			});
+		});
+	}
+</script>

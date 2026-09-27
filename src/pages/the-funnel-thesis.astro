@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CTASection from '../components/CTASection.astro';
+import { articleSchema, breadcrumbSchema } from '../lib/schema';
+
+const path = '/the-funnel-thesis/';
+const eras = [
+	{
+		name: 'The Newspaper Era (1900s–1940s)',
+		body: 'Mass print created the first scalable awareness channel. Salesmen on doorsteps and in showrooms closed the deal.',
+	},
+	{
+		name: 'The Radio Era (1920s–1950s)',
+		body: 'Audio broadcasting brought brand voice into the home. Retail and direct response carried the close.',
+	},
+	{
+		name: 'The Television Era (1950s–1990s)',
+		body: 'Sight, sound, and motion at unprecedented scale. Awareness exploded. Trial and retail closed.',
+	},
+	{
+		name: 'The Search Era (2000s)',
+		body: 'Google made intent measurable for the first time in human history. Forms and e-commerce closed.',
+	},
+	{
+		name: 'The Social Era (2010s)',
+		body: 'Discovery moved into feeds. Retargeting and influencer trust did the closing work.',
+	},
+	{
+		name: 'The AI Era (2020s onward)',
+		body: 'Buyers ask Perplexity, ChatGPT, and Gemini. The funnel compresses into a single query, but every stage — awareness, consideration, decision — still lives inside that query.',
+	},
+];
+---
+
+<Layout
+	title="The Funnel Thesis — Why Marketing's Core Hasn't Changed in 100 Years | Funnelling Revenue"
+	description="Newspapers, radio, TV, search, social, AI — the medium keeps changing. The marketing funnel doesn't. Read the thesis behind Funnelling Revenue."
+	path={path}
+	ogType="article"
+	stickyCta
+	schema={[
+		{
+			'@context': 'https://schema.org',
+			'@type': 'AboutPage',
+			name: 'The Funnel Thesis',
+		},
+		articleSchema({
+			headline: 'The Funnel Thesis',
+			description: "Newspapers, radio, TV, search, social, AI — the medium keeps changing. The marketing funnel doesn't.",
+			path,
+		}),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'The Funnel Thesis', path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'The Funnel Thesis', path: '/the-funnel-thesis/' }]} />
+	</div>
+
+	<section class="opener">
+		<div class="container-reading">
+			<p class="provocation">
+				Most agencies sold you traffic. Then they sold you sessions. Now they want to sell you &ldquo;AI visibility.&rdquo; We&rsquo;ve never sold any of those. We sell revenue.
+			</p>
+			<p class="opener-sub">This is the thesis that built Funnelling Revenue. Read it once. You&rsquo;ll never look at a marketing report the same way.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-reading prose-body">
+			<h2>A short history of marketing in six paragraphs</h2>
+			{eras.map((era) => (
+				<div class="era-block">
+					<h3>{era.name}</h3>
+					<p>{era.body} <em>The channel was new. The funnel was the same.</em></p>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-reading prose-body">
+			<h2>Why the funnel never dies</h2>
+			<p>
+				The funnel isn&rsquo;t a marketing framework. It&rsquo;s a description of how human beings make buying decisions. We notice something exists. We evaluate whether we want it. We decide to act. That sequence is hardwired — it&rsquo;s older than marketing, older than money, older than civilisation. Channels change because technology changes. Buyer psychology doesn&rsquo;t.
+			</p>
+			<blockquote>Awareness. Consideration. Decision. These three words have survived every technological revolution in marketing history. They will survive this one too.</blockquote>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-reading prose-body">
+			<h2>Why this matters more now, not less</h2>
+			<p>
+				AI doesn&rsquo;t kill the funnel. It compresses it. A procurement engineer asking ChatGPT &ldquo;best industrial filtration vendors for pharma applications&rdquo; is doing all three stages in one query. The model does awareness (it tells them who exists), consideration (it explains the trade-offs), and decision (it makes a recommendation). If you&rsquo;re not present in that single answer, you&rsquo;ve lost the deal before the human ever clicked anything.
+			</p>
+			<p>
+				The fix isn&rsquo;t new. The fix is the funnel. You have to show up — with content, citations, structured data, and authority — across every stage the model evaluates. We&rsquo;ve been doing this work for a decade. We just don&rsquo;t call it &ldquo;AI marketing.&rdquo; We call it the funnel.
+			</p>
+		</div>
+	</section>
+
+	<section class="section alt founder">
+		<div class="container-reading">
+			<h2>Founder note</h2>
+			<p class="prose-body">
+				I started as a mechanical engineer. I came into marketing the way most industrial buyers come into your funnel: technical first, sceptical of fluff, allergic to anything that can&rsquo;t be measured. Over 8 years I&rsquo;ve built SEO and growth systems for Pall Corporation, Sany India, and the Danaher Lifesciences portfolio, plus a long list of manufacturers most people have never heard of but whose pumps, filters, and machines run the world. I&rsquo;ve watched the industry pivot from keywords to clusters, from clusters to topical authority, from authority to AI citation. The acronyms changed. The work didn&rsquo;t. The work is still about understanding how a buyer makes a decision and being present at every stage of that decision. That&rsquo;s the funnel. That&rsquo;s the work. That&rsquo;s Funnelling Revenue.
+			</p>
+			<p class="signature">&mdash; Shubham Walwadkar, Founder</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-reading">
+			<h2>What this means for how we work</h2>
+			<ol class="principles">
+				<li><strong>We diagnose before we prescribe.</strong> Every engagement starts with a funnel audit. No tactic before we know which stage is broken.</li>
+				<li><strong>We report revenue, not activity.</strong> If a metric doesn&rsquo;t tie to pipeline, we don&rsquo;t put it on the dashboard.</li>
+				<li><strong>We pick fights with the medium, not the principle.</strong> When a platform dies, when AI Overviews eat half of organic, when a new model becomes the new search — we change tactics. We don&rsquo;t change the funnel.</li>
+			</ol>
+		</div>
+	</section>
+
+	<CTASection
+		heading="If this is how you think about marketing, we should talk."
+		primaryLabel="Get a free revenue audit"
+		secondaryLabel="Read the case studies"
+		secondaryHref="/case-studies/"
+	/>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.opener {
+		padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 3rem);
+		text-align: center;
+	}
+	.provocation {
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+		line-height: 1.25;
+		color: var(--color-steel-900);
+	}
+	.opener-sub { color: var(--color-charcoal-500); margin-top: 1.5rem; }
+	.section.alt { background: var(--color-charcoal-100); }
+	.era-block { margin-bottom: 2rem; }
+	.era-block h3 { font-size: var(--text-h4); margin-bottom: 0.4rem; }
+	.era-block em { color: var(--color-steel-700); font-style: italic; }
+	.founder .signature { font-family: var(--font-display); font-style: italic; color: var(--color-steel-700); margin-top: 1rem; }
+	.principles { display: flex; flex-direction: column; gap: 1.25rem; padding-left: 1.25rem; color: var(--color-charcoal-700); }
+</style>

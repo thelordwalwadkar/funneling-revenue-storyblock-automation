@@ -1,0 +1,161 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import StatStrip from '../../components/StatStrip.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { articleSchema, breadcrumbSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const caseStudies = await getCollection('caseStudies');
+	return caseStudies.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const path = `/case-studies/${entry.id}/`;
+
+const industry = await getEntry('industries', data.industry);
+const services = await Promise.all(data.servicesUsed.map((s) => getEntry('services', s)));
+const nextCase = await getEntry('caseStudies', data.nextCaseStudy);
+const displayName = data.anonymized ? 'Industrial Revenue Recovery' : data.client;
+---
+
+<Layout
+	title={data.metaTitle}
+	description={data.metaDescription}
+	path={path}
+	ogType="article"
+	stickyCta
+	schema={[
+		articleSchema({ headline: data.h1, description: data.metaDescription, path }),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'Case Studies', path: '/case-studies/' },
+			{ name: displayName, path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies/' }, { name: displayName, path }]} />
+	</div>
+
+	<section class="header-strip">
+		<div class="container-max">
+			<div class="meta-row">
+				<a href={`/industries/${industry.id}/`} class="pill">{industry.data.title}</a>
+				{services.map((s) => <a href={`/services/${s.id}/`} class="pill">{s.data.title}</a>)}
+				<span class="pill pill-static">{data.engagementDuration}</span>
+			</div>
+			<h1>{data.h1}</h1>
+			{data.anonymized && data.anonymizedNote && <p class="anon-note">{data.anonymizedNote}</p>}
+			<StatStrip dark stats={data.metrics} />
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<h2>The funnel before</h2>
+			<dl class="funnel-dl">
+				<dt>ToFu</dt><dd>{data.funnelBefore.tofu}</dd>
+				<dt>MoFu</dt><dd>{data.funnelBefore.mofu}</dd>
+				<dt>BoFu</dt><dd>{data.funnelBefore.bofu}</dd>
+			</dl>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max">
+			<h2 class="center">What we did, by funnel stage</h2>
+			<div class="stage-grid">
+				<div class="stage-col">
+					<h3>ToFu</h3>
+					<ul>{data.actionsByStage.tofu.map((a) => <li>{a}</li>)}</ul>
+				</div>
+				<div class="stage-col">
+					<h3>MoFu</h3>
+					<ul>{data.actionsByStage.mofu.map((a) => <li>{a}</li>)}</ul>
+				</div>
+				<div class="stage-col">
+					<h3>BoFu</h3>
+					<ul>{data.actionsByStage.bofu.map((a) => <li>{a}</li>)}</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<h2>The funnel after</h2>
+			<dl class="funnel-dl">
+				<dt>ToFu</dt><dd>{data.funnelAfter.tofu}</dd>
+				<dt>MoFu</dt><dd>{data.funnelAfter.mofu}</dd>
+				<dt>BoFu</dt><dd>{data.funnelAfter.bofu}</dd>
+			</dl>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>Revenue impact</h2>
+			<p class="prose-body impact">{data.revenueImpact}</p>
+			{data.quote && <blockquote class="prose-body">{data.quote}</blockquote>}
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<h2>What we&rsquo;d do differently with AI today</h2>
+			<p class="prose-body">{data.aiToday}</p>
+		</div>
+	</section>
+
+	<section class="section alt next-case">
+		<div class="container-max container-reading">
+			<p class="eyebrow">Next case study</p>
+			<a href={`/case-studies/${nextCase.id}/`} class="next-link">
+				{nextCase.data.anonymized ? 'Industrial Revenue Recovery' : nextCase.data.client}: {nextCase.data.headlineMetric} &rarr;
+			</a>
+		</div>
+	</section>
+
+	<CTASection heading="Get a free audit like this one." primaryLabel="Request a free audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.header-strip { background: var(--color-steel-900); color: white; padding-block: 2rem 3rem; }
+	.meta-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.25rem; }
+	.pill {
+		font-size: 0.8rem; font-weight: 600;
+		padding: 0.35rem 0.85rem;
+		border-radius: 999px;
+		background: var(--color-steel-700);
+		color: white;
+		text-decoration: none;
+	}
+	.pill:hover { background: var(--color-steel-500); }
+	.pill-static { background: transparent; border: 1px solid var(--color-steel-500); }
+	.header-strip h1 { color: white; font-size: clamp(1.75rem, 4vw, var(--text-h1)); max-width: 800px; margin-bottom: 1.5rem; }
+	.anon-note { color: var(--color-steel-100); font-size: 0.85rem; font-style: italic; margin-bottom: 1.5rem; max-width: 60ch; }
+
+	.section.alt { background: var(--color-charcoal-100); }
+	.center { text-align: center; }
+
+	.funnel-dl { display: grid; grid-template-columns: 100px 1fr; gap: 0.75rem 1.5rem; }
+	.funnel-dl dt { font-weight: 700; color: var(--color-steel-700); }
+	.funnel-dl dd { margin: 0; color: var(--color-charcoal-700); }
+
+	.stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+	.stage-col { background: white; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); }
+	.stage-col h3 { font-size: var(--text-h4); color: var(--color-amber-700); margin-bottom: 0.75rem; }
+	.stage-col ul { margin: 0; padding-left: 1.2rem; color: var(--color-charcoal-700); display: flex; flex-direction: column; gap: 0.5rem; }
+
+	.impact { font-size: var(--text-body-lg); }
+	.next-case .next-link { font-family: var(--font-display); font-weight: 700; font-size: var(--text-h3); color: var(--color-steel-900); text-decoration: none; }
+	.next-case .next-link:hover { color: var(--color-steel-700); }
+
+	@media (max-width: 900px) {
+		.stage-grid { grid-template-columns: 1fr; }
+	}
+</style>

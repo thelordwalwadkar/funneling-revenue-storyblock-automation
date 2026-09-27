@@ -1,0 +1,154 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { breadcrumbSchema, faqPageSchema, serviceSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const services = await getCollection('services');
+	return services.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const path = `/services/${entry.id}/`;
+
+const miniCase = data.miniCaseStudy ? await getEntry('caseStudies', data.miniCaseStudy.caseStudy) : null;
+---
+
+<Layout
+	title={data.metaTitle}
+	description={data.metaDescription}
+	path={path}
+	stickyCta
+	schema={[
+		serviceSchema({ name: data.title, description: data.metaDescription, path }),
+		faqPageSchema(data.faq),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'Services', path: '/services/' },
+			{ name: data.title, path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Services', path: '/services/' }, { name: data.title, path }]} />
+	</div>
+
+	<div class="funnel-banner">
+		<div class="container-max banner-inner">
+			<div class="tags">
+				{data.funnelStages.map((s) => <span class="funnel-tag funnel-tag--amber">{s}</span>)}
+			</div>
+			<p>{data.funnelCaption}</p>
+		</div>
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>{data.h1}</h1>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body">
+			<h2>{data.problemHeading}</h2>
+			<p>{data.problemBody}</p>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max">
+			<h2 class="center">Our methodology</h2>
+			<ol class="methodology">
+				{data.methodology.map((m, i) => (
+					<li>
+						<span class="step-num">{i + 1}</span>
+						<div>
+							<h3>{m.title}</h3>
+							<p>{m.body}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max two-col">
+			<div>
+				<h2>What you actually get</h2>
+				<ul class="get-list">
+					{data.whatYouGet.map((item) => <li>{item}</li>)}
+				</ul>
+			</div>
+			<div class="metric-card card">
+				<p class="eyebrow">Revenue metric we&rsquo;re judged on</p>
+				<p class="metric-text">{data.revenueMetric}</p>
+			</div>
+		</div>
+	</section>
+
+	{miniCase && (
+		<section class="section alt">
+			<div class="container-max container-reading">
+				<div class="mini-case card">
+					<p class="eyebrow">Proof</p>
+					<blockquote>{data.miniCaseStudy?.quote}</blockquote>
+					<a href={`/case-studies/${miniCase.id}/`} class="body-link">Read the full {miniCase.data.client} case study &rarr;</a>
+				</div>
+			</div>
+		</section>
+	)}
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<h2>Frequently asked questions</h2>
+			<FAQAccordion faq={data.faq} />
+		</div>
+	</section>
+
+	<CTASection heading={`See where your ${data.title.toLowerCase()} funnel is leaking. Free.`} primaryLabel="Request a free audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.funnel-banner { background: var(--color-steel-900); color: white; padding-block: 1rem; margin-top: 1rem; }
+	.banner-inner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+	.banner-inner p { margin: 0; font-size: 0.9rem; color: var(--color-steel-100); }
+	.tags { display: flex; gap: 0.5rem; }
+	.hero-section { padding-block: 2.5rem 1.5rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); }
+	.section.alt { background: var(--color-charcoal-100); }
+	.center { text-align: center; }
+
+	.methodology { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.75rem; max-width: 760px; margin-inline: auto; }
+	.methodology li { display: flex; gap: 1.25rem; align-items: flex-start; }
+	.step-num {
+		flex-shrink: 0;
+		width: 2.25rem; height: 2.25rem;
+		border-radius: 50%;
+		background: var(--color-amber-700);
+		color: white;
+		display: flex; align-items: center; justify-content: center;
+		font-weight: 700; font-family: var(--font-sans);
+	}
+	.methodology h3 { font-size: var(--text-h4); margin-bottom: 0.25rem; }
+	.methodology p { margin: 0; color: var(--color-charcoal-700); }
+
+	.two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: start; }
+	.get-list { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+	.get-list li { padding-left: 1.5rem; position: relative; color: var(--color-charcoal-700); }
+	.get-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-amber-700); font-weight: 700; }
+	.metric-card { background: var(--color-steel-900); color: white; }
+	.metric-card .eyebrow { color: var(--color-amber-300); margin-bottom: 0.75rem; }
+	.metric-text { font-family: var(--font-display); font-weight: 600; font-size: var(--text-h4); color: white; margin: 0; }
+
+	.mini-case blockquote { margin: 0.75rem 0 1rem; }
+
+	@media (max-width: 900px) {
+		.two-col { grid-template-columns: 1fr; }
+	}
+</style>

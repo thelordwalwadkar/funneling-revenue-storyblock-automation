@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import StatStrip from '../components/StatStrip.astro';
+import { breadcrumbSchema, faqPageSchema } from '../lib/schema';
+
+const path = '/audit/';
+const faq = [
+	{ q: 'Is this really free?', a: 'Yes.' },
+	{ q: "What's the catch?", a: "No catch. Some audits become engagements. Most don't. We're fine with that." },
+	{ q: 'How long does the call take?', a: '30 minutes.' },
+	{ q: 'Do you sign NDAs?', a: 'Yes — sent with the calendar invite if requested.' },
+	{ q: 'Will you give me actionable advice on the call?', a: 'Yes. The whole point is to make the call useful whether or not we work together.' },
+];
+---
+
+<Layout
+	title="Free Revenue Funnel Audit — For Manufacturers & Industrial Brands | Funnelling Revenue"
+	description="Get a free funnel diagnostic. We'll identify where your marketing is leaking revenue — ToFu, MoFu, or BoFu — and what to fix first."
+	path={path}
+	schema={[
+		{ '@context': 'https://schema.org', '@type': 'ContactPage', name: 'Get a Free Revenue Funnel Audit' },
+		faqPageSchema(faq),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Get a Free Audit', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Get a Free Audit', path: '/audit/' }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max hero-grid">
+			<div>
+				<h1>Get a Free Revenue Funnel Audit</h1>
+				<p class="promise">
+					In 30 minutes, we&rsquo;ll show you exactly where your funnel is leaking revenue — and which fix will return the most pipeline in the next 90 days. Free. No deck. No pitch.
+				</p>
+				<ul class="get-list">
+					<li>30-minute live diagnostic call</li>
+					<li>Funnel-stage analysis (ToFu / MoFu / BoFu)</li>
+					<li>Top 3 leaks identified</li>
+					<li>90-day priority roadmap</li>
+					<li>Written summary delivered after the call</li>
+				</ul>
+			</div>
+
+			<div class="form-card card">
+				<form id="audit-form" name="audit" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+					<input type="hidden" name="form-name" value="audit" />
+					<p class="hp-field"><label>Don&rsquo;t fill this out: <input name="bot-field" /></label></p>
+					<div class="field">
+						<label for="name">Name</label>
+						<input id="name" name="name" type="text" required />
+					</div>
+					<div class="field">
+						<label for="email">Work email</label>
+						<input id="email" name="email" type="email" required />
+					</div>
+					<div class="field">
+						<label for="company">Company name</label>
+						<input id="company" name="company" type="text" required />
+					</div>
+					<div class="field">
+						<label for="domain">Domain</label>
+						<input id="domain" name="domain" type="text" placeholder="yourcompany.com" required />
+					</div>
+					<div class="field-row">
+						<div class="field">
+							<label for="role">Role</label>
+							<select id="role" name="role" required>
+								<option value="">Select</option>
+								<option>Marketing head</option>
+								<option>Founder</option>
+								<option>MD</option>
+								<option>CMO</option>
+								<option>Other</option>
+							</select>
+						</div>
+						<div class="field">
+							<label for="industry">Industry</label>
+							<select id="industry" name="industry" required>
+								<option value="">Select</option>
+								<option>Industrial Equipment &amp; Machinery</option>
+								<option>Process &amp; Filtration</option>
+								<option>Life Sciences &amp; Lab Equipment</option>
+								<option>Construction &amp; Heavy Equipment</option>
+								<option>Other</option>
+							</select>
+						</div>
+					</div>
+					<div class="field">
+						<label for="leak">Where do you think your funnel is leaking?</label>
+						<select id="leak" name="leak" required>
+							<option value="">Select</option>
+							<option>ToFu — discovery</option>
+							<option>MoFu — consideration</option>
+							<option>BoFu — decision</option>
+							<option>Not sure</option>
+						</select>
+					</div>
+					<div class="field">
+						<label for="goal">What&rsquo;s your primary goal in the next 90 days?</label>
+						<textarea id="goal" name="goal" rows="3"></textarea>
+					</div>
+					<button type="submit" class="btn btn-accent submit-btn">Request my free audit</button>
+					<p class="required-note">All fields marked required must be completed.</p>
+				</form>
+				<div id="audit-success" class="success-panel" hidden>
+					<h2>Request received.</h2>
+					<p>We&rsquo;ll reply within one business day to schedule your 30-minute call. No SDR, no gatekeepers — you&rsquo;ll hear from Shubham directly.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>Who you&rsquo;ll talk to</h2>
+			<p class="prose-body">
+				You&rsquo;ll speak directly with the founder. No SDR. No discovery-call gatekeepers. Shubham Walwadkar has spent 8+ years building SEO and growth systems for Pall Corporation, Sany India, and the Danaher Lifesciences portfolio — the call is run by the person who does the work.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<h2>What this is NOT</h2>
+			<p class="prose-body">
+				Not a sales pitch disguised as an audit. Not a slide-deck demo. Not a generic &ldquo;free consultation.&rdquo; We give you the diagnostic. You decide whether to engage.
+			</p>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>Frequently asked questions</h2>
+			<FAQAccordion faq={faq} />
+		</div>
+	</section>
+
+	<section class="section trust-section">
+		<div class="container-max">
+			<StatStrip
+				dark
+				stats={[
+					{ value: '8+', label: 'Years scaling B2B and industrial brands' },
+					{ value: '₹3Cr+', label: 'Delivered in 90 days for one client' },
+					{ value: '4,000+', label: 'Keywords optimised across engagements' },
+				]}
+			/>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 3rem; }
+	.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
+	.promise { color: var(--color-charcoal-700); font-size: var(--text-body-lg); margin-bottom: 1.5rem; }
+	.get-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+	.get-list li { padding-left: 1.5rem; position: relative; color: var(--color-charcoal-700); }
+	.get-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-amber-700); font-weight: 700; }
+
+	.form-card { position: sticky; top: 100px; }
+	form { display: flex; flex-direction: column; gap: 1rem; }
+	.field, .field-row > .field { display: flex; flex-direction: column; gap: 0.4rem; }
+	.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+	label { font-size: 0.85rem; font-weight: 600; color: var(--color-charcoal-900); }
+	input, select, textarea {
+		font-family: var(--font-sans);
+		font-size: var(--text-body);
+		padding: 10px 12px;
+		border-radius: var(--radius-md);
+		border: 1.5px solid var(--color-charcoal-300);
+		background: white;
+	}
+	input:focus, select:focus, textarea:focus { border-color: var(--color-steel-700); }
+	.submit-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+	.required-note { font-size: 0.75rem; color: var(--color-charcoal-500); text-align: center; margin: 0; }
+	.hp-field { position: absolute; left: -9999px; }
+	.success-panel { text-align: center; padding: 1rem 0; }
+	.success-panel h2 { font-size: var(--text-h3); color: var(--color-success); }
+
+	.section.alt { background: var(--color-charcoal-100); }
+	.trust-section { background: var(--color-steel-900); }
+
+	@media (max-width: 900px) {
+		.hero-grid { grid-template-columns: 1fr; }
+		.field-row { grid-template-columns: 1fr; }
+		.form-card { position: static; }
+	}
+</style>
+
+<script>
+	const form = document.getElementById('audit-form') as HTMLFormElement | null;
+	const success = document.getElementById('audit-success');
+
+	function encode(data: FormData) {
+		return new URLSearchParams(data as unknown as Record<string, string>).toString();
+	}
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
+		// Netlify Forms: works once this site is deployed on Netlify (data-netlify="true" above).
+		// On any other host this fetch 404s silently — swap this handler for your CRM/Storyblok
+		// forms webhook if you deploy elsewhere.
+		fetch('/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: encode(new FormData(form)),
+		}).finally(() => {
+			form.hidden = true;
+			if (success) success.hidden = false;
+		});
+	});
+</script>

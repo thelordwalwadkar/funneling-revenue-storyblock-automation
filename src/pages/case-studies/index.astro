@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
+
+const path = '/case-studies/';
+const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const industries = await getCollection('industries');
+const industryLabels = Object.fromEntries(industries.map((i) => [i.id, i.data.title]));
+const usedIndustries = [...new Set(caseStudies.map((c) => c.data.industry))];
+---
+
+<Layout
+	title="Case Studies — Revenue-Driven SEO & Marketing for Manufacturers | Funnelling Revenue"
+	description="Real results from industrial and manufacturing clients — ₹3Cr in 90 days, 200% organic growth, first-ever organic leads. Funnel-by-funnel breakdowns."
+	path={path}
+	schema={[
+		collectionPageSchema({ name: 'Case Studies', description: 'Funnel diagnostics for industrial and manufacturing clients.', path }),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Case Studies', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies/' }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>Case Studies — Funnel Diagnostics, Not Success Stories</h1>
+			<p>
+				We don&rsquo;t write success stories. We write funnel diagnostics. Every case below shows what was broken at ToFu, MoFu, or BoFu, what we did at each stage, and what the revenue impact was.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max">
+			<div class="filters" role="group" aria-label="Filter case studies by industry">
+				<button class="filter-btn is-active" data-filter="all">All</button>
+				{usedIndustries.map((id) => (
+					<button class="filter-btn" data-filter={id}>{industryLabels[id]}</button>
+				))}
+			</div>
+			<div class="case-grid">
+				{caseStudies.map((c) => (
+					<div class="case-item" data-industry={c.data.industry}>
+						<CaseStudyCard
+							slug={c.id}
+							client={c.data.anonymized ? 'Industrial Revenue Recovery' : c.data.client}
+							headlineMetric={c.data.headlineMetric}
+							industryLabel={industryLabels[c.data.industry] ?? c.data.industry}
+						/>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<CTASection heading="Want to see what your funnel diagnostic looks like?" primaryLabel="Request a free audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
+	.hero-section p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); }
+	.filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+	.filter-btn {
+		font-family: var(--font-sans);
+		font-size: 0.85rem;
+		font-weight: 600;
+		padding: 0.5rem 1rem;
+		border-radius: 999px;
+		border: 1.5px solid var(--color-charcoal-300);
+		background: white;
+		color: var(--color-charcoal-700);
+		cursor: pointer;
+	}
+	.filter-btn.is-active { background: var(--color-steel-700); border-color: var(--color-steel-700); color: white; }
+	.case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+	.case-item[hidden] { display: none; }
+
+	@media (max-width: 900px) {
+		.case-grid { grid-template-columns: 1fr; }
+	}
+</style>
+
+<script>
+	const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+	const items = document.querySelectorAll<HTMLElement>('.case-item');
+	buttons.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			buttons.forEach((b) => b.classList.remove('is-active'));
+			btn.classList.add('is-active');
+			const filter = btn.dataset.filter;
+			items.forEach((item) => {
+				item.hidden = filter !== 'all' && item.dataset.industry !== filter;
+			});
+		});
+	});
+</script>

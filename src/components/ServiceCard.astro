@@ -1,0 +1,36 @@
+---
+interface Props {
+	slug: string;
+	title: string;
+	funnelStages: string[];
+	oneLiner: string;
+}
+const { slug, title, funnelStages, oneLiner } = Astro.props;
+---
+
+<a href={`/services/${slug}/`} class="service-card card">
+	<div class="tags">
+		{funnelStages.map((stage) => <span class="funnel-tag">{stage}</span>)}
+	</div>
+	<h3>{title}</h3>
+	<p>{oneLiner}</p>
+	<span class="link">Learn more &rarr;</span>
+</a>
+
+<style>
+	.service-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		text-decoration: none;
+		transition: transform 150ms ease, box-shadow 150ms ease;
+	}
+	.service-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-lg);
+	}
+	.tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+	.service-card h3 { font-size: var(--text-h4); }
+	.service-card p { color: var(--color-charcoal-700); font-size: 0.92rem; margin: 0; }
+	.link { color: var(--color-steel-700); font-weight: 600; font-size: 0.9rem; margin-top: auto; }
+</style>

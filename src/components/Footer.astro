@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container-max footer-grid">
+		<div class="col brand-col">
+			<a href="/" class="wordmark">
+				<span class="mark" aria-hidden="true"><span></span><span></span><span></span></span>
+				<span class="wordmark-text">FUNNELLING <span class="amber">REVENUE</span></span>
+			</a>
+			<p class="tagline">The funnel is eternal. The medium isn&rsquo;t.</p>
+			<p class="blurb">Revenue-first SEO, GEO, and digital marketing for manufacturers and industrial brands.</p>
+			<a class="body-link" href="https://www.linkedin.com/in/seo-shubham/" target="_blank" rel="noopener noreferrer">LinkedIn &rarr;</a>
+		</div>
+
+		<nav class="col" aria-label="Services">
+			<h3>Services</h3>
+			<ul>
+				{services.map((s) => (
+					<li><a href={`/services/${s.id}/`}>{s.data.title}</a></li>
+				))}
+			</ul>
+		</nav>
+
+		<nav class="col" aria-label="Industries">
+			<h3>Industries</h3>
+			<ul>
+				{industries.map((i) => (
+					<li><a href={`/industries/${i.id}/`}>{i.data.title}</a></li>
+				))}
+			</ul>
+		</nav>
+
+		<nav class="col" aria-label="Resources">
+			<h3>Resources</h3>
+			<ul>
+				<li><a href="/case-studies/">Case Studies</a></li>
+				<li><a href="/insights/">Insights</a></li>
+			</ul>
+		</nav>
+
+		<nav class="col" aria-label="Company">
+			<h3>Company</h3>
+			<ul>
+				<li><a href="/the-funnel-thesis/">The Funnel Thesis</a></li>
+				<li><a href="/audit/">Get a Free Audit</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<div class="container-max bottom-bar">
+		<p>&copy; {year} Funnelling Revenue. All rights reserved.</p>
+		<div class="bottom-links">
+			<a href="/privacy-policy/">Privacy Policy</a>
+			<a href="/terms/">Terms</a>
+			<a href="/sitemap-index.xml">Sitemap</a>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--color-steel-900);
+		color: var(--color-off-white);
+		padding-block: 3.5rem 1.5rem;
+	}
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1.6fr repeat(4, 1fr);
+		gap: 2rem;
+	}
+	.wordmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+	.mark { display: inline-flex; flex-direction: column; gap: 3px; width: 22px; }
+	.mark span { display: block; height: 3px; border-radius: 2px; background: var(--color-off-white); }
+	.mark span:nth-child(1) { width: 100%; }
+	.mark span:nth-child(2) { width: 68%; }
+	.mark span:nth-child(3) { width: 40%; }
+	.wordmark-text { font-family: var(--font-sans); font-weight: 700; color: white; font-size: 1rem; }
+	.wordmark-text .amber { color: var(--color-amber-300); }
+
+	.tagline {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 600;
+		color: var(--color-amber-300);
+		margin: 1rem 0 0.5rem;
+	}
+	.blurb { color: var(--color-steel-100); font-size: 0.9rem; max-width: 32ch; margin-bottom: 0.75rem; }
+	.brand-col .body-link { color: var(--color-amber-300); font-size: 0.9rem; font-weight: 600; }
+
+	.col h3 {
+		color: white;
+		font-family: var(--font-sans);
+		font-size: var(--text-micro);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		margin-bottom: 1rem;
+	}
+	.col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+	.col ul a { color: var(--color-steel-100); text-decoration: none; font-size: 0.9rem; }
+	.col ul a:hover { color: white; text-decoration: underline; }
+
+	.bottom-bar {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem;
+		border-top: 1px solid var(--color-steel-700);
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		font-size: 0.8rem;
+		color: var(--color-steel-300);
+	}
+	.bottom-links { display: flex; gap: 1.25rem; }
+	.bottom-links a { color: var(--color-steel-300); text-decoration: none; }
+	.bottom-links a:hover { color: white; }
+
+	@media (max-width: 900px) {
+		.footer-grid { grid-template-columns: 1fr 1fr; }
+		.brand-col { grid-column: 1 / -1; }
+	}
+	@media (max-width: 520px) {
+		.footer-grid { grid-template-columns: 1fr; }
+	}
+</style>

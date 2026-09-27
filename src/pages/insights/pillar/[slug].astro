@@ -1,0 +1,100 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import CTASection from '../../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../../lib/schema';
+
+export async function getStaticPaths() {
+	const pillars = await getCollection('pillars');
+	return pillars.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const path = `/insights/pillar/${entry.id}/`;
+---
+
+<Layout
+	title={data.metaTitle}
+	description={data.metaDescription}
+	path={path}
+	schema={[
+		collectionPageSchema({ name: data.title, description: data.metaDescription, path }),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'Insights', path: '/insights/' },
+			{ name: data.title, path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Insights', path: '/insights/' }, { name: data.title, path }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<p class="eyebrow">Insights pillar</p>
+			<h1>{data.h1}</h1>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body manifesto">
+			{data.manifesto.map((p) => <p>{p}</p>)}
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>Posts in production</h2>
+			<p class="note">These pieces are being written next — check back soon, or ask us directly on the audit call.</p>
+			<ul class="planned-list">
+				{data.plannedPosts.map((title) => (
+					<li>
+						<span class="soon">Coming soon</span>
+						{title}
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	<CTASection heading="Want the short version now?" primaryLabel={data.ctaLabel} primaryHref={data.ctaHref} />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(1.9rem, 4vw, var(--text-h1)); margin-top: 0.5rem; }
+	.manifesto p:first-child {
+		font-family: var(--font-display);
+		font-size: var(--text-h4);
+		color: var(--color-steel-900);
+	}
+	.section.alt { background: var(--color-charcoal-100); }
+	.note { color: var(--color-charcoal-500); font-size: 0.9rem; margin-bottom: 1.5rem; }
+	.planned-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+	.planned-list li {
+		background: white;
+		border: 1px solid var(--color-charcoal-300);
+		border-radius: var(--radius-md);
+		padding: 0.9rem 1.1rem;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-weight: 500;
+		color: var(--color-charcoal-900);
+	}
+	.soon {
+		font-size: 0.7rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-amber-700);
+		background: var(--color-amber-100);
+		padding: 0.2rem 0.5rem;
+		border-radius: 999px;
+		flex-shrink: 0;
+	}
+</style>

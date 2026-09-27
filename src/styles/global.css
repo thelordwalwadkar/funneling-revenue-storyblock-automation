@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------- */
+/* Funnelling Revenue design tokens (brand guidelines v1.0, section 8)     */
+/* ---------------------------------------------------------------------- */
+@theme {
+	/* Steel Blue */
+	--color-steel-900: #0f2a3d;
+	--color-steel-700: #1e4a6b;
+	--color-steel-500: #2c5f7c;
+	--color-steel-300: #5b89a6;
+	--color-steel-100: #d4e0e8;
+
+	/* Amber */
+	--color-amber-900: #78350f;
+	--color-amber-700: #b45309;
+	--color-amber-500: #d97706;
+	--color-amber-300: #fbbf24;
+	--color-amber-100: #fef3c7;
+
+	/* Charcoal / neutrals */
+	--color-charcoal-900: #0a0e13;
+	--color-charcoal-700: #2a2f36;
+	--color-charcoal-500: #6b7280;
+	--color-charcoal-300: #d1d5db;
+	--color-charcoal-100: #f3f4f6;
+	--color-off-white: #fafaf8;
+
+	/* Functional */
+	--color-success: #059669;
+	--color-warning: #d97706;
+	--color-error: #dc2626;
+	--color-info: #2563eb;
+
+	/* Typography */
+	--font-display: "Fraunces", Georgia, serif;
+	--font-sans: "Inter", -apple-system, system-ui, sans-serif;
+	--font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+	--text-display-1: 72px;
+	--text-display-1--line-height: 1.1;
+	--text-display-2: 56px;
+	--text-display-2--line-height: 1.15;
+	--text-h1: 44px;
+	--text-h1--line-height: 1.2;
+	--text-h2: 32px;
+	--text-h2--line-height: 1.25;
+	--text-h3: 24px;
+	--text-h3--line-height: 1.3;
+	--text-h4: 20px;
+	--text-h4--line-height: 1.4;
+	--text-body-lg: 18px;
+	--text-body-lg--line-height: 1.6;
+	--text-body: 16px;
+	--text-body--line-height: 1.6;
+	--text-body-sm: 14px;
+	--text-body-sm--line-height: 1.5;
+	--text-micro: 12px;
+	--text-micro--line-height: 1.4;
+
+	--radius-sm: 4px;
+	--radius-md: 6px;
+	--radius-lg: 8px;
+	--radius-xl: 12px;
+
+	--shadow-sm: 0 1px 2px rgba(15, 42, 61, 0.05);
+	--shadow-md: 0 2px 8px rgba(15, 42, 61, 0.08);
+	--shadow-lg: 0 8px 24px rgba(15, 42, 61, 0.12);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Base                                                                    */
+/* ---------------------------------------------------------------------- */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--color-off-white);
+	color: var(--color-charcoal-900);
+	font-family: var(--font-sans);
+	font-size: var(--text-body);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: 600;
+	line-height: 1.25;
+	color: var(--color-steel-900);
+}
+
+h4,
+h5,
+h6 {
+	font-family: var(--font-sans);
+	font-weight: 600;
+	color: var(--color-steel-900);
+}
+
+a {
+	color: inherit;
+}
+
+p {
+	max-width: 75ch;
+}
+
+::selection {
+	background: var(--color-amber-300);
+	color: var(--color-charcoal-900);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-amber-700);
+	outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Reusable components (brand guidelines section 5.1 + 8.4)               */
+/* ---------------------------------------------------------------------- */
+@layer components {
+	.container-max {
+		max-width: 1280px;
+		margin-inline: auto;
+		padding-inline: 1.25rem;
+	}
+
+	.container-reading {
+		max-width: 720px;
+		margin-inline: auto;
+	}
+
+	.eyebrow {
+		font-family: var(--font-sans);
+		font-size: var(--text-micro);
+		font-weight: 600;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: var(--color-amber-700);
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-family: var(--font-sans);
+		font-weight: 600;
+		font-size: var(--text-body);
+		padding: 14px 28px;
+		border-radius: var(--radius-md);
+		transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+		cursor: pointer;
+		border: 1.5px solid transparent;
+		text-decoration: none;
+		line-height: 1;
+	}
+
+	.btn-primary {
+		background-color: var(--color-steel-700);
+		color: white;
+	}
+	.btn-primary:hover {
+		background-color: var(--color-steel-900);
+	}
+
+	.btn-accent {
+		background-color: var(--color-amber-700);
+		color: white;
+	}
+	.btn-accent:hover {
+		background-color: var(--color-amber-900, #78350f);
+	}
+
+	.btn-secondary {
+		background-color: transparent;
+		color: var(--color-steel-700);
+		border-color: var(--color-steel-700);
+	}
+	.btn-secondary:hover {
+		background-color: var(--color-steel-100);
+	}
+
+	.btn-ghost {
+		background-color: transparent;
+		color: var(--color-steel-700);
+		padding: 14px 0;
+		border: none;
+	}
+	.btn-ghost:hover {
+		text-decoration: underline;
+	}
+
+	.card {
+		background-color: white;
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-md);
+		padding: 24px;
+	}
+
+	.funnel-tag {
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-sans);
+		font-size: var(--text-micro);
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		padding: 4px 10px;
+		border-radius: 999px;
+		background-color: var(--color-steel-100);
+		color: var(--color-steel-700);
+	}
+
+	.funnel-tag--amber {
+		background-color: var(--color-amber-100);
+		color: var(--color-amber-900);
+	}
+
+	.section {
+		padding-block: clamp(3rem, 6vw, 6rem);
+	}
+
+	.body-link {
+		color: var(--color-steel-700);
+		text-underline-offset: 3px;
+	}
+	.body-link:hover {
+		text-decoration: underline;
+	}
+
+	.prose-body {
+		max-width: 720px;
+	}
+	.prose-body p {
+		margin-block: 1.1em;
+		color: var(--color-charcoal-700);
+	}
+	.prose-body h2 {
+		font-size: var(--text-h2);
+		margin-block: 1.4em 0.6em;
+	}
+	.prose-body h3 {
+		font-size: var(--text-h3);
+		margin-block: 1.2em 0.5em;
+	}
+	.prose-body blockquote {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 600;
+		font-size: var(--text-h4);
+		color: var(--color-steel-700);
+		border-left: 3px solid var(--color-amber-700);
+		padding-left: 1.25rem;
+		margin-block: 2em;
+	}
+}

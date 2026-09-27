@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { breadcrumbSchema, faqPageSchema, serviceSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+	const industries = await getCollection('industries');
+	return industries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const path = `/industries/${entry.id}/`;
+
+const anchorCase = await getEntry('caseStudies', data.anchorCaseStudy);
+---
+
+<Layout
+	title={data.metaTitle}
+	description={data.metaDescription}
+	path={path}
+	stickyCta
+	schema={[
+		serviceSchema({ name: data.h1, description: data.metaDescription, path }),
+		faqPageSchema(data.faq),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'Industries', path: '/industries/' },
+			{ name: data.title, path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Industries', path: '/industries/' }, { name: data.title, path }]} />
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<h1>{data.h1}</h1>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body">
+			<h2>Vertical credentials</h2>
+			<p>{data.credentials}</p>
+			<h2>The buyer</h2>
+			<p>{data.buyer}</p>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>The keyword universe</h2>
+			<ul class="keyword-list">
+				{data.keywordUniverse.map((k) => <li>{k}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading prose-body">
+			<h2>Why generalist agencies fail this vertical</h2>
+			<p>{data.differentiator}</p>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max two-col">
+			<div>
+				<h2>Channels that work</h2>
+				<ul class="get-list">
+					{data.channelsWork.map((c) => <li>{c}</li>)}
+				</ul>
+			</div>
+			{data.channelsAvoid && (
+				<div>
+					<h2>Channels that usually don&rsquo;t</h2>
+					<ul class="avoid-list">
+						{data.channelsAvoid.map((c) => <li>{c}</li>)}
+					</ul>
+				</div>
+			)}
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max container-reading">
+			<div class="anchor-case card">
+				<p class="eyebrow">Anchor case study</p>
+				<p>{data.anchorSnippet}</p>
+				<a href={`/case-studies/${anchorCase.id}/`} class="body-link">Read the full {anchorCase.data.anonymized ? 'case study' : anchorCase.data.client + ' case study'} &rarr;</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2>Frequently asked questions</h2>
+			<FAQAccordion faq={data.faq} />
+		</div>
+	</section>
+
+	<CTASection heading={`Get a free ${data.title} audit`} primaryLabel="Get a free audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2.5rem 1.5rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); }
+	.section.alt { background: var(--color-charcoal-100); }
+	.keyword-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+	.keyword-list li {
+		background: white;
+		border: 1px solid var(--color-charcoal-300);
+		border-radius: var(--radius-md);
+		padding: 0.75rem 1rem;
+		font-size: 0.9rem;
+		color: var(--color-charcoal-700);
+		font-family: var(--font-mono);
+	}
+	.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+	.get-list, .avoid-list { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+	.get-list li { padding-left: 1.5rem; position: relative; color: var(--color-charcoal-700); }
+	.get-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-amber-700); font-weight: 700; }
+	.avoid-list li { padding-left: 1.5rem; position: relative; color: var(--color-charcoal-500); }
+	.avoid-list li::before { content: "✕"; position: absolute; left: 0; color: var(--color-error); font-weight: 700; }
+	.anchor-case p { color: var(--color-charcoal-700); margin: 0.5rem 0 1rem; }
+
+	@media (max-width: 900px) {
+		.two-col { grid-template-columns: 1fr; }
+	}
+</style>
