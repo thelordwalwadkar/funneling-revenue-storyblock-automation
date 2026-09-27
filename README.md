@@ -1,46 +1,40 @@
-# Astro Starter Kit: Basics
+# Funnelling Revenue
 
-```sh
-npm create astro@latest -- --template basics
+Revenue-first marketing website for manufacturers and industrial brands, built in [Astro](https://astro.build). Homepage, The Funnel Thesis, Services, Industries, Case Studies, Insights, and a free-audit conversion page, driven by typed content collections.
+
+## Project structure
+
+```
+src/
+├── content/            # Services, industries, case studies, and pillar content (Markdown + frontmatter)
+├── content.config.ts    # Zod schemas for the collections above
+├── components/          # Header, Footer, cards, FAQ accordion, CTA sections, etc.
+├── layouts/Layout.astro # Base HTML shell, meta tags, JSON-LD
+├── lib/schema.ts         # JSON-LD (Organization, Service, FAQPage, BreadcrumbList, ...) helpers
+└── pages/                # Route templates, including dynamic [slug].astro pages per collection
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+| Command | Action |
+| :--- | :--- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Start the local dev server (`astro dev --background` to run it detached — see `astro dev status` / `stop` / `logs`) |
+| `npm run build` | Build the static site to `./dist/` |
+| `npm run preview` | Preview the production build locally |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Storyblok sync
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+`scripts/storyblok/` pushes the Markdown content in `src/content/` into a Storyblok space via the Management API — component schemas first, then every entry as a Story. Requires `STORYBLOK_MANAGEMENT_TOKEN` and `STORYBLOK_SPACE_ID` (see `.env.example`).
+
+```
+npm run storyblok:sync             # push components + stories
+npm run storyblok:push-components  # schemas only
+npm run storyblok:push-stories     # content only
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+`.github/workflows/storyblok-sync.yml` runs this automatically on every push that touches `src/content/**`, using the same two values stored as GitHub Actions repository secrets.
 
-## 🧞 Commands
+## SEO / GEO
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Per-page JSON-LD, canonical URLs, OpenGraph/Twitter tags, `sitemap-index.xml` (via `@astrojs/sitemap`), `robots.txt`, and an `llms.txt` at the site root for AI-crawler retrieval.
