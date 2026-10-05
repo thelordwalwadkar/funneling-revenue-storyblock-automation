@@ -5,6 +5,8 @@ import { readServices, readIndustries, readCaseStudies, readPillars } from './co
 const uid = () => randomUUID();
 const lines = (arr = []) => arr.join('\n');
 const paragraphs = (arr = []) => arr.join('\n\n');
+// Storyblok number fields only accept numeric strings.
+const numStr = (n) => (n == null ? '' : String(n));
 
 function faqBloks(faq = []) {
 	return faq.map((f) => ({ component: 'faq_item', _uid: uid(), q: f.q, a: f.a }));
@@ -24,7 +26,7 @@ function mapService(data) {
 		h1: data.h1,
 		metaTitle: data.metaTitle,
 		metaDescription: data.metaDescription,
-		order: data.order,
+		order: numStr(data.order),
 		priority: data.priority,
 		funnelStages: data.funnelStages,
 		funnelCaption: data.funnelCaption,
@@ -46,7 +48,7 @@ function mapIndustry(data) {
 		h1: data.h1,
 		metaTitle: data.metaTitle,
 		metaDescription: data.metaDescription,
-		order: data.order,
+		order: numStr(data.order),
 		oneLiner: data.oneLiner,
 		credentials: data.credentials,
 		buyer: data.buyer,
@@ -66,7 +68,7 @@ function mapCaseStudy(data) {
 		h1: data.h1,
 		metaTitle: data.metaTitle,
 		metaDescription: data.metaDescription,
-		order: data.order,
+		order: numStr(data.order),
 		industry: data.industry,
 		servicesUsed: lines(data.servicesUsed),
 		engagementDuration: data.engagementDuration,
@@ -97,7 +99,7 @@ function mapPillar(data) {
 		h1: data.h1,
 		metaTitle: data.metaTitle,
 		metaDescription: data.metaDescription,
-		order: data.order,
+		order: numStr(data.order),
 		priority: data.priority,
 		primaryKeyword: data.primaryKeyword,
 		description: data.description,
