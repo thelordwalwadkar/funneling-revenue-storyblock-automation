@@ -8,6 +8,12 @@ on:
       - "scripts/storyblok/**"
   workflow_dispatch: {}
 
+env:
+  STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
+  STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+  # Optional: eu (default), us, ca, ap, cn. Set as a repo secret or variable.
+  STORYBLOK_REGION: ${{ secrets.STORYBLOK_REGION || vars.STORYBLOK_REGION }}
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -22,12 +28,6 @@ jobs:
 
       - name: Push component schemas
         run: npm run storyblok:push-components
-        env:
-          STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
-          STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
 
       - name: Push stories
         run: npm run storyblok:push-stories
-        env:
-          STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
-          STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
