@@ -70,7 +70,7 @@ export const contentComponents = [
 	{
 		name: 'service',
 		display_name: 'Service',
-		is_root: false,
+		is_root: true,
 		is_nestable: false,
 		schema: {
 			title: textField('Nav / card title'),
@@ -95,7 +95,7 @@ export const contentComponents = [
 	{
 		name: 'industry',
 		display_name: 'Industry',
-		is_root: false,
+		is_root: true,
 		is_nestable: false,
 		schema: {
 			title: textField('Nav / card title'),
@@ -118,7 +118,7 @@ export const contentComponents = [
 	{
 		name: 'case_study',
 		display_name: 'Case Study',
-		is_root: false,
+		is_root: true,
 		is_nestable: false,
 		schema: {
 			client: textField('Client name'),
@@ -152,7 +152,7 @@ export const contentComponents = [
 	{
 		name: 'pillar',
 		display_name: 'Insights Pillar',
-		is_root: false,
+		is_root: true,
 		is_nestable: false,
 		schema: {
 			title: textField('Pillar title'),
