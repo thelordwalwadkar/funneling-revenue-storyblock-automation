@@ -28,7 +28,8 @@ export function getConfig() {
 	}
 	return {
 		token: requireEnv('STORYBLOK_MANAGEMENT_TOKEN'),
-		spaceId: requireEnv('STORYBLOK_SPACE_ID'),
+		// The dashboard displays the ID as "#123..."; strip the "#" and any stray whitespace.
+		spaceId: requireEnv('STORYBLOK_SPACE_ID').replace(/^#/, '').trim(),
 		apiBase: `${host}/v1/spaces`,
 	};
 }
