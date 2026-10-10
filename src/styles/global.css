@@ -4,36 +4,36 @@
 /* Funnelling Revenue design tokens (brand guidelines v1.0, section 8)     */
 /* ---------------------------------------------------------------------- */
 @theme {
-	/* Steel Blue */
-	--color-steel-900: #0f2a3d;
+	/* Brand blue: sampled from the logo mark (#1E4A6B). Every tint shares its hue. */
+	--color-steel-900: #143650;
 	--color-steel-700: #1e4a6b;
-	--color-steel-500: #2c5f7c;
-	--color-steel-300: #5b89a6;
-	--color-steel-100: #d4e0e8;
+	--color-steel-500: #2e6c93;
+	--color-steel-300: #7db1d3;
+	--color-steel-100: #e6f0f7;
 
-	/* Amber */
-	--color-amber-900: #78350f;
+	/* Brand orange: sampled from the logo mark (#B45309). */
+	--color-amber-900: #7c3306;
 	--color-amber-700: #b45309;
-	--color-amber-500: #d97706;
-	--color-amber-300: #fbbf24;
-	--color-amber-100: #fef3c7;
+	--color-amber-500: #e8680c;
+	--color-amber-300: #f7a55a;
+	--color-amber-100: #fdebd9;
 
-	/* Charcoal / neutrals */
-	--color-charcoal-900: #0a0e13;
-	--color-charcoal-700: #2a2f36;
-	--color-charcoal-500: #6b7280;
-	--color-charcoal-300: #d1d5db;
-	--color-charcoal-100: #f3f4f6;
-	--color-off-white: #fafaf8;
+	/* Warm neutrals on the logo's paper background (#FCFCFB) */
+	--color-charcoal-900: #101820;
+	--color-charcoal-700: #2e2d2a;
+	--color-charcoal-500: #6b6862;
+	--color-charcoal-300: #d9d6d0;
+	--color-charcoal-100: #f4f3f0;
+	--color-off-white: #fcfcfb;
 
 	/* Functional */
 	--color-success: #059669;
-	--color-warning: #d97706;
+	--color-warning: #e8680c;
 	--color-error: #dc2626;
 	--color-info: #2563eb;
 
 	/* Typography */
-	--font-display: "Fraunces", Georgia, serif;
+	--font-display: "Source Serif 4", "Source Serif Pro", Georgia, serif;
 	--font-sans: "Inter", -apple-system, system-ui, sans-serif;
 	--font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
 
@@ -63,9 +63,9 @@
 	--radius-lg: 8px;
 	--radius-xl: 12px;
 
-	--shadow-sm: 0 1px 2px rgba(15, 42, 61, 0.05);
-	--shadow-md: 0 2px 8px rgba(15, 42, 61, 0.08);
-	--shadow-lg: 0 8px 24px rgba(15, 42, 61, 0.12);
+	--shadow-sm: 0 1px 2px rgba(20, 54, 80, 0.06);
+	--shadow-md: 0 2px 10px rgba(20, 54, 80, 0.09);
+	--shadow-lg: 0 12px 32px rgba(20, 54, 80, 0.16);
 }
 
 /* ---------------------------------------------------------------------- */

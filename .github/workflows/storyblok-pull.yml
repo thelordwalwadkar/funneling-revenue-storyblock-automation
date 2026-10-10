@@ -1,0 +1,47 @@
+name: Pull content from Storyblok
+
+# Storyblok publish -> POST /api/storyblok-webhook/ on the live site -> GitHub
+# repository_dispatch -> this job rewrites src/content/*.md from Storyblok and
+# commits. The host redeploys on that push, so title, meta and copy edits made in
+# Storyblok go live without touching code.
+on:
+  repository_dispatch:
+    types: [storyblok-publish]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: storyblok-pull
+  cancel-in-progress: false
+
+env:
+  STORYBLOK_MANAGEMENT_TOKEN: ${{ secrets.STORYBLOK_MANAGEMENT_TOKEN }}
+  STORYBLOK_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+  STORYBLOK_REGION: ${{ secrets.STORYBLOK_REGION || vars.STORYBLOK_REGION }}
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Pull stories into src/content
+        run: npm run storyblok:pull
+      - name: Validate the site still builds
+        run: npm run build
+      - name: Commit and push if anything changed
+        run: |
+          if [ -n "$(git status --porcelain src/content)" ]; then
+            git config user.name "storyblok-sync[bot]"
+            git config user.email "storyblok-sync@users.noreply.github.com"
+            git add src/content
+            git commit -m "Content: sync from Storyblok"
+            git push
+          else
+            echo "No content changes."
+          fi

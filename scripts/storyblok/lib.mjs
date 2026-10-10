@@ -140,3 +140,20 @@ export async function upsertStory(config, { slug, fullSlug, name, component, con
 	console.log(`  + created story "${fullSlug}"`);
 	return created.story;
 }
+
+/** Reading (used by pull-stories) **/
+
+export async function listStories({ token, spaceId, apiBase }, startsWith) {
+	const all = [];
+	for (let page = 1; ; page++) {
+		const data = await request(apiBase, `/${spaceId}/stories?starts_with=${encodeURIComponent(startsWith)}&per_page=100&page=${page}`, { token });
+		const batch = data.stories ?? [];
+		all.push(...batch);
+		if (batch.length < 100) return all;
+	}
+}
+
+export async function getStory({ token, spaceId, apiBase }, id) {
+	const data = await request(apiBase, `/${spaceId}/stories/${id}`, { token });
+	return data.story;
+}

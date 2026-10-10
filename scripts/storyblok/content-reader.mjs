@@ -2,9 +2,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const CONTENT_ROOT = path.join(process.cwd(), 'src', 'content');
+export const CONTENT_ROOT = path.join(process.cwd(), 'src', 'content');
 
-function readCollection(dir) {
+/** Reads every Markdown entry in src/content/<dir> as { slug, data }. */
+export function readCollection(dir) {
 	const full = path.join(CONTENT_ROOT, dir);
 	if (!fs.existsSync(full)) return [];
 	return fs
@@ -18,18 +19,13 @@ function readCollection(dir) {
 		});
 }
 
-export function readServices() {
-	return readCollection('services');
-}
-
-export function readIndustries() {
-	return readCollection('industries');
-}
-
-export function readCaseStudies() {
-	return readCollection('case-studies');
-}
-
-export function readPillars() {
-	return readCollection('pillars');
+/** Writes frontmatter back to src/content/<dir>/<slug>.md. Returns true if the file changed. */
+export function writeEntry(dir, slug, data) {
+	const full = path.join(CONTENT_ROOT, dir, `${slug}.md`);
+	fs.mkdirSync(path.dirname(full), { recursive: true });
+	const next = matter.stringify('', data, { lineWidth: 100 }).replace(/\r\n/g, '\n');
+	const prev = fs.existsSync(full) ? fs.readFileSync(full, 'utf-8').replace(/\r\n/g, '\n') : null;
+	if (prev === next) return false;
+	fs.writeFileSync(full, next);
+	return true;
 }

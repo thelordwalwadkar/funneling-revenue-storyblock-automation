@@ -1,0 +1,130 @@
+---
+interface ServiceLink {
+	id: string;
+	title: string;
+}
+interface Props {
+	services: { tofu: ServiceLink[]; mofu: ServiceLink[]; bofu: ServiceLink[] };
+}
+const { services } = Astro.props;
+
+const stages = [
+	{
+		key: 'tofu',
+		label: 'ToFu',
+		name: 'Awareness',
+		asks: 'What process fixes this? Which technology fits my plant?',
+		build: 'Problem-led guides, glossary and answer-ready pages that earn rankings and AI citations for the questions engineers ask first.',
+		report: 'Qualified visibility: impressions and AI citations for your ideal buyers, not raw traffic.',
+	},
+	{
+		key: 'mofu',
+		label: 'MoFu',
+		name: 'Consideration',
+		asks: 'Who can actually do this, and how do they compare?',
+		build: 'Case studies, specification pages, application guides and comparison content that carry a buying committee through months of research.',
+		report: 'Engaged accounts, asset downloads and return visits from target companies.',
+	},
+	{
+		key: 'bofu',
+		label: 'BoFu',
+		name: 'Decision',
+		asks: 'Can I trust them, what will it cost, and how do I buy?',
+		build: 'Quote and RFQ paths, dealer and location pages, branded-search and review work that closes the last mile.',
+		report: 'Qualified leads, pipeline value, CAC and deal velocity.',
+	},
+] as const;
+---
+
+<div class="fs" data-stages>
+	<div class="fs-funnel" role="tablist" aria-label="Funnel stages" aria-orientation="vertical">
+		{stages.map((s, i) => (
+			<button type="button" role="tab" id={`tab-${s.key}`} aria-controls={`panel-${s.key}`} aria-selected={i === 0} data-stage={s.key} class:list={['seg', `seg-${i + 1}`, { on: i === 0 }]}>
+				<span class="seg-label">{s.label}</span>
+				<span class="seg-name">{s.name}</span>
+			</button>
+		))}
+		<span class="drip" aria-hidden="true"></span>
+	</div>
+
+	<div class="fs-panels">
+		{stages.map((s, i) => (
+			<div role="tabpanel" id={`panel-${s.key}`} aria-labelledby={`tab-${s.key}`} class:list={['panel', { on: i === 0 }]} data-panel={s.key} hidden={i !== 0}>
+				<p class="eyebrow">{s.label} · {s.name}</p>
+				<p class="asks">&ldquo;{s.asks}&rdquo;</p>
+				<dl>
+					<dt>What we build</dt>
+					<dd>{s.build}</dd>
+					<dt>What we report</dt>
+					<dd>{s.report}</dd>
+				</dl>
+				{services[s.key].length > 0 && (
+					<div class="svc">
+						<span>Services that serve this stage</span>
+						<div>{services[s.key].map((x) => <a href={`/services/${x.id}/`}>{x.title}</a>)}</div>
+					</div>
+				)}
+			</div>
+		))}
+	</div>
+</div>
+
+<style>
+	.fs { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 2.5rem; align-items: center; }
+	.fs-funnel { display: grid; gap: 8px; justify-items: center; position: relative; }
+	.seg { border: 0; cursor: pointer; color: white; display: grid; justify-items: center; gap: 2px; padding: 1.15rem 1rem; font-family: var(--font-sans); transition: transform 250ms, filter 250ms, box-shadow 250ms; clip-path: polygon(0 0, 100% 0, calc(100% - var(--cut, 8%)) 100%, var(--cut, 8%) 100%); }
+	.seg-1 { width: 100%; background: var(--color-steel-900); --cut: 7%; }
+	.seg-2 { width: 78%; background: var(--color-steel-700); --cut: 10%; }
+	.seg-3 { width: 56%; background: var(--color-steel-500); --cut: 14%; }
+	.seg-label { font-family: var(--font-display); font-weight: 900; font-size: 1.35rem; }
+	.seg-name { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+	.seg { filter: saturate(0.7) brightness(0.92); }
+	.seg:hover { transform: scale(1.03); filter: none; }
+	.seg.on { background: var(--color-amber-700); filter: none; transform: scale(1.04); }
+	.drip { width: 14px; height: 14px; border-radius: 50%; background: var(--color-amber-700); animation: pulse-ring 1.8s infinite; margin-top: 4px; }
+
+	.panel { background: white; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); padding: clamp(1.5rem, 3vw, 2.25rem); border-left: 5px solid var(--color-amber-700); }
+	.panel.on { animation: panel-in 450ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+	@keyframes panel-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+	.asks { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: var(--text-h3); color: var(--color-steel-900); margin: 0.5rem 0 1.25rem; line-height: 1.25; }
+	dl { margin: 0; display: grid; gap: 0.25rem; }
+	dt { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-amber-700); margin-top: 0.75rem; }
+	dd { margin: 0; color: var(--color-charcoal-700); }
+	.svc { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-charcoal-100); }
+	.svc span { font-size: 0.8rem; color: var(--color-charcoal-500); display: block; margin-bottom: 0.6rem; }
+	.svc div { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+	.svc a { background: var(--color-steel-100); color: var(--color-steel-700); font-weight: 600; font-size: 0.85rem; padding: 6px 14px; border-radius: 99px; text-decoration: none; transition: background 200ms, color 200ms; }
+	.svc a:hover { background: var(--color-steel-700); color: white; }
+
+	@media (max-width: 900px) { .fs { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-stages]').forEach((root) => {
+		const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-stage]')];
+		const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+		const select = (key: string, focus = false) => {
+			tabs.forEach((t) => {
+				const on = t.dataset.stage === key;
+				t.classList.toggle('on', on);
+				t.setAttribute('aria-selected', String(on));
+				t.tabIndex = on ? 0 : -1;
+				if (on && focus) t.focus();
+			});
+			panels.forEach((p) => {
+				const on = p.dataset.panel === key;
+				p.hidden = !on;
+				p.classList.toggle('on', on);
+			});
+		};
+		tabs.forEach((t, i) => {
+			t.addEventListener('click', () => select(t.dataset.stage!));
+			t.addEventListener('pointerenter', (e) => { if ((e as PointerEvent).pointerType === 'mouse') select(t.dataset.stage!); });
+			t.addEventListener('keydown', (e) => {
+				if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); select(tabs[(i + 1) % tabs.length].dataset.stage!, true); }
+				if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); select(tabs[(i + tabs.length - 1) % tabs.length].dataset.stage!, true); }
+			});
+		});
+		select('tofu');
+	});
+</script>

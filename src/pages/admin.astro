@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Submissions" description="Private dashboard." path="/admin/" noindex>
+	<section class="section">
+		<div class="container-max">
+			<h1>Submissions</h1>
+			<p class="lead">Every tool run and lead captured by the site. Protected by <code>ADMIN_TOKEN</code>; the token stays in this browser tab only.</p>
+
+			<form id="gate" class="gate">
+				<input class="field-input" id="token" type="password" placeholder="Admin token" autocomplete="off" required />
+				<button class="btn btn-primary" type="submit">Load</button>
+			</form>
+			<p id="msg" class="msg" hidden></p>
+
+			<div id="dash" hidden>
+				<div class="toolbar">
+					<div class="tabs" role="tablist">
+						<button data-f="all" class="on">All</button>
+						<button data-f="lead">Leads</button>
+						<button data-f="tool">Tool runs</button>
+					</div>
+					<span id="count"></span>
+					<a id="csv" class="btn btn-secondary" href="#">Download CSV</a>
+				</div>
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>When</th><th>Type</th><th>Who / URL</th><th>Score</th><th>Priority</th><th>Detail</th></tr></thead>
+						<tbody id="rows"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<style>
+	.lead { color: var(--color-charcoal-700); }
+	.gate { display: flex; gap: 0.75rem; max-width: 420px; margin: 1.5rem 0; }
+	.msg { color: #991b1b; }
+	.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+	.toolbar #count { margin-left: auto; color: var(--color-charcoal-500); font-size: 0.9rem; }
+	.tabs { display: inline-flex; background: var(--color-steel-100); border-radius: 99px; padding: 4px; }
+	.tabs button { border: 0; background: none; padding: 0.45rem 1rem; border-radius: 99px; font: 600 0.85rem var(--font-sans); color: var(--color-steel-700); cursor: pointer; }
+	.tabs button.on { background: var(--color-steel-700); color: white; }
+	.table-wrap { overflow-x: auto; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+	table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+	th { text-align: left; padding: 0.75rem 1rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-charcoal-500); background: var(--color-charcoal-100); }
+	:global(#rows td) { padding: 0.7rem 1rem; border-top: 1px solid var(--color-charcoal-100); vertical-align: top; }
+	:global(#rows .pill) { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; text-transform: uppercase; }
+	:global(#rows .hot) { background: #fee2e2; color: #991b1b; }
+	:global(#rows .warm) { background: var(--color-amber-100); color: var(--color-amber-900); }
+	:global(#rows .cold) { background: var(--color-steel-100); color: var(--color-steel-700); }
+	:global(#rows small) { display: block; color: var(--color-charcoal-500); }
+</style>
+
+<script>
+	const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
+	const gate = document.getElementById('gate') as HTMLFormElement;
+	const msg = document.getElementById('msg')!;
+	const dash = document.getElementById('dash')!;
+	const rowsEl = document.getElementById('rows')!;
+	const countEl = document.getElementById('count')!;
+	const csv = document.getElementById('csv') as HTMLAnchorElement;
+	let all: any[] = [];
+	let filter = 'all';
+	let token = '';
+	try { token = sessionStorage.getItem('admin-token') ?? ''; } catch { /* storage unavailable */ }
+
+	function draw() {
+		const rows = all.filter((r) => filter === 'all' || r.kind === filter);
+		countEl.textContent = `${rows.length} shown`;
+		rowsEl.innerHTML = rows
+			.map((r) => {
+				const q = r.qualification;
+				const who = r.kind === 'lead' ? `<b>${esc(r.name || r.email)}</b><small>${esc(r.email)}${r.company ? ' · ' + esc(r.company) : ''}</small>` : `<b>${esc(r.host)}</b><small>${esc(r.tool)}</small>`;
+				const score = r.kind === 'lead' ? (r.audit?.score ?? '') : r.score;
+				const detail = r.kind === 'lead' ? esc([r.role, r.industry, r.domain, r.goal].filter(Boolean).join(' · ')) : esc((r.topFixes ?? []).slice(0, 2).join(' | '));
+				return `<tr><td>${esc(new Date(r.ts).toLocaleString())}</td><td>${esc(r.kind)}</td><td>${who}</td><td>${esc(score)}</td><td>${q ? `<span class="pill ${esc(q.tier)}">${esc(q.tier)}</span><small>${esc(q.score)}/100</small>` : ''}</td><td>${detail}</td></tr>`;
+			})
+			.join('');
+	}
+
+	async function load() {
+		msg.hidden = true;
+		const res = await fetch('/api/submissions/?limit=1000', { headers: { authorization: `Bearer ${token}` } });
+		if (!res.ok) {
+			msg.textContent = res.status === 401 ? 'Wrong token, or ADMIN_TOKEN is not set on the server.' : 'Could not load submissions.';
+			msg.hidden = false;
+			dash.hidden = true;
+			return;
+		}
+		all = (await res.json()).rows;
+		dash.hidden = false;
+		gate.hidden = true;
+		try { sessionStorage.setItem('admin-token', token); } catch { /* ignore */ }
+		draw();
+	}
+
+	gate.addEventListener('submit', (e) => {
+		e.preventDefault();
+		token = (document.getElementById('token') as HTMLInputElement).value.trim();
+		load();
+	});
+	document.querySelectorAll<HTMLButtonElement>('.tabs button').forEach((b) =>
+		b.addEventListener('click', () => {
+			filter = b.dataset.f!;
+			document.querySelectorAll('.tabs button').forEach((x) => x.classList.toggle('on', x === b));
+			draw();
+		}),
+	);
+	csv.addEventListener('click', async (e) => {
+		e.preventDefault();
+		const res = await fetch('/api/submissions/?format=csv&limit=5000', { headers: { authorization: `Bearer ${token}` } });
+		if (!res.ok) return;
+		const url = URL.createObjectURL(await res.blob());
+		const a = Object.assign(document.createElement('a'), { href: url, download: 'submissions.csv' });
+		a.click();
+		URL.revokeObjectURL(url);
+	});
+	if (token) load();
+</script>

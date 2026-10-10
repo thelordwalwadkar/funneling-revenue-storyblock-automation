@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import ToolIcon from '../../components/ToolIcon.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
+
+const path = '/tools/';
+const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout
+	title="Free Marketing & SEO Tools for Manufacturers | Funnelling Revenue"
+	description="Free tools for industrial marketers: a website revenue audit, an AI visibility checker, a SERP preview and a funnel revenue calculator. Paste a URL, get answers in seconds."
+	path={path}
+	schema={[
+		collectionPageSchema({ name: 'Free marketing tools', description: 'Free tools for industrial marketers.', path }),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Tools', path }]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Tools', path }]} />
+	</div>
+
+	<section class="hero">
+		<div class="container-max">
+			<p class="eyebrow" data-reveal>Free tools</p>
+			<h1 data-reveal>Paste a URL. <span class="grad-text">See where the revenue leaks.</span></h1>
+			<p class="sub" data-reveal>
+				The same checks we run in the first hour of an engagement, open to everyone. No sign-up. Results in seconds.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max grid">
+			{tools.map((t) => (
+				<a href={`/tools/${t.id}/`} class="card tool-card" data-reveal>
+					<span class="ico"><ToolIcon name={t.data.icon} size={30} /></span>
+					<span class="kind">{t.data.kind === 'url' ? 'Paste a URL' : 'Interactive'}</span>
+					<h2>{t.data.title}</h2>
+					<p>{t.data.oneLiner}</p>
+					<span class="go">Open the tool &rarr;</span>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<CTASection
+		heading="Want a human to read the results with you?"
+		body="Every tool run ends with a short, free fix-list from Shubham. Or skip ahead and book the 30-minute audit."
+		primaryLabel="Get a free revenue audit"
+	/>
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero { padding-block: 2.5rem 1rem; }
+	.hero h1 { font-size: clamp(2.2rem, 5vw, 3.75rem); margin: 0.5rem 0 1rem; max-width: 18ch; line-height: 1.08; }
+	.hero .grad-text { background: linear-gradient(100deg, var(--color-amber-700), var(--color-amber-500)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+	.sub { font-size: var(--text-body-lg); color: var(--color-charcoal-700); max-width: 56ch; }
+	.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+	.tool-card { text-decoration: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 1.75rem; }
+	.ico { width: 54px; height: 54px; border-radius: 14px; display: grid; place-content: center; background: var(--color-steel-700); color: white; transition: transform 300ms, background 300ms; }
+	.tool-card:hover .ico { transform: rotate(-6deg) scale(1.08); background: var(--color-amber-700); }
+	.kind { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-amber-700); margin-top: 0.75rem; }
+	.tool-card h2 { font-size: var(--text-h3); margin: 0; }
+	.tool-card p { color: var(--color-charcoal-700); margin: 0; flex: 1; }
+	.go { font-weight: 600; color: var(--color-steel-700); margin-top: 0.5rem; }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>

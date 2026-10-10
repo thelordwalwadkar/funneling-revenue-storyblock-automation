@@ -1,0 +1,173 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import StatStrip from '../../components/StatStrip.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import { getCollection } from 'astro:content';
+import { breadcrumbSchema, personSchema, profilePageSchema } from '../../lib/schema';
+
+const path = '/author/';
+const author = (await getCollection('authors')).sort((a, b) => a.data.order - b.data.order)[0];
+const a = author.data;
+const caseStudies = (await getCollection('caseStudies')).sort((x, y) => x.data.order - y.data.order);
+const pillars = (await getCollection('pillars')).sort((x, y) => x.data.order - y.data.order);
+const industries = await getCollection('industries');
+const industryLabels = Object.fromEntries(industries.map((i) => [i.id, i.data.title]));
+const initials = a.name.split(' ').map((p) => p[0]).join('');
+---
+
+<Layout
+	title={a.metaTitle}
+	description={a.metaDescription}
+	path={path}
+	ogType="profile"
+	schema={[
+		personSchema({ name: a.name, role: a.role, description: a.metaDescription, sameAs: a.sameAs, knowsAbout: a.knowsAbout, clients: a.clients, email: a.email }),
+		profilePageSchema({ name: a.name, description: a.metaDescription, path }),
+		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Author', path }]),
+	]}
+>
+	<section class="hero">
+		<div class="container-max crumbs"><Breadcrumbs items={[{ name: 'Home', path: '/' }, { name: 'Author', path }]} /></div>
+		<div class="container-max hero-grid">
+			<div class="intro">
+				<p class="eyebrow" data-reveal>{a.role}</p>
+				<h1 data-reveal>{a.h1}</h1>
+				<p class="lede" data-reveal>{a.headline}</p>
+				<div class="actions" data-reveal>
+					<a href="/audit/" class="btn btn-accent">Book a free audit with {a.name.split(' ')[0]}</a>
+					{a.sameAs[0] && <a href={a.sameAs[0]} class="btn btn-secondary" rel="me noopener" target="_blank">LinkedIn</a>}
+				</div>
+			</div>
+			<div class="badge" data-reveal="zoom" aria-hidden="true">
+				<span class="orb"></span>
+				<span class="initials">{initials}</span>
+				<span class="tag t1">SEO</span>
+				<span class="tag t2">GEO</span>
+				<span class="tag t3">Revenue</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="section stats">
+		<div class="container-max"><StatStrip stats={a.credentials} /></div>
+	</section>
+
+	<section class="section">
+		<div class="container-max bio-grid">
+			<div class="bio" data-reveal>
+				<h2>About {a.name.split(' ')[0]}</h2>
+				{a.bio.map((p) => <p>{p}</p>)}
+				{a.quote && <blockquote>{a.quote}</blockquote>}
+			</div>
+			<aside class="facts card" data-reveal>
+				<h3>Worked with</h3>
+				<ul>{a.clients.map((c) => <li>{c}</li>)}</ul>
+				<h3>Expertise</h3>
+				<div class="chips">{a.knowsAbout.map((k) => <span class="chip">{k}</span>)}</div>
+				<h3>Contact</h3>
+				<p><a class="body-link" href={`mailto:${a.email}`}>{a.email}</a></p>
+			</aside>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max">
+			<h2 class="center" data-reveal>How I think about marketing</h2>
+			<div class="principles">
+				{a.principles.map((p, i) => (
+					<div class="card principle" data-reveal>
+						<span class="num">0{i + 1}</span>
+						<h3>{p.title}</h3>
+						<p>{p.body}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container-max">
+			<h2 class="center" data-reveal>Work I can point to</h2>
+			<div class="case-grid">
+				{caseStudies.map((c) => (
+					<CaseStudyCard
+						slug={c.id}
+						client={c.data.anonymized ? 'Industrial Revenue Recovery' : c.data.client}
+						headlineMetric={c.data.headlineMetric}
+						industryLabel={industryLabels[c.data.industry] ?? c.data.industry}
+					/>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt">
+		<div class="container-max container-reading">
+			<h2 data-reveal>What I write about</h2>
+			<ul class="writing">
+				{pillars.map((p) => (
+					<li data-reveal>
+						<a href={`/insights/pillar/${p.id}/`}><strong>{p.data.title}</strong><span>{p.data.description}</span></a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	<CTASection heading="Talk to the person who does the work." body="30 minutes with Shubham. No SDR, no deck, no pitch." primaryLabel="Get a free revenue audit" secondaryLabel="Try the free tools" secondaryHref="/tools/" />
+</Layout>
+
+<style>
+	.hero { background: var(--color-steel-700); color: white; padding-bottom: clamp(3rem, 7vw, 5rem); position: relative; overflow: hidden; }
+	.hero::before { content: ''; position: absolute; width: 520px; height: 520px; right: -140px; top: -160px; border-radius: 50%; background: radial-gradient(circle, rgba(232,104,12,0.45), transparent 65%); }
+	.crumbs { padding-top: 1.5rem; position: relative; }
+	.hero :global(.breadcrumbs a), .hero :global(.breadcrumbs span), .hero :global(.breadcrumbs li) { color: var(--color-steel-100) !important; }
+	.hero-grid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 3rem; align-items: center; padding-top: 2rem; position: relative; }
+	.hero h1 { color: white; font-size: clamp(2rem, 4.6vw, 3.5rem); line-height: 1.1; margin: 0.5rem 0 1rem; }
+	.hero .eyebrow { color: var(--color-amber-300); }
+	.lede { font-size: var(--text-body-lg); color: var(--color-steel-100); max-width: 52ch; }
+	.actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.75rem; }
+	.actions .btn-secondary { color: white; border-color: rgba(255,255,255,0.7); }
+	.actions .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+	.badge { position: relative; width: min(100%, 320px); aspect-ratio: 1; justify-self: center; display: grid; place-content: center; }
+	.orb { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 160deg, var(--color-amber-700), var(--color-amber-300), var(--color-steel-300), var(--color-amber-700)); animation: spin 14s linear infinite; opacity: 0.9; }
+	.badge::after { content: ''; position: absolute; inset: 12px; border-radius: 50%; background: var(--color-steel-900); }
+	.initials { position: relative; z-index: 1; font-family: var(--font-display); font-weight: 900; font-size: clamp(4rem, 9vw, 6rem); color: white; }
+	.tag { position: absolute; z-index: 2; background: white; color: var(--color-steel-900); font-weight: 700; font-size: 0.8rem; padding: 6px 14px; border-radius: 99px; box-shadow: var(--shadow-lg); animation: float-y 5s ease-in-out infinite; }
+	.t1 { top: 6%; left: -4%; } .t2 { top: 42%; right: -8%; animation-delay: -1.5s; } .t3 { bottom: 6%; left: 8%; animation-delay: -3s; background: var(--color-amber-700); color: white; }
+	@keyframes spin { to { transform: rotate(360deg); } }
+
+	.stats { padding-block: 2.5rem; }
+	.bio-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem; align-items: start; }
+	.bio h2, .section h2 { font-size: var(--text-h2); margin-bottom: 1.25rem; }
+	.bio p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); margin-block: 1em; }
+	.bio blockquote { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: var(--text-h3); color: var(--color-steel-700); border-left: 3px solid var(--color-amber-700); padding-left: 1.25rem; margin: 2rem 0 0; }
+	.facts { position: sticky; top: 100px; }
+	.facts h3 { font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-amber-700); font-family: var(--font-sans); margin: 1.25rem 0 0.5rem; }
+	.facts h3:first-child { margin-top: 0; }
+	.facts ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; }
+	.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+	.chip { background: var(--color-steel-100); color: var(--color-steel-700); font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 99px; }
+
+	.section.alt { background: var(--color-charcoal-100); }
+	.center { text-align: center; }
+	.principles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 2rem; }
+	.principle .num { font-family: var(--font-display); font-weight: 900; font-size: 2.5rem; color: var(--color-amber-300); line-height: 1; }
+	.principle h3 { font-size: var(--text-h4); margin: 0.5rem 0; }
+	.principle p { margin: 0; color: var(--color-charcoal-700); }
+	.case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+	.writing { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+	.writing a { display: grid; gap: 0.15rem; text-decoration: none; background: white; padding: 1rem 1.25rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border-left: 4px solid var(--color-amber-700); transition: transform 200ms, box-shadow 200ms; }
+	.writing a:hover { transform: translateX(6px); box-shadow: var(--shadow-md); }
+	.writing strong { color: var(--color-steel-900); }
+	.writing span { color: var(--color-charcoal-500); font-size: 0.9rem; }
+
+	@media (max-width: 900px) {
+		.hero-grid, .bio-grid, .principles, .case-grid { grid-template-columns: 1fr; }
+		.badge { width: 220px; }
+		.facts { position: static; }
+	}
+</style>

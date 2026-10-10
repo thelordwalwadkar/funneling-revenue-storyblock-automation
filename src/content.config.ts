@@ -104,4 +104,47 @@ const pillars = defineCollection({
 	}),
 });
 
-export const collections = { services, industries, caseStudies, pillars };
+const authors = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/authors' }),
+	schema: z.object({
+		name: z.string(),
+		role: z.string(),
+		h1: z.string(),
+		metaTitle: z.string(),
+		metaDescription: z.string(),
+		order: z.number(),
+		headline: z.string(),
+		bio: z.array(z.string()),
+		credentials: z.array(z.object({ value: z.string(), label: z.string() })),
+		clients: z.array(z.string()),
+		principles: z.array(z.object({ title: z.string(), body: z.string() })),
+		sameAs: z.array(z.string()),
+		email: z.string(),
+		knowsAbout: z.array(z.string()),
+		quote: z.string().optional(),
+	}),
+});
+
+const tools = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/tools' }),
+	schema: z.object({
+		title: z.string(),
+		h1: z.string(),
+		metaTitle: z.string(),
+		metaDescription: z.string(),
+		order: z.number(),
+		kind: z.enum(['url', 'calculator']),
+		// audit | ai-visibility | serp-preview (server analysers) or calculator (client-only)
+		toolId: z.string(),
+		icon: z.string(),
+		oneLiner: z.string(),
+		inputLabel: z.string().optional().default(''),
+		inputPlaceholder: z.string().optional().default(''),
+		buttonLabel: z.string().optional().default(''),
+		whatYouGet: z.array(z.string()),
+		howItWorks: z.array(z.object({ title: z.string(), body: z.string() })),
+		faq: faqSchema,
+	}),
+});
+
+export const collections = { services, industries, caseStudies, pillars, authors, tools };

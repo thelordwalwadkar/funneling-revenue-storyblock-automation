@@ -14,11 +14,7 @@ export function organizationSchema() {
 		logo: absoluteUrl('/favicon.svg'),
 		description:
 			'Revenue-first marketing agency for manufacturers and industrial brands. SEO, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and revenue-driven content.',
-		founder: {
-			'@type': 'Person',
-			name: 'Shubham Walwadkar',
-			sameAs: ['https://www.linkedin.com/in/seo-shubham/'],
-		},
+		founder: { '@id': `${SITE_URL}/author/#person` },
 		sameAs: ['https://www.linkedin.com/in/seo-shubham/'],
 		areaServed: 'Worldwide',
 		knowsAbout: [
@@ -114,11 +110,58 @@ export function articleSchema(opts: {
 		headline: opts.headline,
 		description: opts.description,
 		url: absoluteUrl(opts.path),
-		author: {
-			'@type': 'Person',
-			name: 'Shubham Walwadkar',
-			sameAs: ['https://www.linkedin.com/in/seo-shubham/'],
-		},
+		author: { '@id': `${SITE_URL}/author/#person`, '@type': 'Person', name: 'Shubham Walwadkar', url: absoluteUrl('/author/') },
 		publisher: { '@id': `${SITE_URL}/#organization` },
+	};
+}
+
+export function personSchema(a: {
+	name: string;
+	role: string;
+	description: string;
+	sameAs: string[];
+	knowsAbout: string[];
+	clients: string[];
+	email: string;
+}) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		'@id': `${SITE_URL}/author/#person`,
+		name: a.name,
+		jobTitle: a.role,
+		description: a.description,
+		url: absoluteUrl('/author/'),
+		email: a.email,
+		sameAs: a.sameAs,
+		knowsAbout: a.knowsAbout,
+		worksFor: { '@id': `${SITE_URL}/#organization` },
+	};
+}
+
+export function profilePageSchema(opts: { name: string; description: string; path: string }) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'ProfilePage',
+		name: opts.name,
+		description: opts.description,
+		url: absoluteUrl(opts.path),
+		mainEntity: { '@id': `${SITE_URL}/author/#person` },
+		isPartOf: { '@id': `${SITE_URL}/#website` },
+	};
+}
+
+export function softwareToolSchema(opts: { name: string; description: string; path: string }) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebApplication',
+		name: opts.name,
+		description: opts.description,
+		url: absoluteUrl(opts.path),
+		applicationCategory: 'BusinessApplication',
+		operatingSystem: 'Any (web browser)',
+		offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+		publisher: { '@id': `${SITE_URL}/#organization` },
+		author: { '@id': `${SITE_URL}/author/#person` },
 	};
 }

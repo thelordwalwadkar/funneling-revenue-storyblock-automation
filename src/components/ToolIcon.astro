@@ -1,0 +1,19 @@
+---
+interface Props {
+	name: string;
+	size?: number;
+}
+const { name, size = 28 } = Astro.props;
+// Simple stroke icons keyed by the `icon` field of a tool entry.
+const paths: Record<string, string> = {
+	gauge: 'M12 14l4-4M3.5 17a9 9 0 1117 0M7 17h.01M12 6v.01M17 17h.01',
+	sparkles: 'M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z',
+	search: 'M11 4a7 7 0 100 14 7 7 0 000-14zM21 21l-4.3-4.3',
+	calculator: 'M6 3h12a1 1 0 011 1v16a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01',
+};
+const d = paths[name] ?? paths.gauge;
+---
+
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+	<path d={d}></path>
+</svg>

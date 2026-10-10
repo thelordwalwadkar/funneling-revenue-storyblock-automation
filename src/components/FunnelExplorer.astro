@@ -1,0 +1,114 @@
+---
+interface Stage {
+	tofu: string;
+	mofu: string;
+	bofu: string;
+}
+interface Props {
+	before: Stage;
+	after: Stage;
+	actions: { tofu: string[]; mofu: string[]; bofu: string[] };
+}
+const { before, after, actions } = Astro.props;
+const stages = [
+	{ key: 'tofu', label: 'ToFu', name: 'Awareness' },
+	{ key: 'mofu', label: 'MoFu', name: 'Consideration' },
+	{ key: 'bofu', label: 'BoFu', name: 'Decision' },
+] as const;
+const modes = [
+	{ id: 'before', label: 'Before' },
+	{ id: 'actions', label: 'What we did' },
+	{ id: 'after', label: 'After' },
+];
+---
+
+<div class="explorer" data-explorer data-mode="before">
+	<div class="modes" role="tablist" aria-label="Funnel view">
+		{modes.map((m, i) => (
+			<button type="button" role="tab" aria-selected={i === 0} data-mode-btn={m.id} class:list={{ on: i === 0 }}>{m.label}</button>
+		))}
+		<span class="thumb" aria-hidden="true"></span>
+	</div>
+
+	<div class="cols">
+		{stages.map((s, i) => (
+			<article class="stage spot" data-reveal style={`--i:${i}`}>
+				<header>
+					<span class="funnel-tag">{s.label}</span>
+					<span class="sname">{s.name}</span>
+					<span class="state" data-state></span>
+				</header>
+				<div class="body">
+					<p data-m="before" class="on">{before[s.key]}</p>
+					<ul data-m="actions">
+						{actions[s.key].map((a) => <li>{a}</li>)}
+					</ul>
+					<p data-m="after">{after[s.key]}</p>
+				</div>
+				<div class="flow" aria-hidden="true"><span></span></div>
+			</article>
+		))}
+	</div>
+</div>
+
+<style>
+	.explorer { display: grid; gap: 1.75rem; }
+	.modes { position: relative; display: inline-grid; grid-template-columns: repeat(3, 1fr); justify-self: center; background: var(--color-steel-100); border-radius: 999px; padding: 5px; isolation: isolate; }
+	.modes button { position: relative; z-index: 1; border: 0; background: none; padding: 0.65rem 1.4rem; font: 600 0.9rem var(--font-sans); color: var(--color-steel-700); border-radius: 999px; cursor: pointer; transition: color 200ms; white-space: nowrap; }
+	.modes button.on { color: white; }
+	.thumb { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 3); border-radius: 999px; background: var(--color-steel-700); transform: translateX(calc(var(--idx, 0) * 100%)); transition: transform 350ms cubic-bezier(0.3, 0.8, 0.2, 1), background 300ms; }
+	[data-mode='after'] .thumb { background: var(--color-amber-700); }
+	[data-mode='actions'] .thumb { background: var(--color-steel-500); }
+
+	.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+	.stage { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 1.5rem 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+	.stage header { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+	.sname { font-weight: 600; color: var(--color-charcoal-700); font-size: 0.9rem; }
+	.state { margin-left: auto; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; }
+	[data-mode='before'] .state { background: #fee2e2; color: #991b1b; }
+	[data-mode='before'] .state::after { content: 'Leaking'; }
+	[data-mode='actions'] .state { background: var(--color-steel-100); color: var(--color-steel-700); }
+	[data-mode='actions'] .state::after { content: 'Fixing'; }
+	[data-mode='after'] .state { background: #d1fae5; color: #065f46; }
+	[data-mode='after'] .state::after { content: 'Flowing'; }
+
+	.body { flex: 1; color: var(--color-charcoal-700); }
+	.body p, .body ul { margin: 0; }
+	.body ul { padding-left: 1.15rem; display: grid; gap: 0.55rem; }
+	:global(.js) .body > [data-m] { display: none; }
+	:global(.js) .body > [data-m].on { display: block; animation: swap 450ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+	:global(.js) .body > ul[data-m].on { display: grid; }
+	@keyframes swap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+	.flow { height: 6px; border-radius: 99px; background: var(--color-charcoal-100); overflow: hidden; }
+	.flow span { display: block; height: 100%; border-radius: 99px; width: 18%; background: #d4a29c; transition: width 800ms cubic-bezier(0.2, 0.7, 0.2, 1), background 400ms; }
+	[data-mode='actions'] .flow span { width: 55%; background: var(--color-steel-500); }
+	[data-mode='after'] .flow span { width: 100%; background: linear-gradient(90deg, var(--color-amber-700), var(--color-amber-300)); }
+
+	@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-explorer]').forEach((root) => {
+		const btns = [...root.querySelectorAll<HTMLButtonElement>('[data-mode-btn]')];
+		const set = (mode: string) => {
+			root.dataset.mode = mode;
+			const idx = btns.findIndex((b) => b.dataset.modeBtn === mode);
+			root.style.setProperty('--idx', String(idx));
+			btns.forEach((b, i) => {
+				b.classList.toggle('on', i === idx);
+				b.setAttribute('aria-selected', String(i === idx));
+			});
+			root.querySelectorAll<HTMLElement>('[data-m]').forEach((el) => el.classList.toggle('on', el.dataset.m === mode));
+		};
+		btns.forEach((b) => b.addEventListener('click', () => set(b.dataset.modeBtn!)));
+		root.addEventListener('keydown', (e) => {
+			if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+			const cur = btns.findIndex((b) => b.classList.contains('on'));
+			const next = btns[(cur + (e.key === 'ArrowRight' ? 1 : btns.length - 1)) % btns.length];
+			next.focus();
+			set(next.dataset.modeBtn!);
+		});
+		set('before');
+	});
+</script>

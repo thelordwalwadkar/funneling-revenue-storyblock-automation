@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run storyblok:test)",
+      "Bash(npm run preview)",
+      "Bash(npx astro build)",
+      "Bash(npx astro check)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./data/**)",
+      "Bash(git push:*)",
+      "Bash(npm run storyblok:sync)",
+      "Bash(npm run storyblok:push-stories)",
+      "Bash(npm run storyblok:push-components)"
+    ]
+  }
+}

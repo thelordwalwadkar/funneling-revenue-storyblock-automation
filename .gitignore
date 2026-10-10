@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# runtime data (submissions) and local scratch
+data/
+.tmp-*
+
+# personal overrides
+.claude/settings.local.json
