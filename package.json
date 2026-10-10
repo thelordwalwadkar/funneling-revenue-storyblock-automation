@@ -1,5 +1,5 @@
 {
-  "name": "vs-code",
+  "name": "funnelling-revenue",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,9 +12,13 @@
     "astro": "astro",
     "storyblok:push-components": "node scripts/storyblok/push-components.mjs",
     "storyblok:push-stories": "node scripts/storyblok/push-stories.mjs",
-    "storyblok:sync": "npm run storyblok:push-components && npm run storyblok:push-stories"
+    "storyblok:sync": "npm run storyblok:push-components && npm run storyblok:push-stories",
+    "start": "node ./dist/server/entry.mjs",
+    "storyblok:pull": "node scripts/storyblok/pull-stories.mjs",
+    "storyblok:test": "node scripts/storyblok/roundtrip-test.mjs"
   },
   "dependencies": {
+    "@astrojs/node": "^11.1.7",
     "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.5",

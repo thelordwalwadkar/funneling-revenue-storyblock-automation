@@ -1,0 +1,354 @@
+---
+interface Props {
+	toolId: string;
+	label: string;
+	placeholder: string;
+	button: string;
+}
+const { toolId, label, placeholder, button } = Astro.props;
+const inputId = `url-${toolId}`;
+---
+
+<div class="url-tool" data-tool={toolId}>
+	<form class="tool-form" novalidate>
+		<label for={inputId}>{label}</label>
+		<div class="tool-row">
+			<input
+				id={inputId}
+				class="field-input"
+				name="url"
+				type="text"
+				inputmode="url"
+				autocomplete="url"
+				autocapitalize="off"
+				spellcheck="false"
+				placeholder={placeholder}
+				required
+			/>
+			<button type="submit" class="btn btn-accent">{button}</button>
+		</div>
+		<p class="tool-hint">Reads public pages only. Takes 5–10 seconds. Nothing is changed on your site.</p>
+	</form>
+
+	<div class="tool-loading" hidden aria-live="polite">
+		<div class="scan-bar"><span></span></div>
+		<ul class="scan-steps">
+			<li>Fetching the page</li>
+			<li>Reading headings and metadata</li>
+			<li>Checking structured data and crawl files</li>
+			<li>Scoring against the funnel</li>
+		</ul>
+	</div>
+	<p class="tool-error" role="alert" hidden></p>
+	<div class="tool-result" hidden></div>
+</div>
+
+<style is:global>
+	.url-tool { width: 100%; }
+	.url-tool .tool-form label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--color-steel-900); }
+	.url-tool .tool-row { display: flex; gap: 0.75rem; }
+	.url-tool .tool-row .field-input { flex: 1; min-width: 0; }
+	.url-tool .tool-row .btn { white-space: nowrap; }
+	.url-tool .tool-hint { font-size: 0.8rem; color: var(--color-charcoal-500); margin: 0.6rem 0 0; }
+	.url-tool .tool-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.85rem 1rem; border-radius: var(--radius-md); margin-top: 1rem; }
+
+	.url-tool .tool-loading { margin-top: 1.25rem; }
+	.url-tool .scan-bar { height: 6px; background: var(--color-steel-100); border-radius: 99px; overflow: hidden; }
+	.url-tool .scan-bar span { display: block; height: 100%; width: 40%; background: linear-gradient(90deg, var(--color-steel-700), var(--color-amber-500)); border-radius: 99px; animation: scan 1.2s ease-in-out infinite; }
+	@keyframes scan { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+	.url-tool .scan-steps { list-style: none; margin: 0.9rem 0 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--color-charcoal-500); }
+	.url-tool .scan-steps li { opacity: 0.35; transition: opacity 300ms; }
+	.url-tool .scan-steps li.on { opacity: 1; color: var(--color-steel-700); font-weight: 600; }
+	.url-tool .scan-steps li.on::before { content: '→ '; color: var(--color-amber-700); }
+
+	/* Result */
+	.url-tool .tool-result { margin-top: 2rem; display: grid; gap: 1.5rem; }
+	.url-tool .res-top { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center; background: var(--color-steel-700); color: white; border-radius: var(--radius-xl); padding: 1.75rem; }
+	.url-tool .ring { position: relative; width: 150px; height: 150px; }
+	.url-tool .ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+	.url-tool .ring .track { stroke: rgba(255,255,255,0.18); }
+	.url-tool .ring .bar { stroke: var(--color-amber-300); stroke-linecap: round; transition: stroke-dashoffset 1.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.url-tool .ring .num { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; line-height: 1; }
+	.url-tool .ring .num small { display: block; font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--color-amber-300); margin-top: 0.35rem; }
+	.url-tool .res-top h3 { color: white; font-size: var(--text-h3); margin: 0 0 0.5rem; }
+	.url-tool .res-top p { color: var(--color-steel-100); margin: 0; }
+	.url-tool .res-host { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-amber-300); margin-bottom: 0.5rem !important; word-break: break-all; }
+
+	.url-tool .panel { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 1.5rem; }
+	.url-tool .panel h4 { font-size: 1.05rem; margin: 0 0 1rem; }
+	.url-tool .meters { display: grid; gap: 1rem; }
+	.url-tool .meter-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
+	.url-tool .meter-track { height: 10px; background: var(--color-charcoal-100); border-radius: 99px; overflow: hidden; }
+	.url-tool .meter-fill { height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--color-steel-700), var(--color-steel-300)); transition: width 1.2s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.url-tool .meter-fill.low { background: linear-gradient(90deg, var(--color-amber-700), var(--color-amber-300)); }
+
+	.url-tool .fixes { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.6rem; }
+	.url-tool .fixes li::marker { color: var(--color-amber-700); font-weight: 700; }
+
+	.url-tool .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-amber-700); margin: 1.25rem 0 0.5rem; }
+	.url-tool .group-title:first-child { margin-top: 0; }
+	.url-tool .check { display: grid; grid-template-columns: 26px 1fr; gap: 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid var(--color-charcoal-100); }
+	.url-tool .check:last-child { border-bottom: 0; }
+	.url-tool .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-content: center; font-size: 0.75rem; font-weight: 800; color: white; margin-top: 2px; }
+	.url-tool .dot.pass { background: var(--color-success); }
+	.url-tool .dot.warn { background: var(--color-amber-500); }
+	.url-tool .dot.fail { background: var(--color-error); }
+	.url-tool .check strong { display: block; font-size: 0.95rem; color: var(--color-charcoal-900); }
+	.url-tool .check span.detail { display: block; font-size: 0.85rem; color: var(--color-charcoal-500); word-break: break-word; }
+	.url-tool .check span.fix { display: block; font-size: 0.85rem; color: var(--color-steel-700); margin-top: 0.25rem; }
+	.url-tool .check span.fix::before { content: 'Fix: '; font-weight: 700; color: var(--color-amber-700); }
+
+	.url-tool table.bots { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+	.url-tool table.bots th { text-align: left; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-charcoal-500); padding: 0.4rem 0.5rem; }
+	.url-tool table.bots td { padding: 0.55rem 0.5rem; border-top: 1px solid var(--color-charcoal-100); }
+	.url-tool .pill { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; }
+	.url-tool .pill.allowed { background: #d1fae5; color: #065f46; }
+	.url-tool .pill.unspecified { background: var(--color-steel-100); color: var(--color-steel-700); }
+	.url-tool .pill.blocked { background: #fee2e2; color: #991b1b; }
+
+	.url-tool .previews { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+	.url-tool .serp { font-family: Arial, sans-serif; background: white; border: 1px solid var(--color-charcoal-300); border-radius: var(--radius-lg); padding: 1rem 1.15rem; }
+	.url-tool .serp .site { font-size: 0.8rem; color: #202124; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem; }
+	.url-tool .serp .site i { width: 22px; height: 22px; border-radius: 50%; background: var(--color-steel-100); display: grid; place-content: center; font-style: normal; font-weight: 700; color: var(--color-steel-700); font-size: 0.7rem; }
+	.url-tool .serp .t { color: #1a0dab; font-size: 1.15rem; line-height: 1.3; margin: 0; }
+	.url-tool .serp .d { color: #4d5156; font-size: 0.85rem; line-height: 1.5; margin: 0.25rem 0 0; }
+	.url-tool .serp.mobile { max-width: 360px; }
+	.url-tool .share { border: 1px solid var(--color-charcoal-300); border-radius: var(--radius-lg); overflow: hidden; background: white; max-width: 480px; }
+	.url-tool .share .img { aspect-ratio: 1.91; background: var(--color-steel-100) center/cover; display: grid; place-content: center; color: var(--color-steel-500); font-size: 0.85rem; }
+	.url-tool .share .meta { padding: 0.75rem 1rem; background: var(--color-charcoal-100); }
+	.url-tool .share .meta small { color: var(--color-charcoal-500); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.7rem; }
+	.url-tool .share .meta b { display: block; font-size: 0.95rem; margin: 0.15rem 0; }
+	.url-tool .share .meta span { font-size: 0.82rem; color: var(--color-charcoal-500); }
+	.url-tool .suggest { display: grid; gap: 0.75rem; }
+	.url-tool .suggest .row { background: var(--color-amber-100); border-radius: var(--radius-md); padding: 0.75rem 1rem; display: flex; gap: 1rem; justify-content: space-between; align-items: start; }
+	.url-tool .suggest small { display: block; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-amber-900); font-weight: 700; }
+	.url-tool .suggest button { border: 1px solid var(--color-amber-700); background: white; color: var(--color-amber-700); font-weight: 600; border-radius: var(--radius-sm); padding: 4px 12px; cursor: pointer; font-size: 0.8rem; }
+
+	.url-tool .lead { background: var(--color-steel-900); color: white; border-radius: var(--radius-xl); padding: 1.75rem; }
+	.url-tool .lead h4 { color: white; font-size: var(--text-h4); margin: 0 0 0.35rem; }
+	.url-tool .lead p { color: var(--color-steel-100); margin: 0 0 1rem; }
+	.url-tool .lead form { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 0.75rem; }
+	.url-tool .lead .ok { color: var(--color-amber-300); font-weight: 600; }
+	.url-tool .lead .hp { position: absolute; left: -9999px; }
+
+	@media (max-width: 760px) {
+		.url-tool .tool-row { flex-direction: column; }
+		.url-tool .res-top { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+		.url-tool .previews, .url-tool .lead form { grid-template-columns: 1fr; }
+	}
+</style>
+
+<script>
+	type Check = { id: string; group: string; label: string; status: 'pass' | 'warn' | 'fail'; detail: string; fix?: string };
+	type Result = {
+		tool: string; url: string; finalUrl: string; host: string; score: number; grade: string; headline: string;
+		checks: Check[]; facts: any; funnel?: { tofu: number; mofu: number; bofu: number }; topFixes: string[]; fetchedMs: number;
+	};
+
+	const esc = (s: unknown) =>
+		String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string);
+	const clip = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
+	const safeHttp = (u: unknown) => {
+		try {
+			const x = new URL(String(u));
+			return x.protocol === 'https:' || x.protocol === 'http:' ? x.toString() : '';
+		} catch {
+			return '';
+		}
+	};
+	const mark = { pass: '✓', warn: '!', fail: '✕' } as const;
+
+	function ring(score: number, grade: string) {
+		const r = 64, c = 2 * Math.PI * r;
+		return `<div class="ring" role="img" aria-label="Score ${score} out of 100, grade ${esc(grade)}">
+			<svg viewBox="0 0 150 150"><circle class="track" cx="75" cy="75" r="${r}" fill="none" stroke-width="12"/>
+			<circle class="bar" cx="75" cy="75" r="${r}" fill="none" stroke-width="12" stroke-dasharray="${c}" stroke-dashoffset="${c}" data-target="${c * (1 - score / 100)}"/></svg>
+			<div class="num"><span data-score="${score}">0</span><small>GRADE ${esc(grade)}</small></div></div>`;
+	}
+
+	function checksPanel(checks: Check[]) {
+		const groups = [...new Set(checks.map((c) => c.group))];
+		return groups
+			.map(
+				(g) =>
+					`<div class="group-title">${esc(g)}</div>` +
+					checks
+						.filter((c) => c.group === g)
+						.map(
+							(c) => `<div class="check"><span class="dot ${c.status}" aria-label="${c.status}">${mark[c.status]}</span><div>
+							<strong>${esc(c.label)}</strong><span class="detail">${esc(c.detail)}</span>${c.status !== 'pass' && c.fix ? `<span class="fix">${esc(c.fix)}</span>` : ''}</div></div>`,
+						)
+						.join(''),
+			)
+			.join('');
+	}
+
+	function meters(f: NonNullable<Result['funnel']>) {
+		const rows: [string, number, string][] = [
+			['ToFu: discovery content', f.tofu, 'Guides, glossary, "what is" pages'],
+			['MoFu: consideration assets', f.mofu, 'Case studies, specs, comparisons'],
+			['BoFu: decision paths', f.bofu, 'Quote, contact, demo, dealer paths'],
+		];
+		return `<div class="panel"><h4>Funnel coverage</h4><div class="meters">${rows
+			.map(
+				([l, v, s]) =>
+					`<div><div class="meter-label"><span>${l}</span><span>${v}/100</span></div><div class="meter-track"><div class="meter-fill ${v < 35 ? 'low' : ''}" data-w="${v}"></div></div><small style="color:var(--color-charcoal-500)">${s}</small></div>`,
+			)
+			.join('')}</div></div>`;
+	}
+
+	function serpPanel(r: Result) {
+		const f = r.facts;
+		const host = esc(r.host.replace(/^www\./, ''));
+		const t = f.title || '(no title tag)';
+		const d = f.description || '(no meta description: Google will pick text from the page)';
+		const img = safeHttp(f.og?.image);
+		const sug = f.suggestion ?? { title: '', description: '' };
+		const card = (cls: string, tl: number, dl: number) =>
+			`<div class="serp ${cls}"><div class="site"><i>${host.charAt(0).toUpperCase()}</i><span>${host}</span></div><p class="t">${esc(clip(t, tl))}</p><p class="d">${esc(clip(d, dl))}</p></div>`;
+		return `<div class="panel"><h4>Google preview</h4><div class="previews">
+			<div><small>DESKTOP</small>${card('desktop', 60, 160)}</div><div><small>MOBILE</small>${card('mobile', 58, 120)}</div></div></div>
+			<div class="panel"><h4>Social share preview</h4><div class="share"><div class="img" ${img ? `style="background-image:url('${esc(img)}')"` : ''}>${img ? '' : 'No og:image set'}</div>
+			<div class="meta"><small>${host}</small><b>${esc(clip(f.og?.title || f.title || '(no title)', 70))}</b><span>${esc(clip(f.og?.description || f.description || '', 110))}</span></div></div></div>
+			<div class="panel"><h4>Suggested rewrite</h4><div class="suggest">
+			<div class="row"><div><small>Title (${sug.title.length} chars)</small>${esc(sug.title)}</div><button type="button" data-copy="${esc(sug.title)}">Copy</button></div>
+			<div class="row"><div><small>Description (${sug.description.length} chars)</small>${esc(sug.description)}</div><button type="button" data-copy="${esc(sug.description)}">Copy</button></div></div></div>`;
+	}
+
+	function botsPanel(r: Result) {
+		const bots: { name: string; owner: string; access: string }[] = r.facts.bots ?? [];
+		return `<div class="panel"><h4>AI crawler access (robots.txt)</h4><table class="bots"><thead><tr><th>Crawler</th><th>Used by</th><th>Status</th></tr></thead><tbody>${bots
+			.map((b) => `<tr><td><code>${esc(b.name)}</code></td><td>${esc(b.owner)}</td><td><span class="pill ${b.access}">${b.access === 'unspecified' ? 'allowed (no rule)' : b.access}</span></td></tr>`)
+			.join('')}</tbody></table></div>`;
+	}
+
+	function render(r: Result) {
+		const fixes = r.topFixes.length
+			? `<div class="panel"><h4>Fix these first</h4><ol class="fixes">${r.topFixes.map((f) => `<li>${esc(f)}</li>`).join('')}</ol></div>`
+			: '';
+		const body =
+			r.tool === 'serp-preview'
+				? serpPanel(r) + `<div class="panel">${checksPanel(r.checks)}</div>`
+				: (r.funnel ? meters(r.funnel) : '') + (r.tool === 'ai-visibility' ? botsPanel(r) : '') + fixes + `<div class="panel">${checksPanel(r.checks)}</div>`;
+		return `<div class="res-top">${ring(r.score, r.grade)}<div><p class="res-host">${esc(r.finalUrl)}</p><h3>${esc(r.headline)}</h3>
+			<p>Checked live in ${(r.fetchedMs / 1000).toFixed(1)}s, the way a crawler and a buyer would see the page.</p></div></div>${body}
+			<div class="lead"><h4>Want this fixed, not just found?</h4><p>Leave your email and Shubham will send a prioritised, written fix-list for this page: free, no pitch.</p>
+			<form data-lead><input class="hp" name="bot-field" tabindex="-1" autocomplete="off" aria-hidden="true" /><input class="field-input" name="name" placeholder="Your name" autocomplete="name" />
+			<input class="field-input" name="email" type="email" placeholder="Work email" required autocomplete="email" /><button class="btn btn-accent" type="submit">Send me the fix-list</button></form></div>`;
+	}
+
+	function animate(root: HTMLElement) {
+		requestAnimationFrame(() => {
+			root.querySelectorAll<SVGCircleElement>('.ring .bar').forEach((b) => (b.style.strokeDashoffset = b.dataset.target ?? '0'));
+			root.querySelectorAll<HTMLElement>('.meter-fill').forEach((m) => (m.style.width = `${m.dataset.w}%`));
+			const n = root.querySelector<HTMLElement>('[data-score]');
+			if (n) {
+				const target = Number(n.dataset.score);
+				const t0 = performance.now();
+				const step = (now: number) => {
+					const p = Math.min(1, (now - t0) / 1400);
+					n.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+					if (p < 1) requestAnimationFrame(step);
+				};
+				requestAnimationFrame(step);
+			}
+		});
+	}
+
+	document.querySelectorAll<HTMLElement>('.url-tool').forEach((tool) => {
+		const form = tool.querySelector<HTMLFormElement>('.tool-form')!;
+		const input = form.querySelector<HTMLInputElement>('input[name=url]')!;
+		const btn = form.querySelector<HTMLButtonElement>('button')!;
+		const loading = tool.querySelector<HTMLElement>('.tool-loading')!;
+		const errorEl = tool.querySelector<HTMLElement>('.tool-error')!;
+		const out = tool.querySelector<HTMLElement>('.tool-result')!;
+		const steps = [...loading.querySelectorAll('li')];
+		const toolId = tool.dataset.tool!;
+		let timer: number | undefined;
+
+		async function run(url: string) {
+			errorEl.hidden = true;
+			out.hidden = true;
+			loading.hidden = false;
+			btn.disabled = true;
+			let i = 0;
+			steps.forEach((s, k) => s.classList.toggle('on', k === 0));
+			timer = window.setInterval(() => {
+				i = Math.min(i + 1, steps.length - 1);
+				steps.forEach((s, k) => s.classList.toggle('on', k <= i));
+			}, 1400);
+			try {
+				const res = await fetch('/api/analyze/', {
+					method: 'POST',
+					headers: { 'content-type': 'application/json' },
+					body: JSON.stringify({ tool: toolId, url }),
+				});
+				const data = await res.json().catch(() => ({ ok: false, error: 'Unexpected response from the server.' }));
+				if (!data.ok) throw new Error(data.error || 'Something went wrong.');
+				const r = data.result as Result;
+				out.innerHTML = render(r);
+				out.hidden = false;
+				animate(out);
+				out.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+				out.querySelector<HTMLFormElement>('form[data-lead]')?.addEventListener('submit', (e) => submitLead(e, r, out));
+				out.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
+					b.addEventListener('click', async () => {
+						try {
+							await navigator.clipboard.writeText(b.dataset.copy ?? '');
+							b.textContent = 'Copied';
+							setTimeout(() => (b.textContent = 'Copy'), 1500);
+						} catch { /* clipboard unavailable */ }
+					}),
+				);
+			} catch (err) {
+				errorEl.textContent = (err as Error).message;
+				errorEl.hidden = false;
+			} finally {
+				clearInterval(timer);
+				loading.hidden = true;
+				btn.disabled = false;
+			}
+		}
+
+		async function submitLead(e: Event, r: Result, scope: HTMLElement) {
+			e.preventDefault();
+			const f = e.currentTarget as HTMLFormElement;
+			const fd = new FormData(f);
+			const submit = f.querySelector('button')!;
+			submit.disabled = true;
+			try {
+				const res = await fetch('/api/lead/', {
+					method: 'POST',
+					headers: { 'content-type': 'application/json' },
+					body: JSON.stringify({ name: fd.get('name'), email: fd.get('email'), 'bot-field': fd.get('bot-field'), domain: r.url, source: `tool:${toolId}`, goal: `Requested fix-list after ${toolId} scored ${r.score}/100` }),
+				});
+				const data = await res.json();
+				if (!data.ok) throw new Error(data.error);
+				f.outerHTML = '<p class="ok">Thank you. Shubham will email your fix-list within one business day.</p>';
+			} catch (err) {
+				submit.disabled = false;
+				alert((err as Error).message || 'Could not send. Please try again.');
+			}
+		}
+
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const v = input.value.trim();
+			if (!v) {
+				errorEl.textContent = 'Enter a website address, like example.com.';
+				errorEl.hidden = false;
+				input.focus();
+				return;
+			}
+			history.replaceState(null, '', `?url=${encodeURIComponent(v)}`);
+			run(v);
+		});
+
+		// Deep links: /tools/<slug>/?url=example.com runs immediately.
+		const preset = new URLSearchParams(location.search).get('url');
+		if (preset) {
+			input.value = preset;
+			run(preset);
+		}
+	});
+</script>

@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 const industries = (await getCollection('industries')).sort((a, b) => a.data.order - b.data.order);
 const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b.data.order);
+const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <header class="site-header">
@@ -47,6 +48,15 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 				</li>
 				<li><a href="/case-studies/">Case Studies</a></li>
 				<li class="has-dropdown">
+					<a href="/tools/">Free Tools</a>
+					<ul class="dropdown">
+						{tools.map((t) => (
+							<li><a href={`/tools/${t.id}/`}>{t.data.title}</a></li>
+						))}
+						<li><a href="/tools/">All tools</a></li>
+					</ul>
+				</li>
+				<li class="has-dropdown">
 					<a href="/insights/">Insights</a>
 					<ul class="dropdown">
 						{pillars.map((p) => (
@@ -55,6 +65,7 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 						<li><a href="/insights/">All Insights</a></li>
 					</ul>
 				</li>
+				<li><a href="/author/">Author</a></li>
 			</ul>
 			<a href="/audit/" class="btn btn-accent nav-cta">Get a free audit</a>
 		</nav>
@@ -66,7 +77,8 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: var(--color-off-white);
+		background: rgba(252, 252, 251, 0.92);
+		backdrop-filter: saturate(1.4) blur(10px);
 		border-bottom: 1px solid var(--color-charcoal-300);
 	}
 	.bar {
@@ -93,7 +105,9 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 		height: 3px;
 		border-radius: 2px;
 		background: var(--color-steel-700);
+		transition: width 250ms ease, background 250ms ease;
 	}
+	.wordmark:hover .mark span:nth-child(3) { width: 100%; background: var(--color-amber-700); }
 	.mark span:nth-child(1) { width: 100%; }
 	.mark span:nth-child(2) { width: 68%; }
 	.mark span:nth-child(3) { width: 40%; }
@@ -184,7 +198,7 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 
 	.nav-cta { white-space: nowrap; padding: 10px 20px; font-size: 0.9rem; }
 
-	@media (max-width: 900px) {
+	@media (max-width: 1100px) {
 		.nav-toggle { display: inline-flex; }
 		.primary-nav {
 			position: fixed;
@@ -220,10 +234,10 @@ const pillars = (await getCollection('pillars')).sort((a, b) => a.data.order - b
 		toggle.setAttribute('aria-expanded', String(!!open));
 	});
 
-	if (window.matchMedia('(max-width: 900px)').matches) {
+	if (window.matchMedia('(max-width: 1100px)').matches) {
 		document.querySelectorAll('.has-dropdown > a').forEach((link) => {
 			link.addEventListener('click', (e) => {
-				if (window.innerWidth <= 900) {
+				if (window.innerWidth <= 1100) {
 					e.preventDefault();
 					link.parentElement?.classList.toggle('open');
 				}

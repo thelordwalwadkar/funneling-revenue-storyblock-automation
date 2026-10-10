@@ -46,8 +46,8 @@ const faq = [
 			</div>
 
 			<div class="form-card card">
-				<form id="audit-form" name="audit" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
-					<input type="hidden" name="form-name" value="audit" />
+				<form id="audit-form" name="audit" method="POST" action="/api/lead/" novalidate>
+					<input type="hidden" name="source" value="audit-form" />
 					<p class="hp-field"><label>Don&rsquo;t fill this out: <input name="bot-field" /></label></p>
 					<div class="field">
 						<label for="name">Name</label>
@@ -103,6 +103,7 @@ const faq = [
 						<label for="goal">What&rsquo;s your primary goal in the next 90 days?</label>
 						<textarea id="goal" name="goal" rows="3"></textarea>
 					</div>
+					<p id="audit-error" class="form-error" role="alert" hidden></p>
 					<button type="submit" class="btn btn-accent submit-btn">Request my free audit</button>
 					<p class="required-note">All fields marked required must be completed.</p>
 				</form>
@@ -179,6 +180,7 @@ const faq = [
 	input:focus, select:focus, textarea:focus { border-color: var(--color-steel-700); }
 	.submit-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
 	.required-note { font-size: 0.75rem; color: var(--color-charcoal-500); text-align: center; margin: 0; }
+	.form-error { color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 0.6rem 0.8rem; font-size: 0.9rem; margin: 0; }
 	.hp-field { position: absolute; left: -9999px; }
 	.success-panel { text-align: center; padding: 1rem 0; }
 	.success-panel h2 { font-size: var(--text-h3); color: var(--color-success); }
@@ -196,27 +198,35 @@ const faq = [
 <script>
 	const form = document.getElementById('audit-form') as HTMLFormElement | null;
 	const success = document.getElementById('audit-success');
+	const errorEl = document.getElementById('audit-error');
 
-	function encode(data: FormData) {
-		return new URLSearchParams(data as unknown as Record<string, string>).toString();
-	}
-
-	form?.addEventListener('submit', (e) => {
+	form?.addEventListener('submit', async (e) => {
 		e.preventDefault();
 		if (!form.checkValidity()) {
 			form.reportValidity();
 			return;
 		}
-		// Netlify Forms: works once this site is deployed on Netlify (data-netlify="true" above).
-		// On any other host this fetch 404s silently — swap this handler for your CRM/Storyblok
-		// forms webhook if you deploy elsewhere.
-		fetch('/', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: encode(new FormData(form)),
-		}).finally(() => {
+		const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+		button.disabled = true;
+		button.textContent = 'Sending…';
+		if (errorEl) errorEl.hidden = true;
+		try {
+			const res = await fetch('/api/lead/', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(Object.fromEntries(new FormData(form))),
+			});
+			const data = await res.json().catch(() => ({ ok: false }));
+			if (!data.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
 			form.hidden = true;
 			if (success) success.hidden = false;
-		});
+		} catch (err) {
+			if (errorEl) {
+				errorEl.textContent = (err as Error).message;
+				errorEl.hidden = false;
+			}
+			button.disabled = false;
+			button.textContent = 'Request my free audit';
+		}
 	});
 </script>

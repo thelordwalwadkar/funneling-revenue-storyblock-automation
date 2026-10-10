@@ -1,0 +1,173 @@
+---
+interface Props {
+	compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+
+<div class:list={['calc', { compact }]} data-calc>
+	<div class="calc-controls">
+		<div class="ctl">
+			<label for="c-cur">Currency</label>
+			<select id="c-cur" class="field-input" data-k="cur">
+				<option value="INR">₹ INR</option>
+				<option value="USD">$ USD</option>
+			</select>
+		</div>
+		<div class="ctl">
+			<label for="c-vis">Qualified visitors / month <output data-o="vis"></output></label>
+			<input id="c-vis" type="range" min="200" max="50000" step="100" value="5000" data-k="vis" />
+		</div>
+		<div class="ctl">
+			<label for="c-enq">Visitor → enquiry <output data-o="enq"></output></label>
+			<input id="c-enq" type="range" min="0.2" max="8" step="0.1" value="1.5" data-k="enq" />
+		</div>
+		<div class="ctl">
+			<label for="c-opp">Enquiry → qualified opportunity <output data-o="opp"></output></label>
+			<input id="c-opp" type="range" min="5" max="80" step="1" value="25" data-k="opp" />
+		</div>
+		<div class="ctl">
+			<label for="c-won">Opportunity → closed deal <output data-o="won"></output></label>
+			<input id="c-won" type="range" min="2" max="60" step="1" value="20" data-k="won" />
+		</div>
+		<div class="ctl">
+			<label for="c-deal">Average deal value <output data-o="deal"></output></label>
+			<input id="c-deal" type="range" min="1" max="100" step="1" value="25" data-k="deal" />
+		</div>
+	</div>
+
+	<div class="calc-out">
+		<div class="funnel" aria-hidden="true">
+			<div class="band b1" data-band="0"><span>Visitors</span><b data-n="0"></b></div>
+			<div class="band b2" data-band="1"><span>Enquiries</span><b data-n="1"></b></div>
+			<div class="band b3" data-band="2"><span>Qualified</span><b data-n="2"></b></div>
+			<div class="band b4" data-band="3"><span>Closed deals</span><b data-n="3"></b></div>
+		</div>
+		<div class="big">
+			<p class="eyebrow">Annual revenue from this funnel</p>
+			<p class="amount" data-annual>—</p>
+			<p class="sub" data-sub></p>
+		</div>
+		<div class="levers">
+			<p class="eyebrow">What an improvement is worth, per year</p>
+			<ul data-levers></ul>
+			<p class="lev-note" data-bestnote></p>
+		</div>
+	</div>
+</div>
+
+<style>
+	.calc { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 2rem; align-items: start; }
+	.calc.compact { grid-template-columns: 1fr; }
+	.calc-controls { background: white; border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: 1.5rem; display: grid; gap: 1.1rem; }
+	.ctl label { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.85rem; font-weight: 600; color: var(--color-steel-900); margin-bottom: 0.4rem; }
+	.ctl output { font-family: var(--font-mono); color: var(--color-amber-700); font-weight: 500; }
+	input[type='range'] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--color-steel-700) var(--fill, 50%), var(--color-steel-100) var(--fill, 50%)); outline: none; }
+	input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--color-amber-700); border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.25); cursor: grab; transition: transform 120ms; }
+	input[type='range']::-webkit-slider-thumb:hover { transform: scale(1.15); }
+	input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--color-amber-700); border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.25); cursor: grab; }
+	input[type='range']:focus-visible { box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.25); }
+
+	.calc-out { display: grid; gap: 1.25rem; }
+	.funnel { display: grid; gap: 6px; justify-items: center; }
+	.band { height: 52px; display: flex; justify-content: space-between; align-items: center; padding-inline: 1.1rem; color: white; border-radius: 10px; font-size: 0.85rem; min-width: 150px; width: var(--w, 100%); transition: width 600ms cubic-bezier(0.2, 0.7, 0.2, 1); clip-path: polygon(0 0, 100% 0, 97% 100%, 3% 100%); }
+	.band b { font-family: var(--font-display); font-size: 1.15rem; font-weight: 900; }
+	.b1 { background: var(--color-steel-900); }
+	.b2 { background: var(--color-steel-700); }
+	.b3 { background: var(--color-steel-500); }
+	.b4 { background: var(--color-amber-700); }
+
+	.big { background: var(--color-steel-700); color: white; border-radius: var(--radius-xl); padding: 1.5rem; }
+	.big .eyebrow { color: var(--color-amber-300); }
+	.amount { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; margin: 0.35rem 0; color: white; }
+	.sub { color: var(--color-steel-100); margin: 0; font-size: 0.9rem; }
+
+	.levers { background: white; border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: 1.25rem 1.5rem; }
+	.levers ul { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+	.levers li { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: 0.55rem 0.75rem; border-radius: var(--radius-md); background: var(--color-charcoal-100); font-size: 0.9rem; transition: background 250ms; }
+	.levers li.best { background: var(--color-amber-100); outline: 1.5px solid var(--color-amber-700); }
+	.levers li b { font-family: var(--font-mono); color: var(--color-amber-900); font-weight: 500; white-space: nowrap; }
+	.lev-note { font-size: 0.85rem; color: var(--color-charcoal-500); margin: 0.75rem 0 0; }
+
+	@media (max-width: 900px) { .calc { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-calc]').forEach((root) => {
+		const get = (k: string) => root.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-k="${k}"]`)!;
+		const out = (k: string) => root.querySelector<HTMLElement>(`[data-o="${k}"]`)!;
+
+		const fmtNum = (n: number) => (n >= 100 ? Math.round(n).toLocaleString('en-US') : n.toFixed(n < 10 ? 1 : 0));
+		function money(n: number, cur: string) {
+			if (cur === 'INR') {
+				if (n >= 1e7) return `₹${(n / 1e7).toFixed(2)} Cr`;
+				if (n >= 1e5) return `₹${(n / 1e5).toFixed(1)} L`;
+				return `₹${Math.round(n).toLocaleString('en-IN')}`;
+			}
+			if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+			if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+			return `$${Math.round(n)}`;
+		}
+		// Deal slider is in "units": 1 unit = ₹1 L or $5K, so it scales sensibly per currency.
+		const dealValue = (units: number, cur: string) => (cur === 'INR' ? units * 1e5 : units * 5e3);
+
+		function fillTrack(el: HTMLInputElement) {
+			const p = ((+el.value - +el.min) / (+el.max - +el.min)) * 100;
+			el.style.setProperty('--fill', `${p}%`);
+		}
+
+		function revenue(v: number, enq: number, opp: number, won: number, deal: number) {
+			return v * (enq / 100) * (opp / 100) * (won / 100) * deal * 12;
+		}
+
+		function update() {
+			const cur = get('cur').value;
+			const vis = +get('vis').value;
+			const enq = +get('enq').value;
+			const opp = +get('opp').value;
+			const won = +get('won').value;
+			const deal = dealValue(+get('deal').value, cur);
+			root.querySelectorAll<HTMLInputElement>('input[type=range]').forEach(fillTrack);
+
+			out('vis').textContent = vis.toLocaleString('en-US');
+			out('enq').textContent = `${enq.toFixed(1)}%`;
+			out('opp').textContent = `${opp}%`;
+			out('won').textContent = `${won}%`;
+			out('deal').textContent = money(deal, cur);
+
+			const enquiries = vis * (enq / 100);
+			const qualified = enquiries * (opp / 100);
+			const closed = qualified * (won / 100);
+			const counts = [vis, enquiries, qualified, closed];
+			counts.forEach((c, i) => {
+				const el = root.querySelector<HTMLElement>(`[data-n="${i}"]`);
+				if (el) el.textContent = i === 3 ? c.toFixed(1) + ' / mo' : fmtNum(c);
+				const band = root.querySelector<HTMLElement>(`[data-band="${i}"]`);
+				// log scale so the narrow end stays visible
+				const w = 100 - i * 20 - (Math.log10(vis / Math.max(c, 0.1)) / 4) * 14;
+				band?.style.setProperty('--w', `${Math.max(36, Math.min(100, w))}%`);
+			});
+
+			const base = revenue(vis, enq, opp, won, deal);
+			root.querySelector('[data-annual]')!.textContent = money(base, cur);
+			root.querySelector('[data-sub]')!.textContent = `${closed.toFixed(1)} closed deals a month × ${money(deal, cur)} × 12. One visitor is worth ${money(base / 12 / Math.max(vis, 1), cur)} a month.`;
+
+			const levers = [
+				{ label: `+1 pt visitor → enquiry (${enq.toFixed(1)}% → ${(enq + 1).toFixed(1)}%)`, gain: revenue(vis, enq + 1, opp, won, deal) - base },
+				{ label: `+5 pts enquiry → qualified (${opp}% → ${Math.min(100, opp + 5)}%)`, gain: revenue(vis, enq, Math.min(100, opp + 5), won, deal) - base },
+				{ label: `+2 pts opportunity → closed (${won}% → ${Math.min(100, won + 2)}%)`, gain: revenue(vis, enq, opp, Math.min(100, won + 2), deal) - base },
+				{ label: `+20% qualified visitors (${vis.toLocaleString('en-US')} → ${Math.round(vis * 1.2).toLocaleString('en-US')})`, gain: revenue(vis * 1.2, enq, opp, won, deal) - base },
+			];
+			const best = levers.reduce((a, b) => (b.gain > a.gain ? b : a));
+			const ul = root.querySelector('[data-levers]')!;
+			ul.innerHTML = levers
+				.map((l) => `<li class="${l === best ? 'best' : ''}"><span>${l.label}</span><b>+${money(l.gain, cur)}</b></li>`)
+				.join('');
+			root.querySelector('[data-bestnote]')!.textContent = `Biggest lever: ${best.label.split(' (')[0].replace('+', '')}. Funnelling Revenue builds the ToFu / MoFu / BoFu system behind it.`;
+		}
+
+		root.addEventListener('input', update);
+		get('cur').addEventListener('change', update);
+		update();
+	});
+</script>

@@ -1,0 +1,153 @@
+---
+// Animated funnel for the hero: leads pour in at the top, some leak out at each
+// stage, and the ones that survive turn into revenue at the bottom. The pointer
+// pushes particles around. Pure canvas, no dependencies.
+---
+
+<figure class="hero-funnel" aria-label="Animated funnel: leads enter at the top, some leak at each stage, and the rest convert to revenue">
+	<canvas id="hero-funnel" aria-hidden="true"></canvas>
+	<figcaption class="legend">
+		<span><i class="d lead"></i>Leads</span>
+		<span><i class="d lost"></i>Leaking</span>
+		<span><i class="d won"></i>Revenue</span>
+	</figcaption>
+</figure>
+
+<style>
+	.hero-funnel { position: relative; margin: 0; width: 100%; aspect-ratio: 1 / 1.05; max-height: 520px; }
+	canvas { width: 100%; height: 100%; display: block; }
+	.legend { position: absolute; left: 0; right: 0; bottom: -0.25rem; display: flex; justify-content: center; gap: 1.25rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; color: var(--color-steel-100); }
+	.d { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+	.d.lead { background: #cfe3f2; }
+	.d.lost { background: #8aa3b5; opacity: 0.6; }
+	.d.won { background: var(--color-amber-500); box-shadow: 0 0 8px var(--color-amber-500); }
+</style>
+
+<script>
+	const canvas = document.getElementById('hero-funnel') as HTMLCanvasElement | null;
+	if (canvas) {
+		const ctx = canvas.getContext('2d')!;
+		const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let w = 0, h = 0;
+		const mouse = { x: -999, y: -999 };
+
+		type P = { u: number; t: number; v: number; s: 'lead' | 'lost' | 'won'; x: number; y: number; vx: number; a: number; r: number; ph: number; gate: number };
+		const parts: P[] = [];
+		const GATES = [0.3, 0.58];
+		const LOSS = [0.38, 0.32];
+		let won = 0;
+		let flash = 0;
+
+		const ease = (k: number) => k * k * (3 - 2 * k);
+		const half = (t: number) => {
+			const top = w * 0.46, neck = w * 0.075;
+			return t < 0.8 ? top + (neck - top) * ease(t / 0.8) : neck;
+		};
+
+		function resize() {
+			const r = canvas!.getBoundingClientRect();
+			const dpr = Math.min(2, devicePixelRatio || 1);
+			w = r.width; h = r.height;
+			canvas!.width = w * dpr; canvas!.height = h * dpr;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		}
+
+		function spawn() {
+			parts.push({ u: Math.random() * 2 - 1, t: -0.02, v: 0.075 + Math.random() * 0.05, s: 'lead', x: 0, y: 0, vx: 0, a: 1, r: 2.2 + Math.random() * 1.6, ph: Math.random() * 6.28, gate: 0 });
+		}
+
+		function shape() {
+			ctx.beginPath();
+			const top = 0.03, bottom = 0.96, steps = 40;
+			for (let i = 0; i <= steps; i++) { const t = top + (0.8 - top) * (i / steps); ctx.lineTo(w / 2 - half(t), t * h); }
+			ctx.lineTo(w / 2 - half(0.8), bottom * h);
+			ctx.lineTo(w / 2 + half(0.8), bottom * h);
+			for (let i = steps; i >= 0; i--) { const t = top + (0.8 - top) * (i / steps); ctx.lineTo(w / 2 + half(t), t * h); }
+			ctx.closePath();
+		}
+
+		function frame(dt: number) {
+			ctx.clearRect(0, 0, w, h);
+			shape();
+			const g = ctx.createLinearGradient(0, 0, 0, h);
+			g.addColorStop(0, 'rgba(255,255,255,0.10)'); g.addColorStop(1, 'rgba(232,104,12,0.14)');
+			ctx.fillStyle = g; ctx.fill();
+			ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+			// stage gates + labels
+			ctx.font = '600 11px Inter, sans-serif';
+			['TOFU', 'MOFU', 'BOFU'].forEach((label, i) => {
+				const t = i === 0 ? 0.1 : GATES[i - 1] + (i === 1 ? 0.14 : 0.12);
+				const yy = (i === 0 ? 0.1 : GATES[i - 1]) * h;
+				if (i > 0) { ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(w / 2 - half(GATES[i - 1]), yy); ctx.lineTo(w / 2 + half(GATES[i - 1]), yy); ctx.stroke(); ctx.setLineDash([]); }
+				ctx.fillStyle = 'rgba(255,255,255,0.55)';
+				ctx.fillText(label, Math.max(4, w / 2 - half(t) - 2) - (i === 2 ? 0 : 0), (i === 0 ? 0.06 : GATES[i - 1] + 0.04) * h);
+			});
+
+			for (const p of parts) {
+				if (p.s === 'lead' || p.s === 'won') {
+					p.t += p.v * dt;
+					p.ph += dt * 3;
+					const hw = half(Math.max(0, p.t));
+					const tx = w / 2 + p.u * hw * 0.86 + Math.sin(p.ph) * 4;
+					p.x = p.x === 0 ? tx : p.x + (tx - p.x) * Math.min(1, dt * 9);
+					p.y = p.t * h;
+					if (p.s === 'lead' && p.gate < GATES.length && p.t > GATES[p.gate]) {
+						if (Math.random() < LOSS[p.gate]) { p.s = 'lost'; p.vx = (p.u < 0 ? -1 : 1) * (28 + Math.random() * 40); p.v = 0.12; }
+						p.gate++;
+					}
+					if (p.s === 'lead' && p.t > 0.88) { p.s = 'won'; won++; flash = 1; }
+				} else {
+					p.vx *= 1 - dt * 0.4;
+					p.x += p.vx * dt; p.t += p.v * dt * 1.5; p.y = p.t * h; p.a -= dt * 0.55;
+				}
+				// pointer push
+				const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+				if (d2 < 5200) { const d = Math.sqrt(d2) || 1, f = (72 - d) * 0.02 * 60 * dt; p.x += (dx / d) * f; p.y += (dy / d) * f; }
+				ctx.globalAlpha = Math.max(0, p.a);
+				if (p.s === 'won') {
+					ctx.fillStyle = '#e8680c'; ctx.shadowColor = '#e8680c'; ctx.shadowBlur = 12;
+				} else { ctx.fillStyle = p.s === 'lost' ? '#8aa3b5' : '#cfe3f2'; ctx.shadowBlur = 0; }
+				ctx.beginPath(); ctx.arc(p.x, p.y, p.s === 'won' ? p.r + 0.8 : p.r, 0, 6.283); ctx.fill();
+			}
+			ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+
+			for (let i = parts.length - 1; i >= 0; i--) {
+				const p = parts[i];
+				if (p.a <= 0 || p.t > 1.04) parts.splice(i, 1);
+			}
+
+			// outlet: revenue counter
+			flash = Math.max(0, flash - dt * 2.5);
+			ctx.textAlign = 'center';
+			ctx.fillStyle = `rgba(247,165,90,${0.75 + flash * 0.25})`;
+			ctx.font = `800 ${15 + flash * 3}px "Source Serif 4", Georgia, serif`;
+			ctx.fillText(`${won} converted`, w / 2, h * 0.995 - 12);
+			ctx.textAlign = 'start';
+		}
+
+		resize();
+		addEventListener('resize', resize);
+		canvas.addEventListener('pointermove', (e) => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+		canvas.addEventListener('pointerleave', () => { mouse.x = mouse.y = -999; });
+
+		if (reduced) {
+			for (let i = 0; i < 46; i++) { spawn(); const p = parts[i]; p.t = Math.random() * 0.85; p.x = w / 2 + p.u * half(p.t) * 0.86; p.y = p.t * h; }
+			won = 12; frame(0);
+		} else {
+			let last = performance.now(), acc = 0, visible = true;
+			new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+			const loop = (now: number) => {
+				const dt = Math.min(0.05, (now - last) / 1000);
+				last = now;
+				if (visible && !document.hidden) {
+					acc += dt;
+					while (acc > 0.11) { acc -= 0.11; if (parts.length < 150) spawn(); }
+					frame(dt);
+				}
+				requestAnimationFrame(loop);
+			};
+			requestAnimationFrame(loop);
+		}
+	}
+</script>

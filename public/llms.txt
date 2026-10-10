@@ -32,3 +32,12 @@ The funnel is eternal. The medium isn't. Newspapers, radio, television, search, 
 - [The Funnel Thesis](https://funnellingrevenue.com/the-funnel-thesis/): Why the funnel survives every medium shift, in full.
 - [Insights](https://funnellingrevenue.com/insights/): Five content pillars — The Eternal Funnel, Revenue Over Vanity, Manufacturing & Industrial Marketing, GEO/AEO/LLMO, and AI-First Marketing Operations.
 - [Get a Free Revenue Audit](https://funnellingrevenue.com/audit/): The single conversion point on this site — a 30-minute funnel diagnostic, free, no pitch.
+
+## Author
+- [Shubham Walwadkar](https://funnellingrevenue.com/author/): Founder. 8+ years of SEO and growth systems for Pall Corporation, Sany India, and the Danaher Lifesciences portfolio.
+
+## Free tools
+- [Website Revenue Audit](https://funnellingrevenue.com/tools/website-revenue-audit/): Paste a URL for a 0-100 technical, on-page and funnel-coverage score.
+- [AI Visibility Checker](https://funnellingrevenue.com/tools/ai-visibility-checker/): Tests AI-crawler access, llms.txt, entity markup and citable content structure.
+- [SERP & Meta Previewer](https://funnellingrevenue.com/tools/serp-meta-previewer/): Google and social previews with length checks and a suggested rewrite.
+- [Funnel Revenue Calculator](https://funnellingrevenue.com/tools/funnel-revenue-calculator/): Model visitor-to-revenue conversion and see which stage is worth most.

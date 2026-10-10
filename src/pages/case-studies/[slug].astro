@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import StatStrip from '../../components/StatStrip.astro';
 import CTASection from '../../components/CTASection.astro';
+import FunnelExplorer from '../../components/FunnelExplorer.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { articleSchema, breadcrumbSchema } from '../../lib/schema';
 
@@ -18,6 +19,7 @@ const path = `/case-studies/${entry.id}/`;
 const industry = await getEntry('industries', data.industry);
 const services = await Promise.all(data.servicesUsed.map((s) => getEntry('services', s)));
 const nextCase = await getEntry('caseStudies', data.nextCaseStudy);
+const author = (await getCollection('authors'))[0];
 const displayName = data.anonymized ? 'Industrial Revenue Recovery' : data.client;
 ---
 
@@ -48,50 +50,21 @@ const displayName = data.anonymized ? 'Industrial Revenue Recovery' : data.clien
 				<span class="pill pill-static">{data.engagementDuration}</span>
 			</div>
 			<h1>{data.h1}</h1>
+			{author && (
+				<p class="byline">
+					By <a href="/author/">{author.data.name}</a>, {author.data.role}
+				</p>
+			)}
 			{data.anonymized && data.anonymizedNote && <p class="anon-note">{data.anonymizedNote}</p>}
 			<StatStrip dark stats={data.metrics} />
 		</div>
 	</section>
 
-	<section class="section">
-		<div class="container-max container-reading">
-			<h2>The funnel before</h2>
-			<dl class="funnel-dl">
-				<dt>ToFu</dt><dd>{data.funnelBefore.tofu}</dd>
-				<dt>MoFu</dt><dd>{data.funnelBefore.mofu}</dd>
-				<dt>BoFu</dt><dd>{data.funnelBefore.bofu}</dd>
-			</dl>
-		</div>
-	</section>
-
-	<section class="section alt">
+	<section class="section explorer-section">
 		<div class="container-max">
-			<h2 class="center">What we did, by funnel stage</h2>
-			<div class="stage-grid">
-				<div class="stage-col">
-					<h3>ToFu</h3>
-					<ul>{data.actionsByStage.tofu.map((a) => <li>{a}</li>)}</ul>
-				</div>
-				<div class="stage-col">
-					<h3>MoFu</h3>
-					<ul>{data.actionsByStage.mofu.map((a) => <li>{a}</li>)}</ul>
-				</div>
-				<div class="stage-col">
-					<h3>BoFu</h3>
-					<ul>{data.actionsByStage.bofu.map((a) => <li>{a}</li>)}</ul>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="container-max container-reading">
-			<h2>The funnel after</h2>
-			<dl class="funnel-dl">
-				<dt>ToFu</dt><dd>{data.funnelAfter.tofu}</dd>
-				<dt>MoFu</dt><dd>{data.funnelAfter.mofu}</dd>
-				<dt>BoFu</dt><dd>{data.funnelAfter.bofu}</dd>
-			</dl>
+			<h2 class="center" data-reveal>The funnel, before and after</h2>
+			<p class="center lede" data-reveal>Flip between where the funnel was leaking, what we changed at each stage, and where it ended up.</p>
+			<FunnelExplorer before={data.funnelBefore} after={data.funnelAfter} actions={data.actionsByStage} />
 		</div>
 	</section>
 
@@ -137,25 +110,21 @@ const displayName = data.anonymized ? 'Industrial Revenue Recovery' : data.clien
 	.pill:hover { background: var(--color-steel-500); }
 	.pill-static { background: transparent; border: 1px solid var(--color-steel-500); }
 	.header-strip h1 { color: white; font-size: clamp(1.75rem, 4vw, var(--text-h1)); max-width: 800px; margin-bottom: 1.5rem; }
+	.byline { color: var(--color-steel-100); font-size: 0.9rem; margin: -0.75rem 0 1.5rem; }
+	.byline a { color: var(--color-amber-300); font-weight: 600; text-underline-offset: 3px; }
+	.lede { color: var(--color-charcoal-500); margin: -1rem auto 2rem; }
+	.explorer-section h2 { margin-bottom: 1.5rem; }
 	.anon-note { color: var(--color-steel-100); font-size: 0.85rem; font-style: italic; margin-bottom: 1.5rem; max-width: 60ch; }
 
 	.section.alt { background: var(--color-charcoal-100); }
 	.center { text-align: center; }
 
-	.funnel-dl { display: grid; grid-template-columns: 100px 1fr; gap: 0.75rem 1.5rem; }
-	.funnel-dl dt { font-weight: 700; color: var(--color-steel-700); }
-	.funnel-dl dd { margin: 0; color: var(--color-charcoal-700); }
 
-	.stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-	.stage-col { background: white; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); }
-	.stage-col h3 { font-size: var(--text-h4); color: var(--color-amber-700); margin-bottom: 0.75rem; }
-	.stage-col ul { margin: 0; padding-left: 1.2rem; color: var(--color-charcoal-700); display: flex; flex-direction: column; gap: 0.5rem; }
 
 	.impact { font-size: var(--text-body-lg); }
 	.next-case .next-link { font-family: var(--font-display); font-weight: 700; font-size: var(--text-h3); color: var(--color-steel-900); text-decoration: none; }
 	.next-case .next-link:hover { color: var(--color-steel-700); }
 
 	@media (max-width: 900px) {
-		.stage-grid { grid-template-columns: 1fr; }
-	}
+		}
 </style>

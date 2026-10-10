@@ -1,4 +1,28 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# AI answer engines are welcome: being cited is the point of our GEO work.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 Sitemap: https://funnellingrevenue.com/sitemap-index.xml
