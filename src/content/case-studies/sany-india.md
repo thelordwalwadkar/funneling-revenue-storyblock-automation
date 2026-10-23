@@ -1,7 +1,7 @@
 ---
 client: "Sany India"
 h1: "Sany India: First-Ever Organic Leads and 225% Lead Growth in 4 Months"
-metaTitle: "Sany India Case Study — 225% Lead Growth in 4 Months | Funnelling Revenue"
+metaTitle: "Sany India Case Study — 225% Lead Growth in 4 Months | Funneling Revenue"
 metaDescription: >-
   How intent-mapped landing pages and dealer-aware local SEO delivered Sany India's first-ever organic leads and 225% lead growth.
 order: 2

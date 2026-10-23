@@ -1,7 +1,7 @@
 ---
 title: "AI-First Marketing Operations"
 h1: "AI-First Marketing Operations"
-metaTitle: "AI-First Marketing Operations — Insights | Funnelling Revenue"
+metaTitle: "AI-First Marketing Operations — Insights | Funneling Revenue"
 metaDescription: >-
   Agents, prompts, and AI productivity for lean industrial marketing teams — engineered workflow, not improvisation.
 order: 5

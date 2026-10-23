@@ -146,7 +146,7 @@ function once(url: URL, { maxBytes = 1_500_000, timeoutMs = 9000, accept = 'text
 				timeout: timeoutMs,
 				lookup: guardedLookup as any,
 				headers: {
-					'user-agent': 'FunnellingRevenueBot/1.0 (+https://funnellingrevenue.com/tools/)',
+					'user-agent': 'FunnelingRevenueBot/1.0 (+https://funnelingrevenue.com/tools/)',
 					accept,
 					'accept-encoding': 'gzip, deflate, br',
 					'accept-language': 'en',

@@ -1,7 +1,7 @@
 ---
 title: "Paid Media"
 h1: "Paid Media — Performance Marketing Tied to Pipeline"
-metaTitle: "Paid Media for Manufacturers — Performance Marketing Tied to Pipeline | Funnelling Revenue"
+metaTitle: "Paid Media for Manufacturers — Performance Marketing Tied to Pipeline | Funneling Revenue"
 metaDescription: >-
   Google Ads, LinkedIn Ads, Meta, and retargeting for industrial brands. We optimise for cost per qualified lead and ROAS, not impressions.
 order: 5

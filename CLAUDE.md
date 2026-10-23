@@ -21,7 +21,7 @@ Consult these guides before working on related tasks:
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
 
-## Project rules (Funnelling Revenue)
+## Project rules (Funneling Revenue)
 
 **What this is:** revenue-first marketing site for manufacturers. Astro static pages plus a small Node backend (`src/pages/api/`, `src/lib/server/`) in one container. Content lives in `src/content/*.md` and syncs both ways with Storyblok.
 

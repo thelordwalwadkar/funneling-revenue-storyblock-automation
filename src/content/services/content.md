@@ -1,7 +1,7 @@
 ---
 title: "Revenue-Driven Content"
 h1: "Revenue-Driven Content — Mapped to Pipeline, Not Page Views"
-metaTitle: "Revenue-Driven Content Strategy for Manufacturers | Funnelling Revenue"
+metaTitle: "Revenue-Driven Content Strategy for Manufacturers | Funneling Revenue"
 metaDescription: >-
   Content briefs, topic clusters, and editorial calendars mapped to pipeline stages — not publishing cadence. Industrial content that closes deals.
 order: 4

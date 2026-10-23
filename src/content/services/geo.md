@@ -1,7 +1,7 @@
 ---
 title: "Generative Engine Optimization (GEO)"
 h1: "Generative Engine Optimization — Be the Answer When Buyers Ask AI"
-metaTitle: "Generative Engine Optimization for Manufacturers — Get Cited by ChatGPT, Perplexity & Gemini | Funnelling Revenue"
+metaTitle: "Generative Engine Optimization for Manufacturers — Get Cited by ChatGPT, Perplexity & Gemini | Funneling Revenue"
 metaDescription: >-
   GEO services for industrial and manufacturing brands. Be the answer when procurement engineers ask AI. Structured content, citation building, and LLM-readable authority.
 order: 2

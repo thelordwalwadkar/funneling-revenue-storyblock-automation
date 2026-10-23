@@ -1,7 +1,7 @@
 ---
 title: "Life Sciences & Lab Equipment"
 h1: "Marketing for Life Sciences & Lab Equipment Brands"
-metaTitle: "Digital Marketing for Life Sciences & Lab Equipment Brands | Funnelling Revenue"
+metaTitle: "Digital Marketing for Life Sciences & Lab Equipment Brands | Funneling Revenue"
 metaDescription: >-
   SEO, GEO, and content marketing for analytical instruments, lab consumables, and life science brands.
 order: 3

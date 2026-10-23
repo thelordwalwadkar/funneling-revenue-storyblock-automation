@@ -1,7 +1,7 @@
 ---
 title: "Industrial Equipment & Machinery"
 h1: "Marketing for Industrial Equipment & Machinery Manufacturers"
-metaTitle: "SEO & Digital Marketing for Industrial Equipment Manufacturers | Funnelling Revenue"
+metaTitle: "SEO & Digital Marketing for Industrial Equipment Manufacturers | Funneling Revenue"
 metaDescription: >-
   SEO, GEO, and content for CNC, pumps, valves, hydraulics, and motor manufacturers. Built around procurement engineer and plant head buying behaviour.
 order: 1

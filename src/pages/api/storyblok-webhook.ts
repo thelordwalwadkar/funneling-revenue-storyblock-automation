@@ -47,7 +47,7 @@ export const POST: APIRoute = async ({ request }) => {
 	if (token && repo) {
 		const r = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
 			method: 'POST',
-			headers: { authorization: `Bearer ${token}`, accept: 'application/vnd.github+json', 'user-agent': 'funnelling-revenue-site' },
+			headers: { authorization: `Bearer ${token}`, accept: 'application/vnd.github+json', 'user-agent': 'funneling-revenue-site' },
 			body: JSON.stringify({ event_type: 'storyblok-publish', client_payload: { action: event.action, slug: event.full_slug } }),
 		}).catch(() => null);
 		if (r?.ok) triggered.push('github');

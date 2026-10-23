@@ -1,7 +1,7 @@
 ---
 client: "Industrial Revenue Recovery"
 h1: "₹3Cr+ in First-Quarter Organic Revenue from a 17-Year-Old Industrial Website"
-metaTitle: "Industrial Revenue Recovery Case Study — ₹3Cr+ in Q1 | Funnelling Revenue"
+metaTitle: "Industrial Revenue Recovery Case Study — ₹3Cr+ in Q1 | Funneling Revenue"
 metaDescription: >-
   How rebuilding decision-stage pages and mid-funnel reputation surfaces turned a legacy industrial site into ₹3Cr+ in first-quarter organic revenue.
 order: 3

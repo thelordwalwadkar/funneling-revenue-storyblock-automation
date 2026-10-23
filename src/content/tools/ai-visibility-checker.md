@@ -1,7 +1,7 @@
 ---
 title: "AI Visibility Checker"
 h1: "AI Visibility Checker: can ChatGPT and Perplexity see you?"
-metaTitle: "AI Visibility Checker: GEO Readiness Test | Funnelling Revenue"
+metaTitle: "AI Visibility Checker: GEO Readiness Test | Funneling Revenue"
 metaDescription: >-
   Check whether AI crawlers can access your site and whether your content is structured to be cited by ChatGPT, Perplexity, Claude and Gemini.
 order: 2

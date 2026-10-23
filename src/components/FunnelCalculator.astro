@@ -163,7 +163,7 @@ const { compact = false } = Astro.props;
 			ul.innerHTML = levers
 				.map((l) => `<li class="${l === best ? 'best' : ''}"><span>${l.label}</span><b>+${money(l.gain, cur)}</b></li>`)
 				.join('');
-			root.querySelector('[data-bestnote]')!.textContent = `Biggest lever: ${best.label.split(' (')[0].replace('+', '')}. Funnelling Revenue builds the ToFu / MoFu / BoFu system behind it.`;
+			root.querySelector('[data-bestnote]')!.textContent = `Biggest lever: ${best.label.split(' (')[0].replace('+', '')}. Funneling Revenue builds the ToFu / MoFu / BoFu system behind it.`;
 		}
 
 		root.addEventListener('input', update);

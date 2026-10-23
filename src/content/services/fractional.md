@@ -1,7 +1,7 @@
 ---
 title: "Fractional Marketing Leadership"
 h1: "Fractional Marketing Leadership — Senior Ownership Without the Full-Time Hire"
-metaTitle: "Fractional Marketing Leadership for Manufacturers | Funnelling Revenue"
+metaTitle: "Fractional Marketing Leadership for Manufacturers | Funneling Revenue"
 metaDescription: >-
   Senior marketing ownership without the full-time hire. Strategy, OKRs, team coaching, and board-level reporting on a fractional basis.
 order: 6

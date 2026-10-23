@@ -27,7 +27,7 @@ Any container host works; `render.yaml` is a ready Render blueprint (persistent 
    - `WEBHOOK_URL` (Slack/Discord/Zapier URL for instant lead alerts) and/or `RESEND_API_KEY` + `NOTIFY_EMAIL`
    - `STORYBLOK_WEBHOOK_SECRET` (same as step 2)
    - `GITHUB_TOKEN` (step 1.3) and `GITHUB_REPO` (`thelordwalwadkar/funneling-revenue-storyblock-automation`)
-3. Point your domain at it. Update `site` in `astro.config.mjs` if the domain differs from `funnellingrevenue.com`.
+3. Point your domain at it. Update `site` in `astro.config.mjs` if the domain differs from `funnelingrevenue.com`.
 Works when: `/api/health/` returns `{"ok":true}`, a tool run on the site appears in `/admin/`.
 
 ### Hostinger (current live host)

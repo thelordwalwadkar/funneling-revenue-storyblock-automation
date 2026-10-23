@@ -1,7 +1,7 @@
 ---
 title: "Manufacturing & Industrial Marketing"
 h1: "Manufacturing & Industrial Marketing"
-metaTitle: "Manufacturing & Industrial Marketing — Insights | Funnelling Revenue"
+metaTitle: "Manufacturing & Industrial Marketing — Insights | Funneling Revenue"
 metaDescription: >-
   Vertical-specific SEO and growth mechanics for manufacturers — 9-month cycles, RFQs, distributors, and technical buyers.
 order: 3

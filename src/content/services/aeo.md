@@ -1,7 +1,7 @@
 ---
 title: "Answer Engine Optimization (AEO)"
 h1: "Answer Engine Optimization — Own the Mid-Funnel Surfaces"
-metaTitle: "Answer Engine Optimization — Own the Surfaces Buyers Visit Before They Shortlist You | Funnelling Revenue"
+metaTitle: "Answer Engine Optimization — Own the Surfaces Buyers Visit Before They Shortlist You | Funneling Revenue"
 metaDescription: >-
   AEO for manufacturers. We win on Reddit, Quora, Medium, industry forums, and structured FAQ surfaces — where industrial buyers actually research before shortlisting vendors.
 order: 3

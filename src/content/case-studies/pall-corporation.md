@@ -1,7 +1,7 @@
 ---
 client: "Pall Corporation"
 h1: "Pall Corporation: 178% Priority-Segment Growth via Topic Cluster Strategy"
-metaTitle: "Pall Corporation Case Study — 178% Priority-Segment Growth | Funnelling Revenue"
+metaTitle: "Pall Corporation Case Study — 178% Priority-Segment Growth | Funneling Revenue"
 metaDescription: >-
   How a topic cluster strategy and a 2,100-link internal taxonomy drove 178% priority-segment traffic growth for Pall Corporation.
 order: 1

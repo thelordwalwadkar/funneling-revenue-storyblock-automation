@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------- */
-/* Funnelling Revenue design tokens (brand guidelines v1.0, section 8)     */
+/* Funneling Revenue design tokens (brand guidelines v1.0, section 8)     */
 /* ---------------------------------------------------------------------- */
 @theme {
 	/* Brand blue: sampled from the logo mark (#1E4A6B). Every tint shares its hue. */
