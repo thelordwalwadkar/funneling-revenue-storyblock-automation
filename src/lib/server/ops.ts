@@ -62,7 +62,7 @@ export function isAdmin(request: Request): boolean {
 
 export const hashIp = (ip: string) =>
 	createHash('sha256')
-		.update(ip + (env('IP_SALT') || 'funnelling-revenue'))
+		.update(ip + (env('IP_SALT') || 'funneling-revenue'))
 		.digest('hex')
 		.slice(0, 16);
 
@@ -196,7 +196,7 @@ export async function notify(subject: string, text: string, record: Submission) 
 		jobs.push(
 			post(
 				'https://api.resend.com/emails',
-				{ from: env('MAIL_FROM') || 'Funnelling Revenue <onboarding@resend.dev>', to: to.split(',').map((s) => s.trim()), subject, text },
+				{ from: env('MAIL_FROM') || 'Funneling Revenue <onboarding@resend.dev>', to: to.split(',').map((s) => s.trim()), subject, text },
 				{ authorization: `Bearer ${key}` },
 			),
 		);

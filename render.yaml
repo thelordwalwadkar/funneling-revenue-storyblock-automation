@@ -1,7 +1,7 @@
 # One-click deploy on Render: New + > Blueprint > pick this repo.
 services:
   - type: web
-    name: funnelling-revenue
+    name: funneling-revenue
     runtime: docker
     plan: starter
     healthCheckPath: /api/health/

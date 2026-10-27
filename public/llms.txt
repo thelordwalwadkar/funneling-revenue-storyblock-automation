@@ -1,4 +1,4 @@
-# Funnelling Revenue
+# Funneling Revenue
 
 > Revenue-first marketing agency for manufacturers and industrial brands. We engineer SEO, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and revenue-driven content — measured on pipeline, not traffic.
 
@@ -10,34 +10,34 @@ The funnel is eternal. The medium isn't. Newspapers, radio, television, search, 
 - Every service maps to a funnel stage: ToFu (top of funnel), MoFu (middle of funnel), or BoFu (bottom of funnel).
 
 ## Services
-- [SEO for Manufacturers](https://funnellingrevenue.com/services/seo/): Technical SEO, topic clusters, and buyer-persona keyword research for industrial sites.
-- [Generative Engine Optimization (GEO)](https://funnellingrevenue.com/services/geo/): Getting cited by ChatGPT, Perplexity, and Gemini for category and vendor queries.
-- [Answer Engine Optimization (AEO)](https://funnellingrevenue.com/services/aeo/): Winning the Reddit, Quora, and FAQ surfaces buyers check before shortlisting a vendor.
-- [Revenue-Driven Content](https://funnellingrevenue.com/services/content/): Content briefs and clusters mapped to pipeline stage, not publishing cadence.
-- [Paid Media](https://funnellingrevenue.com/services/paid/): Performance marketing measured on qualified leads and ROAS.
-- [Fractional Marketing Leadership](https://funnellingrevenue.com/services/fractional/): Senior marketing ownership without a full-time hire.
+- [SEO for Manufacturers](https://funnelingrevenue.com/services/seo/): Technical SEO, topic clusters, and buyer-persona keyword research for industrial sites.
+- [Generative Engine Optimization (GEO)](https://funnelingrevenue.com/services/geo/): Getting cited by ChatGPT, Perplexity, and Gemini for category and vendor queries.
+- [Answer Engine Optimization (AEO)](https://funnelingrevenue.com/services/aeo/): Winning the Reddit, Quora, and FAQ surfaces buyers check before shortlisting a vendor.
+- [Revenue-Driven Content](https://funnelingrevenue.com/services/content/): Content briefs and clusters mapped to pipeline stage, not publishing cadence.
+- [Paid Media](https://funnelingrevenue.com/services/paid/): Performance marketing measured on qualified leads and ROAS.
+- [Fractional Marketing Leadership](https://funnelingrevenue.com/services/fractional/): Senior marketing ownership without a full-time hire.
 
 ## Industries served
-- [Industrial Equipment & Machinery](https://funnellingrevenue.com/industries/industrial-equipment-machinery/)
-- [Process & Filtration](https://funnellingrevenue.com/industries/process-filtration/)
-- [Life Sciences & Lab Equipment](https://funnellingrevenue.com/industries/life-sciences-lab-equipment/)
-- [Construction & Heavy Equipment](https://funnellingrevenue.com/industries/construction-heavy-equipment/)
+- [Industrial Equipment & Machinery](https://funnelingrevenue.com/industries/industrial-equipment-machinery/)
+- [Process & Filtration](https://funnelingrevenue.com/industries/process-filtration/)
+- [Life Sciences & Lab Equipment](https://funnelingrevenue.com/industries/life-sciences-lab-equipment/)
+- [Construction & Heavy Equipment](https://funnelingrevenue.com/industries/construction-heavy-equipment/)
 
 ## Proof
-- [Pall Corporation](https://funnellingrevenue.com/case-studies/pall-corporation/): 178% priority-segment traffic growth via topic cluster strategy; 2,100 internal links.
-- [Sany India](https://funnellingrevenue.com/case-studies/sany-india/): First-ever organic leads; 2x organic traffic and 225% lead growth in 4 months.
-- [Industrial Revenue Recovery](https://funnellingrevenue.com/case-studies/industrial-revenue-recovery/): ₹3Cr+ organic revenue in Q1 from a 17-year-old industrial website (anonymised).
+- [Pall Corporation](https://funnelingrevenue.com/case-studies/pall-corporation/): 178% priority-segment traffic growth via topic cluster strategy; 2,100 internal links.
+- [Sany India](https://funnelingrevenue.com/case-studies/sany-india/): First-ever organic leads; 2x organic traffic and 225% lead growth in 4 months.
+- [Industrial Revenue Recovery](https://funnelingrevenue.com/case-studies/industrial-revenue-recovery/): ₹3Cr+ organic revenue in Q1 from a 17-year-old industrial website (anonymised).
 
 ## Read more
-- [The Funnel Thesis](https://funnellingrevenue.com/the-funnel-thesis/): Why the funnel survives every medium shift, in full.
-- [Insights](https://funnellingrevenue.com/insights/): Five content pillars — The Eternal Funnel, Revenue Over Vanity, Manufacturing & Industrial Marketing, GEO/AEO/LLMO, and AI-First Marketing Operations.
-- [Get a Free Revenue Audit](https://funnellingrevenue.com/audit/): The single conversion point on this site — a 30-minute funnel diagnostic, free, no pitch.
+- [The Funnel Thesis](https://funnelingrevenue.com/the-funnel-thesis/): Why the funnel survives every medium shift, in full.
+- [Insights](https://funnelingrevenue.com/insights/): Five content pillars — The Eternal Funnel, Revenue Over Vanity, Manufacturing & Industrial Marketing, GEO/AEO/LLMO, and AI-First Marketing Operations.
+- [Get a Free Revenue Audit](https://funnelingrevenue.com/audit/): The single conversion point on this site — a 30-minute funnel diagnostic, free, no pitch.
 
 ## Author
-- [Shubham Walwadkar](https://funnellingrevenue.com/author/): Founder. 8+ years of SEO and growth systems for Pall Corporation, Sany India, and the Danaher Lifesciences portfolio.
+- [Shubham Walwadkar](https://funnelingrevenue.com/author/): Founder. 8+ years of SEO and growth systems for Pall Corporation, Sany India, and the Danaher Lifesciences portfolio.
 
 ## Free tools
-- [Website Revenue Audit](https://funnellingrevenue.com/tools/website-revenue-audit/): Paste a URL for a 0-100 technical, on-page and funnel-coverage score.
-- [AI Visibility Checker](https://funnellingrevenue.com/tools/ai-visibility-checker/): Tests AI-crawler access, llms.txt, entity markup and citable content structure.
-- [SERP & Meta Previewer](https://funnellingrevenue.com/tools/serp-meta-previewer/): Google and social previews with length checks and a suggested rewrite.
-- [Funnel Revenue Calculator](https://funnellingrevenue.com/tools/funnel-revenue-calculator/): Model visitor-to-revenue conversion and see which stage is worth most.
+- [Website Revenue Audit](https://funnelingrevenue.com/tools/website-revenue-audit/): Paste a URL for a 0-100 technical, on-page and funnel-coverage score.
+- [AI Visibility Checker](https://funnelingrevenue.com/tools/ai-visibility-checker/): Tests AI-crawler access, llms.txt, entity markup and citable content structure.
+- [SERP & Meta Previewer](https://funnelingrevenue.com/tools/serp-meta-previewer/): Google and social previews with length checks and a suggested rewrite.
+- [Funnel Revenue Calculator](https://funnelingrevenue.com/tools/funnel-revenue-calculator/): Model visitor-to-revenue conversion and see which stage is worth most.

@@ -1,7 +1,7 @@
 ---
 title: "The Eternal Funnel"
 h1: "The Eternal Funnel"
-metaTitle: "The Eternal Funnel — Insights | Funnelling Revenue"
+metaTitle: "The Eternal Funnel — Insights | Funneling Revenue"
 metaDescription: >-
   Why the marketing funnel survives every technology shift — and what that means for how manufacturers should market in the AI era.
 order: 1

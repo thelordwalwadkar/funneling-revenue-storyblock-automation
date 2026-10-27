@@ -1,4 +1,4 @@
-const SITE_URL = 'https://funnellingrevenue.com';
+const SITE_URL = 'https://funnelingrevenue.com';
 
 export function absoluteUrl(path: string) {
 	return new URL(path, SITE_URL).toString();
@@ -9,7 +9,7 @@ export function organizationSchema() {
 		'@context': 'https://schema.org',
 		'@type': 'Organization',
 		'@id': `${SITE_URL}/#organization`,
-		name: 'Funnelling Revenue',
+		name: 'Funneling Revenue',
 		url: SITE_URL,
 		logo: absoluteUrl('/favicon.svg'),
 		description:
@@ -32,7 +32,7 @@ export function websiteSchema() {
 		'@type': 'WebSite',
 		'@id': `${SITE_URL}/#website`,
 		url: SITE_URL,
-		name: 'Funnelling Revenue',
+		name: 'Funneling Revenue',
 		description: 'The funnel is eternal. The medium isn’t.',
 		publisher: { '@id': `${SITE_URL}/#organization` },
 	};

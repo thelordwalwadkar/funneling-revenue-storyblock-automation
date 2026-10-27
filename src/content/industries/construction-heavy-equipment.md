@@ -1,7 +1,7 @@
 ---
 title: "Construction & Heavy Equipment"
 h1: "Marketing for Construction & Heavy Equipment Brands"
-metaTitle: "Marketing for Construction & Heavy Equipment Manufacturers | Funnelling Revenue"
+metaTitle: "Marketing for Construction & Heavy Equipment Manufacturers | Funneling Revenue"
 metaDescription: >-
   SEO and digital marketing for cranes, earthmovers, construction machinery, and concrete equipment brands. Anchored by Sany India experience.
 order: 4

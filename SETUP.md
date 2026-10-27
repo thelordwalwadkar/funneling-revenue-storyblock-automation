@@ -27,8 +27,17 @@ Any container host works; `render.yaml` is a ready Render blueprint (persistent 
    - `WEBHOOK_URL` (Slack/Discord/Zapier URL for instant lead alerts) and/or `RESEND_API_KEY` + `NOTIFY_EMAIL`
    - `STORYBLOK_WEBHOOK_SECRET` (same as step 2)
    - `GITHUB_TOKEN` (step 1.3) and `GITHUB_REPO` (`thelordwalwadkar/funneling-revenue-storyblock-automation`)
-3. Point your domain at it. Update `site` in `astro.config.mjs` if the domain differs from `funnellingrevenue.com`.
+3. Point your domain at it. Update `site` in `astro.config.mjs` if the domain differs from `funnelingrevenue.com`.
 Works when: `/api/health/` returns `{"ok":true}`, a tool run on the site appears in `/admin/`.
+
+### Hostinger (current live host)
+The live site runs as a Hostinger Node.js web app.
+1. hPanel -> Websites -> the site -> Node.js app -> connect GitHub repo `thelordwalwadkar/funneling-revenue-storyblock-automation`, branch `main`.
+2. Build command `npm run build`, start command `npm start`, Node 22. Set the step 3.2 environment variables there.
+3. Turn on automatic deployment, so every push to `main` redeploys.
+Works when: a merged pull request shows up on the live site within a few minutes.
+
+`.github/workflows/build-check.yml` builds every pull request first, so a red cross means "don't merge".
 
 ## 4. Change everything through Claude Code
 1. Open this folder in VS Code (or `claude` in a terminal here).

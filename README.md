@@ -1,4 +1,4 @@
-# Funnelling Revenue
+# Funneling Revenue
 
 Revenue-first marketing website for manufacturers and industrial brands, built in [Astro](https://astro.build). Static pages plus a small Node backend in one deployable container.
 
@@ -27,8 +27,8 @@ Review everything at `/admin/` (needs `ADMIN_TOKEN`) or `GET /api/submissions/` 
 ## Deploy
 
 ```
-docker build -t funnelling-revenue .
-docker run -p 4321:4321 -v funnelling-data:/data --env-file .env funnelling-revenue
+docker build -t funneling-revenue .
+docker run -p 4321:4321 -v funneling-data:/data --env-file .env funneling-revenue
 ```
 
 `render.yaml` is a ready Render blueprint (persistent disk included). Any container host works. Health check: `/api/health/`. Without Docker: `npm ci && npm run build && npm start`.

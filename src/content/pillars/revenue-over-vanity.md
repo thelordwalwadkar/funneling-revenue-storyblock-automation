@@ -1,7 +1,7 @@
 ---
 title: "Revenue Over Vanity"
 h1: "Revenue Over Vanity"
-metaTitle: "Revenue Over Vanity — Insights | Funnelling Revenue"
+metaTitle: "Revenue Over Vanity — Insights | Funneling Revenue"
 metaDescription: >-
   Metrics, attribution, and the case against traffic. What to report to a board — and what to drop from the dashboard entirely.
 order: 2

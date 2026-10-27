@@ -9,7 +9,7 @@ import node from '@astrojs/node';
 // small Node server (see Dockerfile) that serves both.
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://funnellingrevenue.com',
+	site: 'https://funnelingrevenue.com',
 	trailingSlash: 'always',
 	adapter: node({ mode: 'standalone' }),
 	integrations: [sitemap({ filter: (page) => !page.includes('/admin/') })],

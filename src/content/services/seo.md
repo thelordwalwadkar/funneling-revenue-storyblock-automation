@@ -1,7 +1,7 @@
 ---
 title: "SEO for Manufacturers"
 h1: "SEO for Manufacturers — Built Around RFQs, Not Rankings"
-metaTitle: "SEO for Manufacturers — Industrial SEO Built Around RFQs, Not Rankings | Funnelling Revenue"
+metaTitle: "SEO for Manufacturers — Industrial SEO Built Around RFQs, Not Rankings | Funneling Revenue"
 metaDescription: >-
   Technical SEO, topic clusters, and intent-mapped content for industrial and manufacturing brands. We rank for queries that close deals, not vanity keywords.
 order: 1

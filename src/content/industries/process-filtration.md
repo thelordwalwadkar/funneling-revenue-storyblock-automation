@@ -1,7 +1,7 @@
 ---
 title: "Process & Filtration"
 h1: "Marketing for Filtration & Process Equipment Brands"
-metaTitle: "SEO & Marketing for Filtration & Process Equipment Manufacturers | Funnelling Revenue"
+metaTitle: "SEO & Marketing for Filtration & Process Equipment Manufacturers | Funneling Revenue"
 metaDescription: >-
   Vertical marketing expertise for filtration, separation, and fluid-handling brands. Anchored by experience with Pall Corporation.
 order: 2

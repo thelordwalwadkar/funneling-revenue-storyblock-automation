@@ -1,7 +1,7 @@
 ---
 title: "GEO / AEO / LLMO"
 h1: "GEO / AEO / LLMO"
-metaTitle: "GEO, AEO & LLMO — Insights | Funnelling Revenue"
+metaTitle: "GEO, AEO & LLMO — Insights | Funneling Revenue"
 metaDescription: >-
   Marketing in the AI era. Generative Engine Optimization, Answer Engine Optimization, and Large Language Model Optimization, explained plainly.
 order: 4

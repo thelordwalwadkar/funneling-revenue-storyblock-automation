@@ -1,15 +1,15 @@
 ---
 name: "Shubham Walwadkar"
-role: "Founder, Funnelling Revenue"
+role: "Founder, Funneling Revenue"
 h1: "Shubham Walwadkar: the person who does the work"
-metaTitle: "Shubham Walwadkar — Founder & Revenue-First SEO/GEO Strategist | Funnelling Revenue"
+metaTitle: "Shubham Walwadkar — Founder & Revenue-First SEO/GEO Strategist | Funneling Revenue"
 metaDescription: >-
-  Shubham Walwadkar is the founder of Funnelling Revenue. 8+ years building SEO and growth systems for Pall Corporation, Sany India and the Danaher Lifesciences portfolio.
+  Shubham Walwadkar is the founder of Funneling Revenue. 8+ years building SEO and growth systems for Pall Corporation, Sany India and the Danaher Lifesciences portfolio.
 order: 1
 headline: "8+ years turning industrial search demand into pipeline."
 bio:
   - >-
-    I started Funnelling Revenue because most marketing reports for manufacturers measure what is easy to inflate (impressions, sessions, keyword counts) and skip what the sales team actually feels: qualified leads, pipeline and revenue.
+    I started Funneling Revenue because most marketing reports for manufacturers measure what is easy to inflate (impressions, sessions, keyword counts) and skip what the sales team actually feels: qualified leads, pipeline and revenue.
   - >-
     For 8+ years I have built SEO and growth systems for industrial and life-science brands, including Pall Corporation, Sany India and the Danaher Lifesciences portfolio. The work always starts with the funnel: who is buying, what they ask at each stage, and where the revenue leaks.
   - >-

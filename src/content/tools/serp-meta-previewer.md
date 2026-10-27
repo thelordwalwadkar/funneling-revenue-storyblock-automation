@@ -1,7 +1,7 @@
 ---
 title: "SERP & Meta Previewer"
 h1: "SERP & Meta Previewer: see your page as Google and LinkedIn do"
-metaTitle: "SERP & Meta Tag Previewer with Rewrite Hints | Funnelling Revenue"
+metaTitle: "SERP & Meta Tag Previewer with Rewrite Hints | Funneling Revenue"
 metaDescription: >-
   Preview how any page appears in Google results and social shares, check title and description length, and get a ready-to-use rewrite.
 order: 3

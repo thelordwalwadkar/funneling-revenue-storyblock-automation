@@ -1,7 +1,7 @@
 ---
 title: "Website Revenue Audit"
 h1: "Free Website Revenue Audit: find where your funnel leaks"
-metaTitle: "Free Website Revenue Audit for Manufacturers | Funnelling Revenue"
+metaTitle: "Free Website Revenue Audit for Manufacturers | Funneling Revenue"
 metaDescription: >-
   Paste any URL for an instant technical, on-page and funnel-coverage audit with a 0-100 score and the five fixes most likely to recover lost pipeline.
 order: 1

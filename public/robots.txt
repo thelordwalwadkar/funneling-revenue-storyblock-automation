@@ -25,4 +25,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://funnellingrevenue.com/sitemap-index.xml
+Sitemap: https://funnelingrevenue.com/sitemap-index.xml

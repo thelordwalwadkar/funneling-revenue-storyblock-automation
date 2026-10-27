@@ -1,0 +1,30 @@
+name: Build check
+
+# Runs on every pull request into main (and on main itself). If the site does not
+# build, the pull request shows a red cross and should not be merged, so a broken
+# change never reaches Hostinger, which deploys whatever lands on main.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: build-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Storyblok mapping round-trips
+        run: npm run storyblok:test
+      - name: Site builds
+        run: npm run build

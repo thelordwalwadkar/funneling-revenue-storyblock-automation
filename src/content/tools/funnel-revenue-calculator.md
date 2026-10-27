@@ -1,7 +1,7 @@
 ---
 title: "Funnel Revenue Calculator"
 h1: "Funnel Revenue Calculator: what is each funnel stage worth?"
-metaTitle: "Funnel Revenue Calculator for B2B Manufacturers | Funnelling Revenue"
+metaTitle: "Funnel Revenue Calculator for B2B Manufacturers | Funneling Revenue"
 metaDescription: >-
   Model your visitor-to-revenue funnel. Drag the conversion rates and instantly see how a small lift at one stage changes annual pipeline and revenue.
 order: 4
