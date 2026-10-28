@@ -123,6 +123,7 @@ export function personSchema(a: {
 	knowsAbout: string[];
 	clients: string[];
 	email: string;
+	image?: string | null;
 }) {
 	return {
 		'@context': 'https://schema.org',
@@ -132,6 +133,7 @@ export function personSchema(a: {
 		jobTitle: a.role,
 		description: a.description,
 		url: absoluteUrl('/author/'),
+		...(a.image ? { image: absoluteUrl(a.image) } : {}),
 		email: a.email,
 		sameAs: a.sameAs,
 		knowsAbout: a.knowsAbout,
