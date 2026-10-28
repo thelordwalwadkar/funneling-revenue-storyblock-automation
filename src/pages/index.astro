@@ -10,6 +10,7 @@ import FunnelCalculator from '../components/FunnelCalculator.astro';
 import ToolIcon from '../components/ToolIcon.astro';
 import { getCollection } from 'astro:content';
 import { breadcrumbSchema } from '../lib/schema';
+import { authorPhoto, LINKEDIN_URL } from '../lib/brand';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
@@ -87,6 +88,17 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 			<div data-reveal><b data-count>200%</b><span>organic traffic growth</span></div>
 			<div data-reveal><b data-count>8+</b><span>years in B2B &amp; industrial</span></div>
 			<div data-reveal><b data-count>4,000+</b><span>keywords optimised</span></div>
+		</div>
+	</section>
+
+	<section class="clients" aria-label="Clients">
+		<div class="container-max clients-inner">
+			<p class="clients-label">Growth delivered for</p>
+			<ul class="client-list">
+				<li class="client">PALL</li>
+				<li class="client">SANY</li>
+				<li class="client">DANAHER</li>
+			</ul>
 		</div>
 	</section>
 
@@ -257,12 +269,17 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	{author && (
 		<section class="section alt author-strip">
 			<div class="container-max author-inner" data-reveal>
-				<span class="avatar" aria-hidden="true">{author.data.name.split(' ').map((p) => p[0]).join('')}</span>
+				{authorPhoto
+					? <img class="avatar" src={authorPhoto} alt={author.data.name} width="110" height="110" loading="lazy" />
+					: <span class="avatar" aria-hidden="true">{author.data.name.split(' ').map((p) => p[0]).join('')}</span>}
 				<div>
 					<p class="eyebrow">Who runs the work</p>
 					<h2>{author.data.name}</h2>
 					<p>{author.data.headline} Every engagement is led by the founder, not handed off after the pitch.</p>
-					<a href="/author/" class="body-link">Meet the author &rarr;</a>
+					<p class="author-links">
+						<a href="/author/" class="body-link">Meet the author &rarr;</a>
+						<a href={LINKEDIN_URL} class="body-link" target="_blank" rel="me noopener noreferrer">Connect on LinkedIn &rarr;</a>
+					</p>
 				</div>
 			</div>
 		</section>
@@ -386,7 +403,16 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 
 	.author-inner { display: flex; gap: 2rem; align-items: center; max-width: 820px; }
 	.avatar { flex: none; width: 110px; height: 110px; border-radius: 50%; display: grid; place-content: center; background: var(--color-steel-700); color: white; font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; box-shadow: 0 0 0 6px var(--color-amber-100), 0 0 0 8px var(--color-amber-700); }
+	img.avatar { object-fit: cover; }
+	.author-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
 	.author-strip h2 { margin-bottom: 0.5rem; }
+
+	.clients { background: white; border-bottom: 1px solid var(--color-charcoal-300); padding-block: 1.75rem; }
+	.clients-inner { display: flex; align-items: center; justify-content: center; gap: 1.5rem 3rem; flex-wrap: wrap; }
+	.clients-label { margin: 0; font-size: var(--text-micro); font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-charcoal-500); }
+	.client-list { display: flex; align-items: center; justify-content: center; gap: 1rem clamp(2rem, 6vw, 4.5rem); flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+	.client { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.4rem, 3vw, 1.9rem); letter-spacing: 0.08em; color: var(--color-steel-700); opacity: 0.75; transition: opacity 200ms ease; }
+	.client:hover { opacity: 1; }
 	.author-strip p { margin: 0 0 0.75rem; color: var(--color-charcoal-700); }
 
 	.trust-section { background: var(--color-steel-900); padding-top: 3rem; }
@@ -405,6 +431,7 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 		.url-cta { flex-direction: column; }
 		.tool-grid { grid-template-columns: 1fr; }
 		.author-inner { flex-direction: column; text-align: center; }
+		.author-links { justify-content: center; }
 	}
 </style>
 

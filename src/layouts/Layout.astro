@@ -26,7 +26,8 @@ const jsonLd = [organizationSchema(), websiteSchema(), ...schema];
 		<meta charset="utf-8" />
 		<script is:inline>document.documentElement.classList.add('js')</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="theme-color" content="#1e4a6b" />
 
 		<title>{title}</title>
@@ -41,7 +42,12 @@ const jsonLd = [organizationSchema(), websiteSchema(), ...schema];
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:site_name" content="Funneling Revenue" />
+		<meta property="og:image" content={absoluteUrl('/brand/og-default.png')} />
+		<meta property="og:image:width" content="2400" />
+		<meta property="og:image:height" content="1200" />
+		<meta property="og:image:alt" content="Funneling Revenue logo: The funnel is eternal. The medium isn't." />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content={absoluteUrl('/brand/og-default.png')} />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 

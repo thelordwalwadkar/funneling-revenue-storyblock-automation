@@ -9,9 +9,9 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
 	<div class="container-max footer-grid">
 		<div class="col brand-col">
-			<a href="/" class="wordmark">
-				<span class="mark" aria-hidden="true"><span></span><span></span><span></span></span>
-				<span class="wordmark-text">FUNNELING <span class="amber">REVENUE</span></span>
+			<a href="/" class="wordmark" aria-label="Funneling Revenue — home">
+				<img src="/brand/fr-mark-light.png" alt="" width="64" height="40" class="logo-mark" loading="lazy" />
+				<span class="wordmark-text">Funneling Revenue</span>
 			</a>
 			<p class="tagline">The funnel is eternal. The medium isn&rsquo;t.</p>
 			<p class="blurb">Revenue-first SEO, GEO, and digital marketing for manufacturers and industrial brands.</p>
@@ -77,13 +77,8 @@ const year = new Date().getFullYear();
 		gap: 2rem;
 	}
 	.wordmark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-	.mark { display: inline-flex; flex-direction: column; gap: 3px; width: 22px; }
-	.mark span { display: block; height: 3px; border-radius: 2px; background: var(--color-off-white); }
-	.mark span:nth-child(1) { width: 100%; }
-	.mark span:nth-child(2) { width: 68%; }
-	.mark span:nth-child(3) { width: 40%; }
-	.wordmark-text { font-family: var(--font-sans); font-weight: 700; color: white; font-size: 1rem; }
-	.wordmark-text .amber { color: var(--color-amber-300); }
+	.logo-mark { display: block; width: 64px; height: 40px; }
+	.wordmark-text { font-family: var(--font-display); font-weight: 600; color: white; font-size: 1.35rem; line-height: 1; }
 
 	.tagline {
 		font-family: var(--font-display);
