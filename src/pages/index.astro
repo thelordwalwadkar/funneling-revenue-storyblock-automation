@@ -329,7 +329,10 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	.section.alt { background: var(--color-charcoal-100); }
 	.more-tools { margin-top: 2rem; }
 
-	.timeline { display: grid; grid-template-columns: repeat(6, minmax(180px, 1fr)); gap: 1rem; overflow-x: auto; padding: 0.5rem 0.25rem 1rem; position: relative; }
+	/* Six eras wrap into even rows (6 / 3 / 2 across) instead of a sideways-scrolling strip that cut off the last cards. */
+	.timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; padding: 0.5rem 0.25rem 1rem; position: relative; }
+	@media (max-width: 1100px) { .timeline { grid-template-columns: repeat(3, 1fr); } }
+	@media (max-width: 560px) { .timeline { grid-template-columns: repeat(2, 1fr); } }
 	.timeline-node { background: white; border: 1px solid var(--color-charcoal-300); border-radius: var(--radius-lg); padding: 1.25rem; transition: transform 250ms, border-color 250ms, box-shadow 250ms; }
 	.timeline-node:hover { transform: translateY(-6px); border-color: var(--color-amber-700); box-shadow: var(--shadow-lg); }
 	.timeline-node.last { background: var(--color-steel-700); border-color: var(--color-steel-700); }
@@ -337,7 +340,7 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	.timeline-node.last .body { color: white; }
 	.timeline-node .era { font-weight: 700; color: var(--color-steel-700); margin-bottom: 0.5rem; font-size: 0.9rem; }
 	.timeline-node .body { font-size: 0.85rem; color: var(--color-charcoal-700); margin: 0; }
-	.funnel-strip { text-align: center; margin-top: 1.5rem; font-family: var(--font-sans); font-weight: 700; color: var(--color-amber-700); letter-spacing: 0.02em; }
+	.funnel-strip { text-align: center; margin-top: 1.5rem; margin-inline: auto; font-family: var(--font-sans); font-weight: 700; color: var(--color-amber-700); letter-spacing: 0.02em; }
 
 	.report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 760px; margin-inline: auto; }
 	.report-col { border-radius: var(--radius-lg); padding: 1.75rem; }

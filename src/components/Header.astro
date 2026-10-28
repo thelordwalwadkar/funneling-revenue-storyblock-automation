@@ -202,17 +202,25 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 		.nav-toggle { display: inline-flex; }
 		.primary-nav {
 			position: fixed;
-			inset: 73px 0 0 0;
+			/* The header's backdrop-filter makes it the containing block, so a
+			   bottom: 0 inset collapsed the menu to a 48px strip. Size it explicitly. */
+			inset: 73px 0 auto 0;
+			height: calc(100vh - 73px);
+			height: calc(100dvh - 73px);
 			background: var(--color-off-white);
 			flex-direction: column;
 			align-items: stretch;
 			padding: 1.5rem;
 			gap: 1.5rem;
-			transform: translateX(100%);
-			transition: transform 200ms ease;
+			/* Closed: wiped away with clip-path while staying inside the screen.
+			   Parking it off-screen with translateX(100%) made phones zoom out to
+			   fit it, so the whole page could be swiped sideways. */
+			clip-path: inset(0 0 0 100%);
+			visibility: hidden;
+			transition: clip-path 200ms ease, visibility 0s linear 200ms;
 			overflow-y: auto;
 		}
-		.primary-nav.open { transform: translateX(0); }
+		.primary-nav.open { clip-path: inset(0); visibility: visible; transition: clip-path 200ms ease; }
 		.primary-nav > ul { flex-direction: column; align-items: stretch; gap: 0; }
 		.primary-nav > ul > li > a { display: block; padding-block: 0.9rem; border-bottom: 1px solid var(--color-charcoal-300); }
 		.dropdown {
