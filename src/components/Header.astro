@@ -10,10 +10,8 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 <header class="site-header">
 	<div class="container-max bar">
 		<a href="/" class="wordmark" aria-label="Funneling Revenue — home">
-			<span class="mark" aria-hidden="true">
-				<span></span><span></span><span></span>
-			</span>
-			<span class="wordmark-text">FUNNELING <span class="amber">REVENUE</span></span>
+			<img src="/brand/fr-mark.png" alt="" width="64" height="40" class="logo-mark" />
+			<span class="wordmark-text">Funneling Revenue</span>
 		</a>
 
 		<button id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">
@@ -67,8 +65,13 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 				</li>
 				<li><a href="/author/">Author</a></li>
 			</ul>
+			<a href="https://www.linkedin.com/in/seo-shubham/" class="nav-linkedin" target="_blank" rel="me noopener noreferrer" aria-label="Shubham Walwadkar on LinkedIn">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>
+				<span class="nav-linkedin-label">LinkedIn</span>
+			</a>
 			<a href="/audit/" class="btn btn-accent nav-cta">Get a free audit</a>
 		</nav>
+		<div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 	</div>
 </header>
 
@@ -94,32 +97,29 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 		gap: 10px;
 		text-decoration: none;
 	}
-	.mark {
-		display: inline-flex;
-		flex-direction: column;
-		gap: 3px;
-		width: 22px;
-	}
-	.mark span {
-		display: block;
-		height: 3px;
-		border-radius: 2px;
-		background: var(--color-steel-700);
-		transition: width 250ms ease, background 250ms ease;
-	}
-	.wordmark:hover .mark span:nth-child(3) { width: 100%; background: var(--color-amber-700); }
-	.mark span:nth-child(1) { width: 100%; }
-	.mark span:nth-child(2) { width: 68%; }
-	.mark span:nth-child(3) { width: 40%; }
+	.logo-mark { display: block; width: 64px; height: 40px; }
 	.wordmark-text {
-		font-family: var(--font-sans);
-		font-weight: 700;
-		letter-spacing: 0.02em;
-		font-size: 1rem;
-		color: var(--color-steel-900);
+		font-family: var(--font-display);
+		font-weight: 600;
+		font-size: 1.35rem;
+		line-height: 1;
+		letter-spacing: -0.01em;
+		color: var(--color-steel-700);
 		white-space: nowrap;
 	}
-	.wordmark-text .amber { color: var(--color-amber-700); }
+
+	.nav-linkedin {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--color-steel-700);
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+	}
+	.nav-linkedin:hover { color: var(--color-amber-700); }
+	.nav-linkedin-label { display: none; }
+	.nav-backdrop { display: none; }
 
 	.nav-toggle {
 		display: none;
@@ -202,17 +202,45 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 		.nav-toggle { display: inline-flex; }
 		.primary-nav {
 			position: fixed;
-			inset: 73px 0 0 0;
+			/* The header's backdrop-filter makes it the containing block, so a
+			   bottom: 0 inset collapsed the menu to a 48px strip. Size it explicitly. */
+			/* Side panel on the right; the dimmed page stays visible on the left. */
+			inset: 73px 0 auto auto;
+			width: min(400px, 86vw);
+			height: calc(100vh - 73px);
+			height: calc(100dvh - 73px);
+			z-index: 2;
 			background: var(--color-off-white);
+			border-left: 1px solid var(--color-charcoal-300);
+			box-shadow: -12px 0 32px rgba(20, 54, 80, 0.18);
 			flex-direction: column;
 			align-items: stretch;
 			padding: 1.5rem;
 			gap: 1.5rem;
-			transform: translateX(100%);
-			transition: transform 200ms ease;
+			/* Closed: wiped away with clip-path while staying inside the screen.
+			   Parking it off-screen with translateX(100%) made phones zoom out to
+			   fit it, so the whole page could be swiped sideways. */
+			clip-path: inset(0 0 0 100%);
+			visibility: hidden;
+			transition: clip-path 200ms ease, visibility 0s linear 200ms;
 			overflow-y: auto;
 		}
-		.primary-nav.open { transform: translateX(0); }
+		.primary-nav.open { clip-path: inset(0 0 0 -40px); visibility: visible; transition: clip-path 200ms ease; }
+		.nav-backdrop {
+			display: block;
+			position: fixed;
+			inset: 73px 0 auto 0;
+			height: calc(100vh - 73px);
+			height: calc(100dvh - 73px);
+			z-index: 1;
+			background: rgba(15, 33, 48, 0.45);
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 200ms ease, visibility 0s linear 200ms;
+		}
+		.primary-nav.open + .nav-backdrop { opacity: 1; visibility: visible; transition: opacity 200ms ease; }
+		.nav-linkedin { padding-block: 0.25rem; }
+		.nav-linkedin-label { display: inline; }
 		.primary-nav > ul { flex-direction: column; align-items: stretch; gap: 0; }
 		.primary-nav > ul > li > a { display: block; padding-block: 0.9rem; border-bottom: 1px solid var(--color-charcoal-300); }
 		.dropdown {
@@ -229,9 +257,15 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 <script>
 	const toggle = document.getElementById('nav-toggle');
 	const nav = document.getElementById('primary-nav');
-	toggle?.addEventListener('click', () => {
-		const open = nav?.classList.toggle('open');
-		toggle.setAttribute('aria-expanded', String(!!open));
+	const setOpen = (open: boolean) => {
+		nav?.classList.toggle('open', open);
+		toggle?.setAttribute('aria-expanded', String(open));
+	};
+	toggle?.addEventListener('click', () => setOpen(!nav?.classList.contains('open')));
+	// Tapping the dimmed page or pressing Escape closes the side panel.
+	document.getElementById('nav-backdrop')?.addEventListener('click', () => setOpen(false));
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && nav?.classList.contains('open')) { setOpen(false); toggle?.focus(); }
 	});
 
 	if (window.matchMedia('(max-width: 1100px)').matches) {

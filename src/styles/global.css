@@ -73,6 +73,10 @@
 /* ---------------------------------------------------------------------- */
 html {
 	scroll-behavior: smooth;
+	/* The closed mobile menu waits just off the right edge; without this the
+	   whole page can be swiped sideways into empty space on phones and tablets. */
+	overflow-x: hidden;
+	overflow-x: clip;
 }
 
 body {
@@ -107,6 +111,12 @@ a {
 
 p {
 	max-width: 75ch;
+}
+
+/* A centred paragraph must centre its 75ch box too, or the text sits left of
+   the heading above it on wide screens. */
+p.center {
+	margin-inline: auto;
 }
 
 ::selection {

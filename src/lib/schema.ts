@@ -11,7 +11,7 @@ export function organizationSchema() {
 		'@id': `${SITE_URL}/#organization`,
 		name: 'Funneling Revenue',
 		url: SITE_URL,
-		logo: absoluteUrl('/favicon.svg'),
+		logo: absoluteUrl('/brand/fr-icon-512.png'),
 		description:
 			'Revenue-first marketing agency for manufacturers and industrial brands. SEO, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and revenue-driven content.',
 		founder: { '@id': `${SITE_URL}/author/#person` },
