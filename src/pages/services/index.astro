@@ -8,12 +8,19 @@ import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
 
 const path = '/services/';
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
-const stages: Array<'ToFu' | 'MoFu' | 'BoFu'> = ['ToFu', 'MoFu', 'BoFu'];
+
+// What every service on this page is set up to do, in the order manufacturers ask for it.
+const commitments = [
+	{ title: 'A written roadmap first', body: 'Before any retainer starts you get a plan: what we fix first, what it should move and what we will not do. No spend out of FOMO.' },
+	{ title: 'Reports in plain language', body: 'Crawling, indexing and impressions are explained in plant and product terms, then tied to enquiries, RFQs and pipeline.' },
+	{ title: 'You own the data', body: 'Analytics, Search Console, ad accounts and dashboards are set up in your name, so you are never tied to us to see your own numbers.' },
+	{ title: 'Small tools before big budgets', body: 'Our free audit, AI visibility checker and funnel calculator show what is worth fixing, and bring in enquiries without a media budget.' },
+];
 ---
 
 <Layout
-	title="Services — SEO, GEO, Paid, and Content for Manufacturers | Funneling Revenue"
-	description="Six revenue-driven services for industrial brands. SEO, Generative Engine Optimization, Answer Engine Optimization, content, paid media, and fractional marketing leadership."
+	title="Digital Marketing for Manufacturing Industry | Services"
+	description="Digital marketing for manufacturing industry brands: SEO, GEO, content, paid media and fractional leadership, on a clear roadmap with plain-English reports."
 	path={path}
 	schema={[
 		collectionPageSchema({
@@ -30,9 +37,12 @@ const stages: Array<'ToFu' | 'MoFu' | 'BoFu'> = ['ToFu', 'MoFu', 'BoFu'];
 
 	<section class="hero-section">
 		<div class="container-max container-reading">
-			<h1>Services Built Around the Funnel — Not the Channel</h1>
+			<h1>Digital Marketing for the Manufacturing Industry, Built Around the Funnel</h1>
 			<p>
-				Every service we offer maps to a stage of the funnel. If you&rsquo;re losing deals at the top, you have a discovery problem. If you&rsquo;re losing them in the middle, you have a consideration problem. If you&rsquo;re losing them at the bottom, you have a conversion problem. Pick the service that matches your bottleneck &mdash; or talk to us and we&rsquo;ll diagnose it for you.
+				Digital marketing for manufacturing companies goes wrong when it is built around channels instead of buyers. Our industrial digital marketing services start with the funnel. If you&rsquo;re losing deals at the top, you have a discovery problem. If you&rsquo;re losing them in the middle, you have a consideration problem. If you&rsquo;re losing them at the bottom, you have a conversion problem. Pick the service that matches your bottleneck &mdash; or talk to us and we&rsquo;ll diagnose it for you.
+			</p>
+			<p>
+				Plenty of manufacturers have already been through an agency that sent jargon instead of answers, sold a retainer without a roadmap and kept the data. Every service below is set up the other way round.
 			</p>
 		</div>
 	</section>
@@ -40,33 +50,21 @@ const stages: Array<'ToFu' | 'MoFu' | 'BoFu'> = ['ToFu', 'MoFu', 'BoFu'];
 	<section class="section">
 		<div class="container-max service-grid">
 			{services.map((s) => (
-				<ServiceCard slug={s.id} title={s.data.title} funnelStages={s.data.funnelStages} oneLiner={s.data.oneLiner} />
+				<ServiceCard slug={s.id} title={s.data.title} oneLiner={s.data.oneLiner} />
 			))}
 		</div>
 	</section>
 
 	<section class="section alt">
 		<div class="container-max">
-			<h2 class="center">The funnel-stage matrix</h2>
-			<div class="matrix-wrap">
-				<table class="matrix">
-					<thead>
-						<tr>
-							<th scope="col">Service</th>
-							{stages.map((st) => <th scope="col">{st}</th>)}
-						</tr>
-					</thead>
-					<tbody>
-						{services.map((s) => (
-							<tr>
-								<th scope="row"><a href={`/services/${s.id}/`}>{s.data.title}</a></th>
-								{stages.map((st) => (
-									<td>{s.data.funnelStages.includes(st) ? '✓' : ''}</td>
-								))}
-							</tr>
-						))}
-					</tbody>
-				</table>
+			<h2 class="center">How every service works</h2>
+			<div class="commit-grid">
+				{commitments.map((c) => (
+					<div class="card commit">
+						<h3>{c.title}</h3>
+						<p>{c.body}</p>
+					</div>
+				))}
 			</div>
 		</div>
 	</section>
@@ -79,19 +77,24 @@ const stages: Array<'ToFu' | 'MoFu' | 'BoFu'> = ['ToFu', 'MoFu', 'BoFu'];
 	.hero-section { padding-block: 2rem 1rem; }
 	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin-bottom: 1rem; }
 	.hero-section p { color: var(--color-charcoal-700); font-size: var(--text-body-lg); }
+	.hero-section p + p { margin-top: 1rem; }
+	.section h2 { font-size: var(--text-h2); margin-bottom: 1.5rem; }
+	.commit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+	.commit.card { border-top: 3px solid transparent; }
+	.commit.card:hover { border-top-color: var(--color-amber-700); }
+	.commit h3 { font-size: var(--text-h4); margin-bottom: 0.5rem; }
+	.commit p { color: var(--color-charcoal-700); font-size: 0.92rem; margin: 0; }
 	.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 	.section.alt { background: var(--color-charcoal-100); }
 	.center { text-align: center; }
-	.matrix-wrap { overflow-x: auto; }
-	.matrix { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-lg); overflow: hidden; }
-	.matrix th, .matrix td { padding: 0.9rem 1.1rem; text-align: center; border-bottom: 1px solid var(--color-charcoal-300); }
-	.matrix thead th { background: var(--color-steel-900); color: white; }
-	.matrix tbody th { text-align: left; font-weight: 600; }
-	.matrix tbody th a { color: var(--color-steel-900); text-decoration: none; }
-	.matrix tbody th a:hover { text-decoration: underline; }
-	.matrix td { color: var(--color-amber-700); font-weight: 700; }
 
+	@media (max-width: 1000px) {
+		.commit-grid { grid-template-columns: repeat(2, 1fr); }
+	}
 	@media (max-width: 900px) {
 		.service-grid { grid-template-columns: 1fr; }
+	}
+	@media (max-width: 560px) {
+		.commit-grid { grid-template-columns: 1fr; }
 	}
 </style>

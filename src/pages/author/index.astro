@@ -24,7 +24,7 @@ const initials = a.name.split(' ').map((p) => p[0]).join('');
 	path={path}
 	ogType="profile"
 	schema={[
-		personSchema({ name: a.name, role: a.role, description: a.metaDescription, sameAs: a.sameAs, knowsAbout: a.knowsAbout, clients: a.clients, email: a.email }),
+		personSchema({ name: a.name, role: a.role, description: a.metaDescription, sameAs: a.sameAs, knowsAbout: a.knowsAbout, clients: a.clients, email: a.email, image: authorPhoto }),
 		profilePageSchema({ name: a.name, description: a.metaDescription, path }),
 		breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Author', path }]),
 	]}

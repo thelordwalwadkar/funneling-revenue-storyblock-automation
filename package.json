@@ -15,7 +15,8 @@
     "storyblok:sync": "npm run storyblok:push-components && npm run storyblok:push-stories",
     "start": "node ./dist/server/entry.mjs",
     "storyblok:pull": "node scripts/storyblok/pull-stories.mjs",
-    "storyblok:test": "node scripts/storyblok/roundtrip-test.mjs"
+    "storyblok:test": "node scripts/storyblok/roundtrip-test.mjs",
+    "test:gsc": "node --test \"tests/gsc/*.test.js\""
   },
   "dependencies": {
     "@astrojs/node": "^11.1.7",

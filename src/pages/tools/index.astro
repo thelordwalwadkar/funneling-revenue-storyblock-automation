@@ -8,11 +8,37 @@ import { breadcrumbSchema, collectionPageSchema } from '../../lib/schema';
 
 const path = '/tools/';
 const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.data.order);
+
+// Three families, in the order a visitor is likely to want them.
+const groups = [
+	{
+		id: 'checks',
+		title: 'Website checks',
+		note: 'Paste a URL. Results in seconds, no sign-in.',
+		label: 'Paste a URL',
+		items: tools.filter((t) => t.data.kind === 'url' || t.data.kind === 'calculator'),
+	},
+	{
+		id: 'search-console',
+		title: 'Search Console tools',
+		note: 'Sign in with Google (read-only) and run an audit on your own data.',
+		label: 'Google Search Console',
+		items: tools.filter((t) => t.data.kind === 'gsc'),
+	},
+	{
+		id: 'reports',
+		title: 'Free reports',
+		note: 'Deeper reports on your site. Leave your details once to unlock all three.',
+		label: 'Free report',
+		items: tools.filter((t) => t.data.kind === 'report'),
+	},
+].filter((g) => g.items.length);
+const labelFor = (kind: string, fallback: string) => (kind === 'calculator' ? 'Interactive' : fallback);
 ---
 
 <Layout
-	title="Free Marketing & SEO Tools for Manufacturers | Funneling Revenue"
-	description="Free tools for industrial marketers: a website revenue audit, an AI visibility checker, a SERP preview and a funnel revenue calculator. Paste a URL, get answers in seconds."
+	title="Free SEO Tools for Manufacturers | Funneling Revenue"
+	description="Free tools for industrial marketers: website audit, AI visibility check, Search Console audits for decay and cannibalization, plus link and index reports."
 	path={path}
 	schema={[
 		collectionPageSchema({ name: 'Free marketing tools', description: 'Free tools for industrial marketers.', path }),
@@ -26,26 +52,32 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 	<section class="hero">
 		<div class="container-max">
 			<p class="eyebrow" data-reveal>Free tools</p>
-			<h1 data-reveal>Paste a URL. <span class="grad-text">See where the revenue leaks.</span></h1>
+			<h1 data-reveal>Find where the revenue leaks. <span class="grad-text">Then fix it.</span></h1>
 			<p class="sub" data-reveal>
-				The same checks we run in the first hour of an engagement, open to everyone. No sign-up. Results in seconds.
+				The same checks we run in the first hour of an engagement, open to everyone. Paste a URL for an instant check, or connect Google Search Console for a deeper audit of your own data.
 			</p>
 		</div>
 	</section>
 
-	<section class="section">
-		<div class="container-max grid">
-			{tools.map((t) => (
-				<a href={`/tools/${t.id}/`} class="card tool-card" data-reveal>
-					<span class="ico"><ToolIcon name={t.data.icon} size={30} /></span>
-					<span class="kind">{t.data.kind === 'url' ? 'Paste a URL' : 'Interactive'}</span>
-					<h2>{t.data.title}</h2>
-					<p>{t.data.oneLiner}</p>
-					<span class="go">Open the tool &rarr;</span>
-				</a>
-			))}
-		</div>
-	</section>
+	{groups.map((g, i) => (
+		<section class={`section group${i % 2 ? ' alt' : ''}`} id={g.id}>
+			<div class="container-max">
+				<h2 class="group-title" data-reveal>{g.title}</h2>
+				<p class="group-note" data-reveal>{g.note}</p>
+				<div class="grid">
+					{g.items.map((t) => (
+						<a href={`/tools/${t.id}/`} class="card tool-card" data-reveal>
+							<span class="ico"><ToolIcon name={t.data.icon} size={30} /></span>
+							<span class="kind">{labelFor(t.data.kind, g.label)}</span>
+							<h3>{t.data.title}</h3>
+							<p>{t.data.oneLiner}</p>
+							<span class="go">Open the tool &rarr;</span>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	))}
 
 	<CTASection
 		heading="Want a human to read the results with you?"
@@ -59,13 +91,16 @@ const tools = (await getCollection('tools')).sort((a, b) => a.data.order - b.dat
 	.hero { padding-block: 2.5rem 1rem; }
 	.hero h1 { font-size: clamp(2.2rem, 5vw, 3.75rem); margin: 0.5rem 0 1rem; max-width: 18ch; line-height: 1.08; }
 	.hero .grad-text { background: linear-gradient(100deg, var(--color-amber-700), var(--color-amber-500)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-	.sub { font-size: var(--text-body-lg); color: var(--color-charcoal-700); max-width: 56ch; }
+	.sub { font-size: var(--text-body-lg); color: var(--color-charcoal-700); max-width: 62ch; }
+	.group.alt { background: var(--color-charcoal-100); }
+	.group-title { font-size: var(--text-h2); margin: 0 0 0.35rem; }
+	.group-note { color: var(--color-charcoal-700); margin: 0 0 1.5rem; max-width: 62ch; }
 	.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 	.tool-card { text-decoration: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 1.75rem; }
 	.ico { width: 54px; height: 54px; border-radius: 14px; display: grid; place-content: center; background: var(--color-steel-700); color: white; transition: transform 300ms, background 300ms; }
 	.tool-card:hover .ico { transform: rotate(-6deg) scale(1.08); background: var(--color-amber-700); }
 	.kind { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-amber-700); margin-top: 0.75rem; }
-	.tool-card h2 { font-size: var(--text-h3); margin: 0; }
+	.tool-card h3 { font-size: var(--text-h3); margin: 0; }
 	.tool-card p { color: var(--color-charcoal-700); margin: 0; flex: 1; }
 	.go { font-weight: 600; color: var(--color-steel-700); margin-top: 0.5rem; }
 	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }

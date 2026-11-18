@@ -1,0 +1,390 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import CTASection from '../../components/CTASection.astro';
+import { articleSchema, breadcrumbSchema, faqPageSchema } from '../../lib/schema';
+
+const path = '/insights/industrial-seo-guide/';
+const title = 'Industrial SEO: The Complete Guide for Manufacturers';
+const description =
+	'Industrial SEO explained for manufacturers: the buyer journey, a B2B SEO strategy in six steps, technical SEO in plant terms and the mistakes to avoid.';
+
+const toc = [
+	{ id: 'what-it-is', label: 'What industrial SEO is, and what it is not' },
+	{ id: 'why-underused', label: 'Why many manufacturers underuse search' },
+	{ id: 'buyer-journey', label: 'How industrial buyers search' },
+	{ id: 'strategy', label: 'A B2B SEO strategy in six steps' },
+	{ id: 'technical', label: 'Technical SEO, explained in plant terms' },
+	{ id: 'whole-company', label: 'Show the whole company, not only the owner' },
+	{ id: 'small-tools', label: 'Small tools that generate leads' },
+	{ id: 'ai-answers', label: 'Industrial SEO in the age of AI answers' },
+	{ id: 'mistakes', label: 'Seven mistakes that waste budgets' },
+	{ id: 'faq', label: 'Questions we get asked' },
+];
+
+const journey = [
+	{ stage: 'Awareness', doing: 'Understanding a problem', search: 'how to reduce pump cavitation', page: 'A clear guide or application note' },
+	{ stage: 'Consideration', doing: 'Comparing options and suppliers', search: 'mechanical seal vs gland packing', page: 'A comparison page and a product-line hub' },
+	{ stage: 'Decision', doing: 'Shortlisting and asking for a quote', search: 'industrial pump supplier in Pune', page: 'A product page with specs, certifications, a case study and an RFQ form' },
+];
+
+const personas = [
+	{ who: 'R&D or process engineer', wants: 'Specifications, standards and application fit' },
+	{ who: 'Plant head or operations', wants: 'Reliability, downtime and after-sales support' },
+	{ who: 'Procurement', wants: 'Vendor credibility, lead time, certifications and price' },
+	{ who: 'MD or owner', wants: 'Proof that other companies like theirs trust you' },
+];
+
+const steps = [
+	{
+		title: 'Diagnose first, then write a roadmap',
+		body: 'Map your organic traffic to awareness, consideration and decision, and find the stage that leaks. Then put a written 90-day roadmap on the table: what gets fixed first, what it should move and what will not be touched. SEO bought out of FOMO, with no plan, is the most common way budgets disappear.',
+	},
+	{
+		title: 'Research by persona and intent, not by volume',
+		body: 'A pump manufacturer does not need 10,000 keywords. They need the 200 queries an engineer or buyer types before an RFQ. Group keywords by who is searching and what they want to do next: learn, compare, shortlist or buy.',
+	},
+	{
+		title: 'Build topic clusters around product lines and applications',
+		body: 'One pillar page per major product line or application, supported by pages that answer every question around it, all linked together. At Pall Corporation this approach produced 178% organic traffic growth in the priority segment, backed by 2,100 internal links structured for taxonomy authority.',
+	},
+	{
+		title: 'Fix the technical foundation',
+		body: 'Pages must be crawlable, indexable, fast and marked up so that search engines and AI assistants understand what each page is. The next section explains this in plant terms.',
+	},
+	{
+		title: 'Create proof, not just pages',
+		body: 'Case studies with numbers, customer testimonials and reviews are what turn a visit into an RFQ. Many agencies never build them. Plan them from day one and collect them on a schedule.',
+	},
+	{
+		title: 'Measure what sales feels, and own the data',
+		body: 'Report qualified leads, RFQs and pipeline, not impressions. Keep Google Analytics, Search Console and your reports in your own name, so no agency can hold your numbers back.',
+	},
+];
+
+const glossary = [
+	{ term: 'Crawling', plain: 'Google\'s inspector walking through your plant.', ask: 'Which pages can Google not reach?' },
+	{ term: 'Indexing', plain: 'Being entered in the supplier catalogue. A page that is not listed cannot be found.', ask: 'How many of my product pages are indexed?' },
+	{ term: 'Ranking', plain: 'Where you stand on the buyer\'s shortlist for one query.', ask: 'For which queries am I on the first page, and do they lead to RFQs?' },
+	{ term: 'Core Web Vitals', plain: 'How fast and stable a page feels, like a machine\'s start-up time.', ask: 'How do my key pages score on mobile?' },
+	{ term: 'Schema markup', plain: 'The datasheet for search engines: labels that say "this is a product, this is a spec".', ask: 'Are my products and company marked up?' },
+	{ term: 'Staging server', plain: 'A test bay where changes are tried before they reach the live site.', ask: 'Where are changes tested before they go live?' },
+	{ term: 'Backups', plain: 'Spare parts kept in a different warehouse, not next to the machine they protect.', ask: 'Are my backups stored away from the live server?' },
+];
+
+const mistakes = [
+	'Chasing traffic and keyword counts instead of RFQs.',
+	'One generic page for every product line.',
+	'Datasheets that exist only as PDFs, with no page around them.',
+	'No clear path from a product page to an RFQ.',
+	'An agency that owns your analytics, ad accounts and reports.',
+	'Editing the live website with no staging server and no separate backup.',
+	'Reports full of jargon that nobody in the company can read.',
+];
+
+const faq = [
+	{
+		q: 'What is industrial SEO?',
+		a: 'Industrial SEO is search optimisation for companies that sell machines, components, materials or equipment to other businesses. It targets the technical, high-intent queries that engineers and procurement teams use, and it is measured on RFQs and pipeline, not traffic.',
+	},
+	{
+		q: 'How long does industrial SEO take to work?',
+		a: 'Technical fixes can show results in weeks. Content-led rankings for competitive industrial terms usually take three to six months, and authority keeps compounding after that.',
+	},
+	{
+		q: 'Does SEO work for products that few people search for?',
+		a: 'Yes. Low-volume, high-intent queries are where industrial buyers live. A query searched 50 times a month can still be worth far more than thousands of casual visits, because each searcher is close to a decision.',
+	},
+	{
+		q: 'Our business comes from referrals. Do we still need SEO?',
+		a: 'Referrals are valuable, but they do not scale and they miss buyers who research suppliers online before they ask anyone. SEO adds a second source of enquiries without replacing your network.',
+	},
+	{
+		q: 'Do we need a new website first?',
+		a: 'Not always. Start with a diagnostic. Many sites need fixes, structure and proof content rather than a rebuild. If the site does need rebuilding, the roadmap will say so and why.',
+	},
+	{
+		q: 'How do SEO and Google Ads work together?',
+		a: 'SEO builds assets that keep working. Ads capture buyers now, while those assets grow. We usually start with SEO and add paid search where the numbers justify it.',
+	},
+];
+---
+
+<Layout
+	title={title}
+	description={description}
+	path={path}
+	ogType="article"
+	stickyCta
+	schema={[
+		articleSchema({ headline: title, description, path, datePublished: '2026-11-14', dateModified: '2026-11-14' }),
+		faqPageSchema(faq),
+		breadcrumbSchema([
+			{ name: 'Home', path: '/' },
+			{ name: 'Insights', path: '/insights/' },
+			{ name: 'Manufacturing & Industrial Marketing', path: '/insights/pillar/manufacturing-marketing/' },
+			{ name: 'Industrial SEO guide', path },
+		]),
+	]}
+>
+	<div class="container-max crumbs">
+		<Breadcrumbs
+			items={[
+				{ name: 'Home', path: '/' },
+				{ name: 'Insights', path: '/insights/' },
+				{ name: 'Manufacturing & Industrial Marketing', path: '/insights/pillar/manufacturing-marketing/' },
+				{ name: 'Industrial SEO guide', path },
+			]}
+		/>
+	</div>
+
+	<section class="hero-section">
+		<div class="container-max container-reading">
+			<p class="eyebrow">Guide</p>
+			<h1>{title}</h1>
+			<p class="byline">By <a href="/author/">Shubham Walwadkar</a> · November 2026</p>
+			<p class="lede">
+				Industrial SEO is search optimisation for companies that sell machines, components, materials and equipment to other businesses. It is not blog posts and keyword counts. It is making sure that when a plant head, an R&amp;D engineer or a procurement manager searches for what you make, your brand is on the shortlist and your website gives them everything they need to send an RFQ. This guide explains how it works in plain language, and how to run a B2B SEO strategy that a manufacturer can measure.
+			</p>
+		</div>
+	</section>
+
+	<section class="section toc-section">
+		<div class="container-max container-reading">
+			<nav class="toc card" aria-label="In this guide">
+				<p class="eyebrow">In this guide</p>
+				<ol>
+					{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}
+				</ol>
+			</nav>
+		</div>
+	</section>
+
+	<section class="section" id="what-it-is">
+		<div class="container-max container-reading prose-body">
+			<h2>What industrial SEO is, and what it is not</h2>
+			<p>
+				Industrial SEO means being found, trusted and chosen when an engineer or buyer searches for a technical product. Done well, SEO for industrial companies puts your product lines, applications and proof in front of people who are already looking for a supplier.
+			</p>
+			<p>
+				SEO for industrial companies is different from SEO for consumer brands or software. Volumes are lower and the value per visitor is far higher. A query searched 50 times a month can still be worth crores if the right buyer sends an RFQ. So the goal is not more traffic. The goal is to own the few hundred queries that sit right before an order.
+			</p>
+			<p>
+				It is also not a monthly PDF of charts. If a report cannot be tied to enquiries, RFQs or pipeline, it is a diagnostic at best.
+			</p>
+		</div>
+	</section>
+
+	<section class="section alt" id="why-underused">
+		<div class="container-max container-reading prose-body">
+			<h2>Why many manufacturers underuse search</h2>
+			<p>
+				Most manufacturers built their business on relationships: referrals, dealers, exhibitions and a strong network. That works, and it should continue. But it does not scale, and it misses the buyer who researches suppliers online before asking anyone.
+			</p>
+			<p>
+				In India there is a second reason. For many companies, digital marketing has one face: social media. Posts and followers build awareness, but they rarely reach a buyer who is actively looking for a supplier right now. Search does. That is why industrial SEO can deliver strong results for companies that have only ever tried social media.
+			</p>
+			<p>
+				A third reason is plain FOMO. Many manufacturers pay an agency because a competitor does, with no roadmap, jargon-heavy reports and no clear idea of what the money should achieve. Good SEO starts by reversing that: a plan first, then work.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="buyer-journey">
+		<div class="container-max container-reading">
+			<div class="prose-body">
+				<h2>How industrial buyers search</h2>
+				<p>
+					An industrial purchase is rarely one person's decision. Several people search at different times, for different reasons, over months. A website that treats them all the same loses most of them.
+				</p>
+			</div>
+			<div class="table-wrap">
+				<table class="data-table">
+					<thead>
+						<tr><th scope="col">Who is searching</th><th scope="col">What they care about</th></tr>
+					</thead>
+					<tbody>
+						{personas.map((p) => <tr><th scope="row">{p.who}</th><td>{p.wants}</td></tr>)}
+					</tbody>
+				</table>
+			</div>
+			<div class="prose-body">
+				<p>
+					Across the journey, the same people ask different questions. Each stage needs its own kind of page.
+				</p>
+			</div>
+			<div class="table-wrap">
+				<table class="data-table">
+					<thead>
+						<tr><th scope="col">Stage</th><th scope="col">What the buyer is doing</th><th scope="col">Example search</th><th scope="col">The page you need</th></tr>
+					</thead>
+					<tbody>
+						{journey.map((j) => <tr><th scope="row">{j.stage}</th><td>{j.doing}</td><td>{j.search}</td><td>{j.page}</td></tr>)}
+					</tbody>
+				</table>
+			</div>
+			<div class="prose-body">
+				<p>
+					Translating your ideal customer profiles and this long buying journey into your website structure is the heart of a good B2B SEO strategy. Without it, a site becomes a brochure.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt" id="strategy">
+		<div class="container-max container-reading">
+			<div class="prose-body">
+				<h2>A B2B SEO strategy for manufacturers in six steps</h2>
+			</div>
+			<ol class="steps">
+				{steps.map((s, i) => (
+					<li>
+						<span class="step-num">{i + 1}</span>
+						<div>
+							<h3>{s.title}</h3>
+							<p>{s.body}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+			<div class="prose-body">
+				<p>
+					If you would rather have a team run this with you, see our <a href="/services/seo/" class="body-link">SEO services built for manufacturers</a>.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="technical">
+		<div class="container-max container-reading">
+			<div class="prose-body">
+				<h2>Technical SEO, explained in plant terms</h2>
+				<p>
+					Technical SEO is where manufacturers are most often handed jargon, and it is the part of SEO for industrial companies that nobody explains. These are the terms you will meet in reports, in the words of the shop floor, with one question to ask your agency for each.
+				</p>
+			</div>
+			<div class="table-wrap">
+				<table class="data-table">
+					<thead>
+						<tr><th scope="col">Term</th><th scope="col">In plain words</th><th scope="col">Ask your agency</th></tr>
+					</thead>
+					<tbody>
+						{glossary.map((g) => <tr><th scope="row">{g.term}</th><td>{g.plain}</td><td>{g.ask}</td></tr>)}
+					</tbody>
+				</table>
+			</div>
+			<div class="prose-body">
+				<h3>A real example: the website that kept going down</h3>
+				<p>
+					In one engagement with a heavy equipment manufacturer in India, the leadership team received six emergency emails from the US about the website being down. The causes were basic. There was no staging server, so changes were made on the live site. The backup was stored on the same server as the website. And the site went down every month or two.
+				</p>
+				<p>
+					None of that is advanced. It is hygiene, and it decides whether anything else you do for search survives. Test every change on a staging server first, and keep backups away from the live server.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt" id="whole-company">
+		<div class="container-max container-reading prose-body">
+			<h2>Show the whole company, not only the owner</h2>
+			<p>
+				Most manufacturer websites show one face: the MD, the founder or the owner. But a manufacturer is R&amp;D, production, quality, sales and service. Buyers want to see the engineers who design the product, the team that makes it and the people who support it after the sale. So do search engines and AI assistants, which look for real experience and expertise behind a page.
+			</p>
+			<p>
+				Put named experts from every function on your technical pages. Publish case studies with numbers. Collect testimonials and reviews on a schedule. Proof is what turns a good ranking into an RFQ, and it is the part most agencies skip.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="small-tools">
+		<div class="container-max container-reading prose-body">
+			<h2>Small tools that generate leads without a big budget</h2>
+			<p>
+				Not every lead needs a media budget. A small interactive tool can bring in qualified enquiries for years: a product selector, a sizing calculator, a quick audit or a checker. We built a few of our own as examples:
+			</p>
+			<ul>
+				<li><a href="/tools/website-revenue-audit/" class="body-link">Website Revenue Audit</a>, a 0 to 100 score for your site</li>
+				<li><a href="/tools/ai-visibility-checker/" class="body-link">AI Visibility Checker</a>, to test whether AI assistants can read and cite you</li>
+				<li><a href="/tools/funnel-revenue-calculator/" class="body-link">Funnel Revenue Calculator</a>, to see what one more point of conversion is worth</li>
+			</ul>
+			<p>
+				The same idea works for your products. Ask what question your buyers keep asking your sales team, then build the smallest tool that answers it.
+			</p>
+		</div>
+	</section>
+
+	<section class="section alt" id="ai-answers">
+		<div class="container-max container-reading prose-body">
+			<h2>Industrial SEO in the age of AI answers</h2>
+			<p>
+				Procurement engineers and plant managers now ask ChatGPT, Perplexity and Gemini before they ask Google. The foundations are the same: clear pages, strong proof and structured data. Our work has appeared in AI Overviews for more than 750 keywords and topics. Pages that answer a technical question precisely, with evidence, are the ones assistants tend to cite.
+			</p>
+			<p>
+				If you want to see how readable your site is to AI assistants, start with the <a href="/tools/ai-visibility-checker/" class="body-link">AI Visibility Checker</a>, or read how <a href="/services/geo/" class="body-link">Generative Engine Optimization</a> works.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="mistakes">
+		<div class="container-max container-reading">
+			<div class="prose-body">
+				<h2>Seven mistakes that waste budgets</h2>
+			</div>
+			<ol class="mistakes">
+				{mistakes.map((m) => <li>{m}</li>)}
+			</ol>
+			<div class="prose-body">
+				<p>
+					For the wider picture, read our pillar on <a href="/insights/pillar/manufacturing-marketing/" class="body-link">B2B digital marketing strategies for manufacturers</a>, or see the <a href="/case-studies/pall-corporation/" class="body-link">Pall Corporation case study</a> for what a topic-cluster approach looks like in practice.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section alt" id="faq">
+		<div class="container-max container-reading">
+			<h2>Questions we get asked</h2>
+			<FAQAccordion faq={faq} />
+		</div>
+	</section>
+
+	<CTASection heading="See where your search funnel is leaking. Free." primaryLabel="Request a free audit" />
+</Layout>
+
+<style>
+	.crumbs { padding-top: 1.5rem; }
+	.hero-section { padding-block: 2rem 1rem; }
+	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); margin: 0.5rem 0 0.75rem; }
+	.byline { color: var(--color-charcoal-500); font-size: 0.9rem; margin: 0 0 1.25rem; }
+	.byline a { color: var(--color-steel-700); }
+	.lede { font-size: var(--text-body-lg); color: var(--color-charcoal-700); }
+	.section.alt { background: var(--color-charcoal-100); }
+	.toc-section { padding-block: 1rem 0; }
+	.toc ol { margin: 0.5rem 0 0; padding-left: 1.25rem; columns: 2; column-gap: 2rem; }
+	.toc li { margin-bottom: 0.4rem; break-inside: avoid; }
+	.toc a { color: var(--color-steel-700); text-decoration: none; }
+	.toc a:hover { text-decoration: underline; }
+	section[id] { scroll-margin-top: 90px; }
+
+	.table-wrap { overflow-x: auto; margin-block: 1.25rem; }
+	.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-lg); overflow: hidden; font-size: 0.92rem; }
+	.data-table th, .data-table td { padding: 0.75rem 1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--color-charcoal-300); }
+	.data-table thead th { background: var(--color-steel-900); color: white; font-weight: 600; }
+	.data-table tbody th { font-weight: 600; color: var(--color-steel-900); white-space: nowrap; }
+	.data-table td { color: var(--color-charcoal-700); }
+
+	.steps { list-style: none; margin: 1.25rem 0; padding: 0; display: flex; flex-direction: column; gap: 1.25rem; }
+	.steps li { display: flex; gap: 1rem; align-items: flex-start; }
+	.step-num { flex: none; width: 2rem; height: 2rem; border-radius: 50%; background: var(--color-steel-700); color: white; display: grid; place-content: center; font-weight: 700; font-size: 0.9rem; }
+	.steps h3 { font-size: var(--text-h4); margin: 0 0 0.25rem; }
+	.steps p { margin: 0; color: var(--color-charcoal-700); }
+
+	.mistakes { margin: 1.25rem 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; color: var(--color-charcoal-700); }
+
+	@media (max-width: 640px) {
+		.toc ol { columns: 1; }
+		.data-table tbody th { white-space: normal; }
+	}
+</style>

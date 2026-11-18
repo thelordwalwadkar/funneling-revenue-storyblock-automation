@@ -4,6 +4,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import CTASection from '../../../components/CTASection.astro';
 import { getCollection } from 'astro:content';
 import { breadcrumbSchema, collectionPageSchema } from '../../../lib/schema';
+import { postByTitle } from '../../../lib/posts';
 
 export async function getStaticPaths() {
 	const pillars = await getCollection('pillars');
@@ -47,15 +48,23 @@ const path = `/insights/pillar/${entry.id}/`;
 
 	<section class="section alt">
 		<div class="container-max container-reading">
-			<h2>Posts in production</h2>
-			<p class="note">These pieces are being written next — check back soon, or ask us directly on the audit call.</p>
+			<h2>Posts in this pillar</h2>
+			<p class="note">Live guides are linked below. The rest are being written next — check back soon, or ask us directly on the audit call.</p>
 			<ul class="planned-list">
-				{data.plannedPosts.map((title) => (
-					<li>
-						<span class="soon">Coming soon</span>
-						{title}
-					</li>
-				))}
+				{data.plannedPosts.map((title) => {
+					const live = postByTitle(title);
+					return live ? (
+						<li>
+							<span class="soon live">Read now</span>
+							<a href={live.path}>{title}</a>
+						</li>
+					) : (
+						<li>
+							<span class="soon">Coming soon</span>
+							{title}
+						</li>
+					);
+				})}
 			</ul>
 		</div>
 	</section>
@@ -86,6 +95,9 @@ const path = `/insights/pillar/${entry.id}/`;
 		font-weight: 500;
 		color: var(--color-charcoal-900);
 	}
+	.planned-list a { color: var(--color-steel-900); text-decoration: none; }
+	.planned-list a:hover { color: var(--color-steel-700); text-decoration: underline; }
+	.soon.live { color: var(--color-steel-700); background: var(--color-steel-100); }
 	.soon {
 		font-size: 0.7rem;
 		font-weight: 700;

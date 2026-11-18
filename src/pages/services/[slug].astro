@@ -5,6 +5,7 @@ import FAQAccordion from '../../components/FAQAccordion.astro';
 import CTASection from '../../components/CTASection.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { breadcrumbSchema, faqPageSchema, serviceSchema } from '../../lib/schema';
+import { postForService } from '../../lib/posts';
 
 export async function getStaticPaths() {
 	const services = await getCollection('services');
@@ -15,6 +16,7 @@ const { entry } = Astro.props;
 const { data } = entry;
 const path = `/services/${entry.id}/`;
 
+const guide = postForService(entry.id);
 const miniCase = data.miniCaseStudy ? await getEntry('caseStudies', data.miniCaseStudy.caseStudy) : null;
 ---
 
@@ -39,9 +41,6 @@ const miniCase = data.miniCaseStudy ? await getEntry('caseStudies', data.miniCas
 
 	<div class="funnel-banner">
 		<div class="container-max banner-inner">
-			<div class="tags">
-				{data.funnelStages.map((s) => <span class="funnel-tag funnel-tag--amber">{s}</span>)}
-			</div>
 			<p>{data.funnelCaption}</p>
 		</div>
 	</div>
@@ -103,6 +102,18 @@ const miniCase = data.miniCaseStudy ? await getEntry('caseStudies', data.miniCas
 		</section>
 	)}
 
+	{guide && (
+		<section class="section">
+			<div class="container-max container-reading">
+				<div class="guide-link card">
+					<p class="eyebrow">Go deeper</p>
+					<p>{guide.serviceBlurb}</p>
+					<a href={guide.path} class="body-link">{guide.serviceAnchor} &rarr;</a>
+				</div>
+			</div>
+		</section>
+	)}
+
 	<section class="section">
 		<div class="container-max container-reading">
 			<h2>Frequently asked questions</h2>
@@ -118,11 +129,11 @@ const miniCase = data.miniCaseStudy ? await getEntry('caseStudies', data.miniCas
 	.funnel-banner { background: var(--color-steel-900); color: white; padding-block: 1rem; margin-top: 1rem; }
 	.banner-inner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 	.banner-inner p { margin: 0; font-size: 0.9rem; color: var(--color-steel-100); }
-	.tags { display: flex; gap: 0.5rem; }
 	.hero-section { padding-block: 2.5rem 1.5rem; }
 	.hero-section h1 { font-size: clamp(2rem, 4vw, var(--text-h1)); }
 	.section.alt { background: var(--color-charcoal-100); }
 	.center { text-align: center; }
+	.guide-link p:not(.eyebrow) { margin: 0.4rem 0 0.9rem; color: var(--color-charcoal-700); }
 
 	.methodology { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.75rem; max-width: 760px; margin-inline: auto; }
 	.methodology li { display: flex; gap: 1.25rem; align-items: flex-start; }

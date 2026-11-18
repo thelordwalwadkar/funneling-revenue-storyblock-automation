@@ -18,7 +18,7 @@ export function organizationSchema() {
 		sameAs: ['https://www.linkedin.com/in/seo-shubham/'],
 		areaServed: 'Worldwide',
 		knowsAbout: [
-			'Industrial SEO',
+			'B2B SEO',
 			'Generative Engine Optimization',
 			'Answer Engine Optimization',
 			'B2B manufacturing marketing',
@@ -103,6 +103,8 @@ export function articleSchema(opts: {
 	headline: string;
 	description: string;
 	path: string;
+	datePublished?: string;
+	dateModified?: string;
 }) {
 	return {
 		'@context': 'https://schema.org',
@@ -110,6 +112,8 @@ export function articleSchema(opts: {
 		headline: opts.headline,
 		description: opts.description,
 		url: absoluteUrl(opts.path),
+		...(opts.datePublished ? { datePublished: opts.datePublished } : {}),
+		...(opts.dateModified ? { dateModified: opts.dateModified } : {}),
 		author: { '@id': `${SITE_URL}/author/#person`, '@type': 'Person', name: 'Shubham Walwadkar', url: absoluteUrl('/author/') },
 		publisher: { '@id': `${SITE_URL}/#organization` },
 	};
@@ -123,6 +127,7 @@ export function personSchema(a: {
 	knowsAbout: string[];
 	clients: string[];
 	email: string;
+	image?: string | null;
 }) {
 	return {
 		'@context': 'https://schema.org',
@@ -132,6 +137,7 @@ export function personSchema(a: {
 		jobTitle: a.role,
 		description: a.description,
 		url: absoluteUrl('/author/'),
+		...(a.image ? { image: absoluteUrl(a.image) } : {}),
 		email: a.email,
 		sameAs: a.sameAs,
 		knowsAbout: a.knowsAbout,

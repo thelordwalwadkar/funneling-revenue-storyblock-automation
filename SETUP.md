@@ -45,6 +45,17 @@ Works when: a merged pull request shows up on the live site within a few minutes
 3. Typical requests: "add a case study for X with these numbers", "rewrite the meta descriptions for all services", "add a fifth tool that does Y", "check the site works".
 4. Claude Code is blocked from `git push` and Storyblok pushes by `.claude/settings.json`, so you approve those. Remove the matching `deny` lines if you want it fully hands-off.
 
+## 5. Google sign-in for the Search Console tools
+The Tools page has five Search Console tools and three gated reports. Visitors sign in with Google and the tool reads their own Search Console data. That data goes from Google to their browser; the server only records who ran what (see `/admin/`). One-time setup, about 15 minutes:
+1. [Google Cloud console](https://console.cloud.google.com/) -> create a project (for example "Funneling Revenue Tools").
+2. APIs & Services -> Library -> enable **Google Search Console API**.
+3. APIs & Services -> OAuth consent screen -> **External**. App name, support email, home page `https://funnelingrevenue.com`, privacy policy `https://funnelingrevenue.com/privacy-policy/`, authorised domain `funnelingrevenue.com`. Add the scopes `.../auth/webmasters.readonly`, `openid`, `email` and `profile`.
+4. Credentials -> Create credentials -> **OAuth client ID** -> Web application. Under *Authorised JavaScript origins* add `https://funnelingrevenue.com` (and the `www` version if you use it). No redirect URI is needed.
+5. Copy the client ID into the host environment as `GOOGLE_CLIENT_ID` and restart the app. No rebuild is needed; the pages read it at run time.
+6. Also set `ADMIN_TOKEN` (opens `/admin/`), `REPORT_SECRET` (any long random string; signs the report unlock) and `DATA_DIR` (a folder that survives re-uploads, so leads are not lost).
+
+Until Google approves the app, only the test users you list on the consent screen (up to 100) can sign in. `webmasters.readonly` is a sensitive scope, so a public launch needs Google's verification (a short demo video plus the privacy page, which already carries the required Limited Use sentence).
+
 ## Day to day
 - Content/meta edits: Storyblok UI -> publish -> site updates itself (steps 2-3).
 - Anything structural (layout, tools, backend): ask Claude Code, review the diff, push.

@@ -133,8 +133,8 @@ const tools = defineCollection({
 		metaTitle: z.string(),
 		metaDescription: z.string(),
 		order: z.number(),
-		kind: z.enum(['url', 'calculator']),
-		// audit | ai-visibility | serp-preview (server analysers) or calculator (client-only)
+		kind: z.enum(['url', 'calculator', 'gsc', 'report']),
+		// audit | ai-visibility | serp-preview (server analysers), calculator (client-only), or a Search Console tool id (kind gsc | report)
 		toolId: z.string(),
 		icon: z.string(),
 		oneLiner: z.string(),

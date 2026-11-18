@@ -4,31 +4,34 @@ role: "Founder, Funneling Revenue"
 h1: "Shubham Walwadkar: the person who does the work"
 metaTitle: "Shubham Walwadkar — Founder & Revenue-First SEO/GEO Strategist | Funneling Revenue"
 metaDescription: >-
-  Shubham Walwadkar is the founder of Funneling Revenue. 8+ years building SEO and growth systems for Pall Corporation, Sany India and the Danaher Lifesciences portfolio.
+  Shubham Walwadkar is the founder of Funneling Revenue. About 10 years building SEO and growth systems for Pall Corporation, Sany India and the Danaher Lifesciences portfolio.
 order: 1
-headline: "8+ years turning industrial search demand into pipeline."
+headline: "About 10 years turning industrial search demand into pipeline."
 bio:
   - >-
     I started Funneling Revenue because most marketing reports for manufacturers measure what is easy to inflate (impressions, sessions, keyword counts) and skip what the sales team actually feels: qualified leads, pipeline and revenue.
   - >-
-    For 8+ years I have built SEO and growth systems for industrial and life-science brands, including Pall Corporation, Sany India and the Danaher Lifesciences portfolio. The work always starts with the funnel: who is buying, what they ask at each stage, and where the revenue leaks.
+    For about 10 years I have built SEO and growth systems for industrial and life-science brands, including Pall Corporation, Sany India and the Danaher Lifesciences portfolio. The work always starts with the funnel: who is buying, what they ask at each stage, and where the revenue leaks.
   - >-
     Today that includes Generative Engine Optimization. Procurement engineers now ask ChatGPT, Perplexity and Gemini before they ask Google, so I engineer for citations in AI answers the same way I used to engineer for rankings.
   - >-
     Every engagement is run by me, not handed to a junior after the pitch. The audit call is with the person who will do the work.
 credentials:
-  - value: "8+"
+  - value: "~10"
     label: "Years scaling B2B and industrial brands"
-  - value: "4,000+"
+  - value: "10,000+"
     label: "Keywords optimised across engagements"
-  - value: "1,800+"
+  - value: "3,000+"
     label: "Keywords ranking in the top 10"
   - value: "5×"
     label: "Average traffic uplift across engagements"
+  - value: "750+"
+    label: "Keywords and topics appearing in AI Overviews"
 clients:
   - "Pall Corporation"
   - "Sany India"
   - "Danaher Lifesciences portfolio"
+  - "Motor & Gear Engineering"
 principles:
   - title: "The funnel is eternal. The medium isn't."
     body: "Print, radio, search, social and now AI answers all do the same job: move a buyer from awareness to a decision. I design for the funnel and treat each channel as a tool."
@@ -42,7 +45,7 @@ sameAs:
   - "https://www.linkedin.com/in/seo-shubham/"
 email: "shubhamwdigital@gmail.com"
 knowsAbout:
-  - "Industrial SEO"
+  - "B2B SEO"
   - "Generative Engine Optimization"
   - "Answer Engine Optimization"
   - "B2B manufacturing marketing"

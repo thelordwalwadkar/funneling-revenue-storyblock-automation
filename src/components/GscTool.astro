@@ -1,0 +1,31 @@
+---
+// Mount point for a Search Console tool or report. The tool itself is built in the browser (src/gsc/mount.js).
+interface Props {
+	toolId: string;
+}
+const { toolId } = Astro.props;
+---
+
+<div class="gsc-app" data-tool={toolId}>
+	<noscript>
+		<p class="gsc-note">This tool runs in your browser and needs JavaScript switched on.</p>
+	</noscript>
+	<p class="gsc-note gsc-loading">Loading the tool&hellip;</p>
+</div>
+
+<style>
+	.gsc-note { color: var(--color-charcoal-500); }
+</style>
+
+<script>
+	import '../gsc/gsc.css';
+	import { start } from '../gsc/mount.js';
+
+	document.querySelectorAll<HTMLElement>('.gsc-app[data-tool]').forEach((el) => {
+		start(el).catch((err) => {
+			console.error(err);
+			const note = el.querySelector('.gsc-loading');
+			if (note) note.textContent = 'Sorry, the tool could not start. Please refresh the page.';
+		});
+	});
+</script>

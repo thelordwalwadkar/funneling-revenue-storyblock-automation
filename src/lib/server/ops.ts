@@ -18,7 +18,7 @@ const FILE = () => path.join(DATA_DIR(), 'submissions.jsonl');
 export interface Submission {
 	id: string;
 	ts: string;
-	kind: 'tool' | 'lead';
+	kind: 'tool' | 'lead' | 'gsc' | 'report-lead';
 	[key: string]: unknown;
 }
 

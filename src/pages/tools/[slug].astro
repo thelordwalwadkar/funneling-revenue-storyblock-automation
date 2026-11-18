@@ -5,6 +5,7 @@ import FAQAccordion from '../../components/FAQAccordion.astro';
 import CTASection from '../../components/CTASection.astro';
 import UrlTool from '../../components/UrlTool.astro';
 import FunnelCalculator from '../../components/FunnelCalculator.astro';
+import GscTool from '../../components/GscTool.astro';
 import ToolIcon from '../../components/ToolIcon.astro';
 import { getCollection } from 'astro:content';
 import { breadcrumbSchema, faqPageSchema, softwareToolSchema } from '../../lib/schema';
@@ -17,7 +18,11 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { data } = entry;
 const path = `/tools/${entry.id}/`;
-const others = (await getCollection('tools')).filter((t) => t.id !== entry.id).sort((a, b) => a.data.order - b.data.order);
+const rest = (await getCollection('tools')).filter((t) => t.id !== entry.id).sort((a, b) => a.data.order - b.data.order);
+// Three related tools: the same family first (Search Console tools and reports belong together), then the rest.
+const family = (kind: string) => (kind === 'gsc' || kind === 'report' ? 'gsc' : kind);
+const same = rest.filter((t) => family(t.data.kind) === family(data.kind));
+const others = [...same, ...rest.filter((t) => !same.includes(t))].slice(0, 3);
 ---
 
 <Layout
@@ -48,6 +53,8 @@ const others = (await getCollection('tools')).filter((t) => t.id !== entry.id).s
 				<div class="tool-shell card-ish">
 					<UrlTool toolId={data.toolId} label={data.inputLabel} placeholder={data.inputPlaceholder} button={data.buttonLabel} />
 				</div>
+			) : data.kind === 'gsc' || data.kind === 'report' ? (
+				<GscTool toolId={data.toolId} />
 			) : (
 				<FunnelCalculator />
 			)}
