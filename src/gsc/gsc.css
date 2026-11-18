@@ -1,0 +1,152 @@
+/* Styles for the Search Console tools and reports. Everything is scoped to .gsc-app so it cannot leak into the rest of
+   the site. Colours come from the site theme (global.css @theme). Unlayered rules here win over the site's
+   @layer components, so the .btn / .card names the tools use do not need the site's own look. */
+.gsc-app {
+	--g-ink: var(--color-charcoal-900);
+	--g-muted: var(--color-charcoal-500);
+	--g-line: var(--color-charcoal-300);
+	--g-soft: var(--color-charcoal-100);
+	--g-steel: var(--color-steel-700);
+	--g-steel-dark: var(--color-steel-900);
+	--g-steel-tint: var(--color-steel-100);
+	--g-amber: var(--color-amber-700);
+	--g-amber-tint: var(--color-amber-100);
+	--g-ok: #1b7f4b;
+	--g-ok-bg: #e2f3ea;
+	--g-bad: #b42318;
+	--g-bad-bg: #fde8e6;
+	font-family: var(--font-sans);
+	color: var(--g-ink);
+	font-size: 15px;
+	line-height: 1.55;
+}
+.gsc-app *, .gsc-app *::before, .gsc-app *::after { box-sizing: border-box; }
+.gsc-app .muted { color: var(--g-muted); }
+.gsc-app .small { font-size: 0.86rem; }
+.gsc-app .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.gsc-app p { margin: 0 0 0.8em; }
+.gsc-app code { font-family: var(--font-mono); font-size: 0.88em; }
+
+/* ---- cards and steps ---- */
+.gsc-app .card { background: #fff; border: 1px solid var(--g-line); border-radius: 12px; padding: clamp(16px, 2.4vw, 24px); margin: 0 0 16px; box-shadow: none; }
+.gsc-app .card > h2 { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 1.25rem; color: var(--g-steel-dark); margin: 0 0 12px; }
+.gsc-app .step { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; border-radius: 50%; background: var(--g-steel); color: #fff; font: 700 0.82rem var(--font-sans); }
+.gsc-app .lead-note { color: var(--g-muted); font-size: 0.88rem; }
+
+/* ---- buttons ---- */
+.gsc-app .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; appearance: none; border: 1.5px solid var(--g-steel); background: var(--g-steel); color: #fff; font: 600 0.95rem var(--font-sans); padding: 11px 20px; border-radius: 8px; cursor: pointer; line-height: 1.2; text-decoration: none; transition: background-color 150ms, border-color 150ms; }
+.gsc-app .btn:hover { background: var(--g-steel-dark); border-color: var(--g-steel-dark); }
+.gsc-app .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.gsc-app .btn.secondary { background: #fff; color: var(--g-steel); }
+.gsc-app .btn.secondary:hover { background: var(--g-steel-tint); }
+.gsc-app .btn.small { padding: 5px 11px; font-size: 0.82rem; border-radius: 6px; }
+.gsc-app .btn.run { background: var(--g-steel); padding: 13px 28px; font-size: 1rem; }
+.gsc-app .btn-row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
+.gsc-app .run-row { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding-top: 4px; }
+
+/* ---- forms ---- */
+.gsc-app .fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px 20px; }
+.gsc-app .field { grid-column: 1 / -1; min-width: 0; }
+.gsc-app .field.half { grid-column: auto; }
+.gsc-app .field > label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; color: var(--g-ink); }
+.gsc-app .field .help { color: var(--g-muted); font-size: 0.82rem; margin-top: 6px; }
+.gsc-app input[type='text'], .gsc-app input[type='email'], .gsc-app input[type='tel'], .gsc-app input[type='url'], .gsc-app input[type='number'], .gsc-app input[type='date'], .gsc-app input[type='month'], .gsc-app select, .gsc-app textarea {
+	width: 100%; font: inherit; padding: 11px 13px; border: 1px solid var(--g-line); border-radius: 8px; background: #fff; color: var(--g-ink);
+}
+.gsc-app input:focus-visible, .gsc-app select:focus-visible, .gsc-app textarea:focus-visible, .gsc-app button:focus-visible { outline: 2px solid var(--g-amber); outline-offset: 2px; }
+.gsc-app .field.check > label { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; font-size: 0.9rem; }
+.gsc-app .field.check input { width: auto; margin-top: 4px; }
+.gsc-app details.adv { margin-top: 16px; }
+.gsc-app details summary { cursor: pointer; color: var(--g-steel); font-weight: 600; }
+.gsc-app details.adv .fields { margin-top: 12px; }
+
+/* ---- chips (one-of-many choices) ---- */
+.gsc-app .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.gsc-app .chipbtn { appearance: none; background: #fff; color: var(--g-ink); border: 1px solid var(--g-line); border-radius: 8px; padding: 9px 16px; font: 500 0.92rem var(--font-sans); cursor: pointer; transition: background-color 120ms, border-color 120ms; }
+.gsc-app .chipbtn:hover { border-color: var(--color-steel-500); }
+.gsc-app .chipbtn[aria-pressed='true'] { background: var(--g-steel-tint); border-color: var(--color-steel-500); color: var(--g-steel-dark); font-weight: 600; }
+
+/* ---- notices, badges, log ---- */
+.gsc-app .notice { border-radius: 8px; padding: 10px 14px; margin: 12px 0; border: 1px solid var(--color-steel-300); background: var(--g-steel-tint); font-size: 0.92rem; }
+.gsc-app .notice.warn { border-color: #f0c98a; background: #fff7e8; }
+.gsc-app .notice.error { border-color: #f1b3ad; background: var(--g-bad-bg); color: #7a1a12; }
+.gsc-app .notice.ok { border-color: #a9d8bd; background: var(--g-ok-bg); }
+.gsc-app .demo-badge { display: inline-block; background: var(--g-amber-tint); color: var(--color-amber-900); border: 1px solid #f0c98a; border-radius: 6px; padding: 1px 8px; font: 700 0.72rem var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; }
+.gsc-app .log { font: 0.84rem var(--font-mono); color: var(--g-muted); padding: 8px 12px; background: var(--g-soft); border-radius: 8px; margin: 12px 0 0; width: 100%; }
+
+/* ---- sign-in panel ---- */
+.gsc-app .connect { display: grid; gap: 14px; justify-items: start; }
+.gsc-app .connect-points { list-style: disc; margin: 0; padding-left: 1.2em; color: var(--g-muted); font-size: 0.9rem; }
+.gsc-app .connect-points li { margin: 0.2em 0; }
+.gsc-app .who { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 0.92rem; margin-bottom: 14px; }
+.gsc-app .who b { font-weight: 600; }
+.gsc-app .linklike { appearance: none; background: none; border: 0; padding: 0; color: var(--g-steel); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
+
+/* ---- gate (lead form) ---- */
+.gsc-app .gate-intro { color: var(--g-muted); margin-bottom: 14px; }
+.gsc-app .gate-points { margin: 0 0 16px; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 0.92rem; }
+.gsc-app .gate-points li { position: relative; padding-left: 26px; }
+.gsc-app .gate-points li::before { content: '\2713'; position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border-radius: 50%; background: var(--g-amber-tint); color: var(--g-amber); font-weight: 800; font-size: 0.72rem; display: grid; place-content: center; }
+.gsc-app .gate-form .fields { grid-template-columns: repeat(2, 1fr); }
+.gsc-app .gate-form .field { grid-column: auto; }
+.gsc-app .gate-form .field.wide { grid-column: 1 / -1; }
+.gsc-app .gate-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.gsc-app .gate-form .req { color: var(--g-amber); }
+.gsc-app .gate-error { color: #7a1a12; background: var(--g-bad-bg); border: 1px solid #f1b3ad; border-radius: 8px; padding: 8px 12px; margin-top: 12px; font-size: 0.9rem; }
+.gsc-app .unlocked { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 0.9rem; }
+
+/* ---- stats ---- */
+.gsc-app .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
+.gsc-app .stat { background: var(--g-soft); border: 1px solid var(--g-line); border-radius: 10px; padding: 12px 14px; }
+.gsc-app .stat .k { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--g-muted); font-weight: 600; }
+.gsc-app .stat .v { font: 600 1.6rem/1.25 var(--font-display); color: var(--g-steel-dark); }
+.gsc-app .stat .h { font-size: 0.78rem; color: var(--g-muted); }
+.gsc-app .stat.good .v { color: var(--g-ok); }
+.gsc-app .stat.bad .v { color: var(--g-bad); }
+
+/* ---- chips as labels ---- */
+.gsc-app .chip { display: inline-block; padding: 2px 10px; border-radius: 999px; font: 600 0.74rem/1.6 var(--font-sans); letter-spacing: 0.02em; white-space: nowrap; border: 1px solid transparent; }
+.gsc-app .chip-high, .gsc-app .chip-bad { background: var(--g-bad-bg); color: var(--g-bad); border-color: #f1b3ad; }
+.gsc-app .chip-medium, .gsc-app .chip-warn { background: var(--g-amber-tint); color: var(--color-amber-900); border-color: #f0c98a; }
+.gsc-app .chip-low, .gsc-app .chip-muted { background: #eef1f4; color: #4a5866; border-color: #d9e0e6; }
+.gsc-app .chip-ok { background: var(--g-ok-bg); color: var(--g-ok); border-color: #a9d8bd; }
+.gsc-app .chip-info { background: var(--g-steel-tint); color: var(--g-steel); border-color: var(--color-steel-300); }
+.gsc-app .chip-filter { cursor: pointer; background: #fff; color: var(--g-muted); border-color: var(--g-line); font-size: 0.8rem; padding: 4px 12px; font-family: var(--font-sans); }
+.gsc-app .chip-filter[aria-pressed='true'] { background: var(--g-steel); color: #fff; border-color: var(--g-steel); }
+.gsc-app .filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 12px 0; }
+.gsc-app .search { max-width: 260px; padding: 7px 11px; }
+
+/* ---- tables ---- */
+.gsc-app .table-wrap { overflow-x: auto; border: 1px solid var(--g-line); border-radius: 10px; background: #fff; }
+.gsc-app table.data { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.gsc-app table.data th { text-align: left; background: var(--g-soft); color: var(--g-steel-dark); font-weight: 600; padding: 9px 11px; border-bottom: 1px solid var(--g-line); white-space: nowrap; }
+.gsc-app table.data th.num, .gsc-app table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.gsc-app table.data th button { all: unset; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+.gsc-app table.data th button:focus-visible { outline: 2px solid var(--g-amber); }
+.gsc-app table.data td { padding: 9px 11px; border-bottom: 1px solid var(--color-charcoal-100); vertical-align: top; }
+.gsc-app table.data tr:last-child td { border-bottom: 0; }
+.gsc-app table.data tbody tr.row:hover { background: #fafafa; }
+.gsc-app table.data tr.expandable { cursor: pointer; }
+.gsc-app table.data tr.detail td { background: var(--g-soft); padding: 14px 16px; cursor: default; }
+.gsc-app table.data td.url { min-width: 220px; max-width: 420px; overflow-wrap: anywhere; }
+.gsc-app table.data td.url a { color: var(--g-ink); text-decoration: none; }
+.gsc-app table.data td.url a:hover { text-decoration: underline; }
+.gsc-app .table-foot { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 10px 0 0; font-size: 0.86rem; color: var(--g-muted); }
+.gsc-app .spark { display: block; }
+.gsc-app .delta-up { color: var(--g-ok); }
+.gsc-app .delta-down { color: var(--g-bad); }
+.gsc-app .bar { height: 8px; border-radius: 4px; background: var(--g-steel-tint); min-width: 70px; }
+.gsc-app .bar > i { display: block; height: 100%; border-radius: 4px; background: var(--color-steel-500); }
+.gsc-app details.rules { margin: 10px 0 0; }
+.gsc-app details.rules ul { list-style: disc; margin: 0.6em 0 0; padding-left: 1.2em; color: var(--g-muted); font-size: 0.9rem; }
+.gsc-app details.rules li { margin: 0.3em 0; }
+.gsc-app .results-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 4px; }
+.gsc-app h3 { font-family: var(--font-display); font-size: 1.1rem; color: var(--g-steel-dark); margin: 22px 0 8px; }
+
+@media (max-width: 640px) {
+	.gsc-app .fields, .gsc-app .gate-form .fields { grid-template-columns: 1fr; }
+	.gsc-app .field.half { grid-column: 1 / -1; }
+	.gsc-app .chipbtn { padding: 8px 12px; font-size: 0.88rem; }
+	.gsc-app .btn.run { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .gsc-app * { transition: none !important; } }

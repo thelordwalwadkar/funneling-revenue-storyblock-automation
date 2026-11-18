@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 	const limit = Math.min(Number(url.searchParams.get('limit')) || 500, 5000);
 	const rows = await readSubmissions(limit);
 	if (url.searchParams.get('format') === 'csv') {
-		const cols = ['ts', 'kind', 'tool', 'host', 'score', 'name', 'email', 'company', 'domain', 'role', 'industry', 'leak', 'goal'];
+		const cols = ['ts', 'kind', 'tool', 'property', 'host', 'score', 'name', 'email', 'phone', 'company', 'domain', 'role', 'industry', 'leak', 'goal'];
 		const body = [cols.join(','), ...rows.map((r: any) => cols.map((c) => csvCell(r[c])).join(','))].join('\n');
 		return new Response(body, {
 			headers: { 'content-type': 'text/csv; charset=utf-8', 'content-disposition': 'attachment; filename="submissions.csv"' },

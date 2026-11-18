@@ -18,8 +18,10 @@ import Layout from '../layouts/Layout.astro';
 				<div class="toolbar">
 					<div class="tabs" role="tablist">
 						<button data-f="all" class="on">All</button>
-						<button data-f="lead">Leads</button>
-						<button data-f="tool">Tool runs</button>
+						<button data-f="gsc">Search Console runs</button>
+						<button data-f="report-lead">Report leads</button>
+						<button data-f="lead">Audit leads</button>
+						<button data-f="tool">URL tool runs</button>
 					</div>
 					<span id="count"></span>
 					<a id="csv" class="btn btn-secondary" href="#">Download CSV</a>
@@ -74,10 +76,29 @@ import Layout from '../layouts/Layout.astro';
 		rowsEl.innerHTML = rows
 			.map((r) => {
 				const q = r.qualification;
-				const who = r.kind === 'lead' ? `<b>${esc(r.name || r.email)}</b><small>${esc(r.email)}${r.company ? ' · ' + esc(r.company) : ''}</small>` : `<b>${esc(r.host)}</b><small>${esc(r.tool)}</small>`;
-				const score = r.kind === 'lead' ? (r.audit?.score ?? '') : r.score;
-				const detail = r.kind === 'lead' ? esc([r.role, r.industry, r.domain, r.goal].filter(Boolean).join(' · ')) : esc((r.topFixes ?? []).slice(0, 2).join(' | '));
-				return `<tr><td>${esc(new Date(r.ts).toLocaleString())}</td><td>${esc(r.kind)}</td><td>${who}</td><td>${esc(score)}</td><td>${q ? `<span class="pill ${esc(q.tier)}">${esc(q.tier)}</span><small>${esc(q.score)}/100</small>` : ''}</td><td>${detail}</td></tr>`;
+				const k = r.kind;
+				let who = '';
+				let score = '';
+				let detail = '';
+				if (k === 'gsc') {
+					// Someone signed in with Google and ran a Search Console tool on this property.
+					who = `<b>${esc(r.property || r.host)}</b><small>${esc(r.email || 'Google email not shared')}${r.name ? ' · ' + esc(r.name) : ''}</small>`;
+					const s = r.settings && typeof r.settings === 'object' ? Object.entries(r.settings).map(([a, b]) => `${a}: ${b}`).join(', ') : '';
+					detail = esc([r.tool, s].filter(Boolean).join(' — ')) + (r.leadId ? '<small>Report lead on file</small>' : '');
+				} else if (k === 'report-lead') {
+					who = `<b>${esc(r.name || r.email)}</b><small>${esc(r.email)} · ${esc(r.phone)}${r.company ? ' · ' + esc(r.company) : ''}</small>`;
+					detail = esc([r.role, r.domain, r.tool && 'asked for ' + r.tool].filter(Boolean).join(' · '));
+				} else if (k === 'lead') {
+					who = `<b>${esc(r.name || r.email)}</b><small>${esc(r.email)}${r.company ? ' · ' + esc(r.company) : ''}</small>`;
+					score = r.audit?.score ?? '';
+					detail = esc([r.role, r.industry, r.domain, r.goal].filter(Boolean).join(' · '));
+				} else {
+					who = `<b>${esc(r.host)}</b><small>${esc(r.tool)}</small>`;
+					score = r.score ?? '';
+					detail = esc((r.topFixes ?? []).slice(0, 2).join(' | '));
+				}
+				const label = { gsc: 'Search Console', 'report-lead': 'Report lead', lead: 'Audit lead', tool: 'URL tool' }[k] || k;
+				return `<tr><td>${esc(new Date(r.ts).toLocaleString())}</td><td>${esc(label)}</td><td>${who}</td><td>${esc(score)}</td><td>${q ? `<span class="pill ${esc(q.tier)}">${esc(q.tier)}</span><small>${esc(q.score)}/100</small>` : ''}</td><td>${detail}</td></tr>`;
 			})
 			.join('');
 	}
