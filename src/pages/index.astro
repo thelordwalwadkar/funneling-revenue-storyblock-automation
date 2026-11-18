@@ -43,12 +43,31 @@ const manufacturingCards = [
 	{ title: 'Low-Volume, High-Intent Queries', body: '50 searches a month can drive ₹1Cr in revenue. We rank for the queries your CFO cares about, not the ones that look good in screenshots.' },
 ];
 
-const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Engine Optimization', 'Revenue attribution', 'Process & Filtration', 'Life Sciences', 'Construction & Heavy Equipment', 'Machinery & Equipment', 'Dealer-aware local SEO', 'Pipeline, not traffic'];
+const clients = [
+	{ name: 'Pall Corporation', src: '/brand/clients/pall.png', width: 300, height: 140, show: 58 },
+	{ name: 'Danaher', src: '/brand/clients/danaher.png', width: 264, height: 140, show: 56 },
+	{ name: 'Sany', src: '/brand/clients/sany.png', width: 480, height: 120, show: 40 },
+	{ name: 'Motor & Gear Engineering, Inc.', src: '/brand/clients/motor-gear-engineering.png', width: 325, height: 103, show: 52 },
+];
+
+// Where most B2B digital marketing agencies let manufacturers down, and what we do instead.
+const painPoints = [
+	{ title: 'Reports you can actually read', body: 'Crawling, indexing, impressions: most manufacturers get a report full of jargon nobody explains. We translate every number into plant-floor terms: enquiries, RFQs and pipeline.' },
+	{ title: 'A roadmap, not FOMO spend', body: 'Too many manufacturers pay an agency because a competitor does. We start with a written roadmap: what we fix first, what it should move and what we will not do.' },
+	{ title: 'Your buyer journey, on your website', body: 'Long cycles, buying committees, technical buyers. We turn your ideal customer profiles and their journey into site structure, content and tracking.' },
+	{ title: 'Beyond the network', body: 'Referrals built your business, but they do not scale. In India, digital marketing often means social media alone. Search reaches buyers already looking for a supplier.' },
+	{ title: 'You own the data', body: 'Analytics, Search Console, ad accounts and reports stay in your name. No lock-in, and no data held back to keep you as a client.' },
+	{ title: 'Proof you can show buyers', body: 'Case studies, testimonials and reviews are part of the work. Many agencies skip them, so growth never turns into trust.' },
+	{ title: 'Small tools that earn leads', body: 'A free audit, a calculator or an AI visibility checker can bring qualified enquiries without a big media budget. Try ours below.' },
+	{ title: 'A site for the whole company', body: 'Manufacturing runs from R&D to production, sales and service. We build the website around all of it, not only the face of the founder or MD.' },
+];
+
+const marquee = ['Technical SEO', 'Generative Engine Optimization', 'Answer Engine Optimization', 'Revenue attribution', 'Process & Filtration', 'Life Sciences', 'Construction & Heavy Equipment', 'Machinery & Equipment', 'Dealer-aware local SEO', 'Pipeline, not traffic'];
 ---
 
 <Layout
-	title="Funneling Revenue — SEO & GEO Agency for Manufacturers | Revenue-First Digital Marketing"
-	description="We engineer revenue funnels for industrial and manufacturing brands — SEO, Generative Engine Optimization, and AI-first marketing built around pipeline, not vanity metrics."
+	title="Digital Marketing Agency for Manufacturers"
+	description="A digital marketing agency for manufacturers: SEO, GEO and content built on your buyer journey, with plain-English reports and data you own."
 	path="/"
 	schema={[breadcrumbSchema([{ name: 'Home', path: '/' }])]}
 >
@@ -57,13 +76,13 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 		<div class="glow" aria-hidden="true"></div>
 		<div class="container-max hero-grid">
 			<div class="hero-inner">
-				<p class="eyebrow" data-reveal>Revenue-first marketing for manufacturers</p>
+				<p class="eyebrow" data-reveal>Digital marketing agency for manufacturers</p>
 				<h1 data-reveal>The Funnel Is Eternal. The Medium Isn&rsquo;t.</h1>
 				<p class="rotor" data-reveal>
 					We engineer <span class="grad-text" data-rotate="pipeline|qualified leads|AI citations|revenue">pipeline</span>.
 				</p>
 				<p class="sub" data-reveal>
-					Revenue-first SEO, GEO, and digital marketing — built for manufacturers and industrial brands. We don&rsquo;t sell traffic.
+					Revenue-first SEO, GEO, and digital marketing for manufacturers and industrial brands, with a clear roadmap, plain-English reports and data you own. We don&rsquo;t sell traffic.
 				</p>
 
 				<form class="url-cta" action="/tools/website-revenue-audit/" method="get" data-reveal>
@@ -86,18 +105,21 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 		<div class="container-max proof-row">
 			<div data-reveal><b data-count>₹3Cr+</b><span>delivered in 90 days</span></div>
 			<div data-reveal><b data-count>200%</b><span>organic traffic growth</span></div>
-			<div data-reveal><b data-count>8+</b><span>years in B2B &amp; industrial</span></div>
-			<div data-reveal><b data-count>4,000+</b><span>keywords optimised</span></div>
+			<div data-reveal><b data-count>~10</b><span>years in B2B &amp; industrial</span></div>
+			<div data-reveal><b data-count>10,000+</b><span>keywords optimised</span></div>
+			<div data-reveal><b data-count>750+</b><span>keywords and topics in AI Overviews</span></div>
 		</div>
 	</section>
 
 	<section class="clients" aria-label="Clients">
 		<div class="container-max clients-inner">
-			<p class="clients-label">Growth delivered for</p>
+			<p class="clients-label">Brands we have worked with</p>
 			<ul class="client-list">
-				<li class="client">PALL</li>
-				<li class="client">SANY</li>
-				<li class="client">DANAHER</li>
+				{clients.map((c) => (
+					<li class="client">
+						<img src={c.src} alt={c.name} width={c.width} height={c.height} style={`--logo-h:${c.show}px`} loading="lazy" />
+					</li>
+				))}
 			</ul>
 		</div>
 	</section>
@@ -107,6 +129,16 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 			{[...marquee, ...marquee].map((m) => <span class="m-item">{m}</span>)}
 		</div>
 	</div>
+
+	<!-- Positioning -->
+	<section class="section alt intro-section">
+		<div class="container-max container-reading">
+			<h2 class="center" data-reveal>A manufacturing digital marketing agency, run by an engineer</h2>
+			<p class="center intro-copy" data-reveal>
+				Funneling Revenue is a digital marketing agency for manufacturers, led by a mechanical engineer. Most B2B digital marketing agencies learned their craft on software and services. We learned ours inside filtration, heavy-equipment and life-science brands, where buyers research for months, specs decide the shortlist and one RFQ can outweigh a year of leads. As a manufacturing digital marketing agency, we build the whole path: search, AI answers, content, paid media and the reporting that ties them to revenue.
+			</p>
+		</div>
+	</section>
 
 	<!-- Interactive funnel -->
 	<section class="section">
@@ -191,14 +223,30 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 		</div>
 	</section>
 
+	<!-- Where agencies fall short -->
+	<section class="section alt pain-section">
+		<div class="container-max">
+			<h2 class="center" data-reveal>Where most B2B digital marketing agencies let manufacturers down</h2>
+			<div class="pain-grid">
+				{painPoints.map((p) => (
+					<div class="card pain" data-reveal>
+						<h3>{p.title}</h3>
+						<p>{p.body}</p>
+					</div>
+				))}
+			</div>
+			<p class="center more-tools"><a href="/tools/" class="body-link">See our free tools &rarr;</a></p>
+		</div>
+	</section>
+
 	<!-- Services teaser -->
-	<section class="section alt">
+	<section class="section">
 		<div class="container-max">
 			<h2 class="center" data-reveal>Services built around the funnel</h2>
 			<div class="service-grid">
 				{services.map((s) => (
 					<div data-reveal>
-						<ServiceCard slug={s.id} title={s.data.title} funnelStages={s.data.funnelStages} oneLiner={s.data.oneLiner} />
+						<ServiceCard slug={s.id} title={s.data.title} oneLiner={s.data.oneLiner} />
 					</div>
 				))}
 			</div>
@@ -207,7 +255,7 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	</section>
 
 	<!-- Case studies -->
-	<section class="section">
+	<section class="section alt">
 		<div class="container-max">
 			<h2 class="center" data-reveal>Proof, not promises</h2>
 			<div class="case-grid">
@@ -291,10 +339,11 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 			<StatStrip
 				dark
 				stats={[
-					{ value: '8+', label: 'Years scaling B2B and industrial brands' },
+					{ value: '~10', label: 'Years scaling B2B and industrial brands' },
 					{ value: '5×', label: 'Traffic uplift, agency-level average' },
 					{ value: '3×', label: 'Revenue uplift, agency-level average' },
-					{ value: '4,000+', label: 'Keywords optimised, 1,800+ in top 10' },
+					{ value: '10,000+', label: 'Keywords optimised, 3,000+ in top 10' },
+					{ value: '750+', label: 'Keywords and topics appearing in AI Overviews' },
 				]}
 			/>
 		</div>
@@ -330,7 +379,7 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	.hero-actions .btn-ghost { color: var(--color-amber-300); }
 	.hero-art { position: relative; }
 
-	.proof-row { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: clamp(2.5rem, 5vw, 4rem); padding-block: 1.75rem; border-top: 1px solid rgba(255,255,255,0.18); }
+	.proof-row { position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: clamp(2.5rem, 5vw, 4rem); padding-block: 1.75rem; border-top: 1px solid rgba(255,255,255,0.18); }
 	.proof-row div { display: grid; gap: 0.15rem; }
 	.proof-row b { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.6rem, 3.2vw, 2.4rem); color: var(--color-amber-300); line-height: 1.1; }
 	.proof-row span { font-size: 0.85rem; color: var(--color-steel-100); }
@@ -411,8 +460,16 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	.clients-inner { display: flex; align-items: center; justify-content: center; gap: 1.5rem 3rem; flex-wrap: wrap; }
 	.clients-label { margin: 0; font-size: var(--text-micro); font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-charcoal-500); }
 	.client-list { display: flex; align-items: center; justify-content: center; gap: 1rem clamp(2rem, 6vw, 4.5rem); flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
-	.client { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.4rem, 3vw, 1.9rem); letter-spacing: 0.08em; color: var(--color-steel-700); opacity: 0.75; transition: opacity 200ms ease; }
-	.client:hover { opacity: 1; }
+	.client { display: flex; align-items: center; }
+	.client img { display: block; width: auto; max-width: 100%; height: var(--logo-h, 48px); object-fit: contain; border-radius: 4px; }
+
+	.intro-copy { max-width: 70ch; margin-inline: auto; font-size: var(--text-body-lg); color: var(--color-charcoal-700); }
+	.intro-section h2 { margin-bottom: 1.25rem; }
+	.pain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+	.pain.card { border-top: 3px solid transparent; }
+	.pain.card:hover { border-top-color: var(--color-amber-700); }
+	.pain h3 { font-size: var(--text-h4); margin-bottom: 0.5rem; }
+	.pain p { color: var(--color-charcoal-700); font-size: 0.92rem; margin: 0; }
 	.author-strip p { margin: 0 0 0.75rem; color: var(--color-charcoal-700); }
 
 	.trust-section { background: var(--color-steel-900); padding-top: 3rem; }
@@ -424,11 +481,12 @@ const marquee = ['Industrial SEO', 'Generative Engine Optimization', 'Answer Eng
 	}
 	@media (max-width: 900px) {
 		.report-grid, .manufacturing-grid, .service-grid, .case-grid { grid-template-columns: 1fr; }
+		.pain-grid { grid-template-columns: repeat(2, 1fr); }
 		.ai-era-inner { grid-template-columns: 1fr; }
-		.proof-row { grid-template-columns: repeat(2, 1fr); }
 	}
 	@media (max-width: 560px) {
 		.url-cta { flex-direction: column; }
+		.pain-grid { grid-template-columns: 1fr; }
 		.tool-grid { grid-template-columns: 1fr; }
 		.author-inner { flex-direction: column; text-align: center; }
 		.author-links { justify-content: center; }
